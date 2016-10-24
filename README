@@ -44,6 +44,8 @@ eval `opam config env`
 
 opam install llvm.3.4 ocamlfind
 
+
+
 ------------------------------
 Installation under OS X
 
@@ -165,6 +167,9 @@ Installation under OS X
    sudo ln -s /usr/local/opt/llvm/bin/lli-3.7 /usr/bin/lli   
 
    As before, you may also modify the path to lli in testall.sh
+
+
+
 
 ------------------------------
 To run and test:
