@@ -36,10 +36,14 @@ rule token = parse
 | "void"   { VOID }
 | "true"   { TRUE }
 | "false"  { FALSE }
+| "dna"    { DNA }
+| "rna"    { RNA }
+| ['#']['A' 'T' 'U' 'G' 'C' 'a' 't' 'u' 'g' 'c']+ as nucSEQ { NUCSEQ(nucSEQ) }
 | ['0'-'9']+ as lxm { LITERAL(int_of_string lxm) }
 | ['a'-'z' 'A'-'Z']['a'-'z' 'A'-'Z' '0'-'9' '_']* as lxm { ID(lxm) }
 | eof { EOF }
 | _ as char { raise (Failure("illegal character " ^ Char.escaped char)) }
+
 
 and comment = parse
   "*/" { token lexbuf }
