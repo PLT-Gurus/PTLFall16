@@ -8,6 +8,11 @@ rule token = parse
 | "variable" {VARIABLE}					(* Test, remove after *)
 | "="		 {ASSIGN}
 | ";"		 {SEMI}
+(*Operators *)
+| "+"		{PLUS}
+| "-"		{MINUS}
+| "*"		{TIMES}
+| "/"		{DIVIDE}
 (* Variables *)
 | "int"		 {INT}
 | "nuc" 	 {NUC} 						(*nucleotide*)
