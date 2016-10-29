@@ -80,5 +80,5 @@ and comment = parse
 
 and stringparse= parse
   '#'   { token lexbuf}
-| ['A'-'D''G''H''K''M''N''R'-'T''U'-'W']+ as lxm	{SEQUENCE_LIT(lxm)}		(*Why does this work? Shouldn't it register new line as an illegal character?? *)
+| ['A'-'D''G''H''K''M''N''R'-'T''U'-'W''a'-'d''g''h''k''m''n''r'-'t''u'-'w']+ as lxm	{SEQUENCE_LIT(lxm)}		(*Why does this work? Shouldn't it register new line as an illegal character?? *)
 | _ as char {raise (Failure("illegal character in sequence " ^ Char.escaped char))}
