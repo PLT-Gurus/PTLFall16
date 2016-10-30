@@ -12,31 +12,43 @@ open Ast
 %token <char> CHAR_LIT
 %token <float> DOUBLE_LIT
 
-
+%right ASSIGN
 %left PLUS MINUS
 %left TIMES DIVIDE
 %start program
 %type <Ast.program> program
 
 %%
+program:	decls EOF {$1}
 
-program: 
-	stmt EOF {$1}
+decls: 	{[], []}
+|	decls vdecl { ($2 :: fst $1), snd $1}
+|	decls stmt {fst $1, ($2 :: snd $1) }
+
+
+
+
+stmt_list: 
+	/* nothing */		{[]}
+|	stmt_list stmt {$2::$1}
+
 stmt:
- 	vdecl SEMI{$1}
-|	SEMI {Semi}
+ 	expr SEMI {Expr $1}
+|	BEGIN stmt_list END {Stmtlist(List.rev $2)}
+
+
+
 vdecl:
-	typename ID ASSIGN typ  { VDecl($1,$2,$4) }
-typ:
-	INT_LIT {Litint($1)}
-|	SEQUENCE_LIT {Sequence($1)}
+	typename ID ASSIGN expr SEMI{ $1,$2,$4 }
 
 expr:
-    typ 	{$1}
-|	expr PLUS expr {Binop($1,Add,$3)}
+    INT_LIT {Litint($1)}
+|	SEQUENCE_LIT {Sequence($1)}
+|	expr PLUS expr  {Binop($1,Add,$3)}
 |	expr MINUS expr {Binop($1,Sub,$3)}
 |	expr TIMES expr {Binop($1,Mul,$3)}
-|	expr PLUS expr {Binop($1,Div,$3)}
+|	expr DIVIDE expr  {Binop($1,Div,$3)}
+|   				{ Noexpr}
 
 typename:
 	INT 	{Int}
