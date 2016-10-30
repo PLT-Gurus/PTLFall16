@@ -3,9 +3,32 @@
 open Ast
 %}
 
-%token VARIABLE EOF ASSIGN SEMI INT NUC SEQUENCE PLUS MINUS TIMES DIVIDE LPAREN RPAREN COMMA BEGIN END IF ELSEIF ELSE FOR WHILE CONTINUE BREAK 
-%token INCLUDE LOCAL THEN RETURN MODULO EXPONENTIAL AND OR NOT EQ NEQ LT LEQ GT GEQ COMPLEMENT TRANSCRIBE TRANSLATE TRANSLATETWO BOOL VOID CHAR
-%token DOUBLE AA CODON TRUE FALSE 
+(* Assignment Binary Operator *)
+%token ASSIGN
+(* Logical Binary Operators *)
+%token OR AND NOT
+(* Relational Binary Operators *)
+%token LT LEQ EQ NEQ GEQ GT
+(* Arithmetic Binary Operators *)
+%token PLUS MINUS TIMES DIVIDE MODULO EXPONENTIAL
+(* Bio Expression Operators *)
+%token COMPLEMENT TRANSCRIBE  TRANSLATE  TRANSLATETWO
+(* Control Flow  *)
+%token BEGIN END IF ELSEIF ELSE THEN FOR WHILE CONTINUE BREAK
+(* Data Types  *)
+%token NUC INT DOUBLE AA BOOL CHAR VOID
+(* Complex Data Types *)
+%token CODON SEQUENCE
+(* Literal  *)
+%token TRUE FALSE
+
+(* Others  *)
+%token LPAREN RPAREN
+%token SEMI COMMA
+%token INCLUDE
+%token RETURN EOF
+%token LOCAL VARIABLE
+
 %token <int> INT_LIT
 %token <string> ID
 %token <string> SEQUENCE_LIT
@@ -13,12 +36,23 @@ open Ast
 %token <float> DOUBLE_LIT
 
 %right ASSIGN
-%left PLUS MINUS
-%left TIMES DIVIDE
+%left  OR
+%left  AND
+%left  LT          LEQ        EQ      NEQ  GEQ   GT
+%left  PLUS        MINUS
+%left  TIMES       DIVIDE     MODULO
+%left  TRANSLATETWO
+%left  TRANSLATE
+%left  TRANSCRIBE
+%left  EXPONENTIAL
+%right NOT         COMPLEMENT
+%left  LPAREN      RPAREN
+
 %start program
 %type <Ast.program> program
 
 %%
+
 program:	decls EOF {$1}
 
 decls: 	{[], []}
@@ -28,7 +62,7 @@ decls: 	{[], []}
 
 
 
-stmt_list: 
+stmt_list:
 	/* nothing */		{[]}
 |	stmt_list stmt {$2::$1}
 
