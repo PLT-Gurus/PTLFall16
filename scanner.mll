@@ -23,7 +23,6 @@ rule token = parse
 | "continue"{CONTINUE}
 | "break"   {BREAK}
 | "include" {INCLUDE}
-| "then"    {THEN}
 | "local"   {LOCAL}
 | "then"    {THEN}
 | "return"  {RETURN}
