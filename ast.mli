@@ -20,12 +20,12 @@ type expr = Litint of int
 		| Call of string * expr list
 
 type stmt = Block of stmt list
-		| If of expr * stmt * stmt
+		| If of expr * stmt * stmt * ending
 		| Elseif of expr * stmt * stmt
-		| For of expr * expr * expr * stmt
-		| While of expr * stmt
+		| For of expr * expr * expr * stmt * ending
+		| While of expr * stmt * ending
 		| Return of expr
-		| Expr of expr * ending
+		| Expr of expr
 
 type func_decl = {
 	typ		: typ;
@@ -35,4 +35,4 @@ type func_decl = {
 	body	: stmt list;
 }
 
-type program = bind list * func_decl list;
+type program =  bind list * func_decl list * stmt list
