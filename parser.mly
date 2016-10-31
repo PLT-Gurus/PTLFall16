@@ -13,7 +13,7 @@ open Ast
 %token TRUE FALSE
 
 %token LPAREN RPAREN
-%token SEMI COMMA
+%token SEMI COMMA COLON
 %token INCLUDE
 %token RETURN EOF
 %token LOCAL VARIABLE
@@ -53,7 +53,7 @@ vdecl:
 	typ ID ASSIGN expr SEMI    { $1, $2, $4 }
 
 func_decl:
-    typ ID LPAREN formals_opt RPAREN block END
+    typ ID LPAREN formals_opt RPAREN block COLON END
     {{ typ = $1; fname = $2; formals = $4; variables = $6.variables; stmts = $6.stmts}}
 
 formals_opt:
@@ -70,11 +70,8 @@ vdecl_list:
 
 block:  
     {{variables = []; stmts = []; funcs = []}}
-    |   block vdecl {{ variables = $2 :: $1.variables; stmts = $1.stmts; funcs = $1.funcs; }}
-    |   block stmt {{ variables = $1.variables; stmts = $2 :: $1.stmts; funcs = $1.funcs; }}
-
-
-
+    |   block vdecl {{ variables = $2 :: $1.variables; stmts = $1.stmts; funcs = []; }}
+    |   block stmt {{ variables = $1.variables; stmts = $2 :: $1.stmts; funcs = []; }}
 
 typ:
 	    INT 	{Int}
@@ -94,14 +91,14 @@ stmt:
         expr SEMI   { Expr $1 }
     |   RETURN expr_opt SEMI    {Return $2 }
     |	BEGIN stmt_list END   {Block(List.rev $2)}
-    |   FOR expr_opt SEMI expr SEMI expr_opt THEN stmt END { For($2, $4, $6, $8) }
-    |   WHILE expr THEN stmt END  { While($2, $4) }
-    |   IF expr THEN stmt bstmt END{ If($2, $4, $5) }
+    |   FOR expr_opt SEMI expr SEMI expr_opt THEN block END { For($2, $4, $6, $8.stmts, $8.variables) }
+    |   WHILE expr THEN block END  { While($2, $4.stmts, $4.variables) }
+    |   IF expr THEN block bstmt END{ If($2, $4.stmts, $4.variables, $5) }
 
 bstmt:
         /* nothing */   {Nobranching}
-    |   ELSEIF expr THEN stmt bstmt { Elseif($2, $4, $5) }
-    |   ELSE stmt   { Else($2)}
+    |   ELSEIF expr THEN block bstmt { Elseif($2, $4.stmts, $4.variables, $5) }
+    |   ELSE block   { Else($2.stmts, $2.variables)}
 
 expr:
         TRUE    { Litbool(true) }

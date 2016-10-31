@@ -19,17 +19,19 @@ type expr = Litint of int
 		| Assign of string * expr
 		| Call of string * expr list
 
+type vdecl = typ * string * expr 
+
 type stmt = Block of stmt list
-		| If of expr * stmt * stmt
-		| For of expr * expr * expr * stmt
-		| While of expr * stmt
+		| If of expr * stmt list * vdecl list * stmt
+		| For of expr * expr * expr * stmt list * vdecl list
+		| While of expr * stmt list * vdecl list
 		| Return of expr
 		| Expr of expr
  		| Nobranching
-		| Elseif of expr * stmt * stmt
-		| Else of stmt
+		| Elseif of expr * stmt list * vdecl list * stmt
+		| Else of stmt list * vdecl list
 
-type vdecl = typ * string * expr
+
 
 type bind = typ * string
 type block = {
