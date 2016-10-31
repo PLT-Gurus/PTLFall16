@@ -42,7 +42,7 @@ open Ast
 
 %%
 
-program:	decls EOF {$1}
+program: decls EOF {$1}
 
 decls: 	{{variables = []; stmts = []; funcs = [];}}
     |	decls vdecl {{ variables = $2 :: $1.variables; stmts = $1.stmts; funcs = $1.funcs;}}
@@ -53,8 +53,8 @@ vdecl:
 	typ ID ASSIGN expr SEMI    { $1, $2, $4 }
 
 func_decl:
-    typ ID LPAREN formals_opt RPAREN vdecl_list stmt_list END
-    {{ typ = $1; fname = $2; formals = $4; locals = List.rev $6; body = List.rev $7; }}
+    typ ID LPAREN formals_opt RPAREN block END
+    {{ typ = $1; fname = $2; formals = $4; variables = $6.variables; stmts = $6.stmts}}
 
 formals_opt:
     /* nothing */ {[]}
@@ -67,6 +67,14 @@ formal_list:
 vdecl_list:
      /* nothing */  {[]}
     |vdecl_list vdecl   { $2 :: $1 }
+
+block:  
+    {{variables = []; stmts = []; funcs = []}}
+    |   block vdecl {{ variables = $2 :: $1.variables; stmts = $1.stmts; funcs = $1.funcs; }}
+    |   block stmt {{ variables = $1.variables; stmts = $2 :: $1.stmts; funcs = $1.funcs; }}
+
+
+
 
 typ:
 	    INT 	{Int}

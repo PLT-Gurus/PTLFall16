@@ -32,13 +32,16 @@ type stmt = Block of stmt list
 type vdecl = typ * string * expr
 
 type bind = typ * string
-
+type block = {
+	variables: vdecl list;
+	stmts: stmt list; 
+}
 type func_decl = {
 	typ		: typ;
 	fname	: string;
 	formals	: bind list;
-	locals	: vdecl list;
-	body	: stmt list;
+	variables: vdecl list;
+	stmts: stmt list;
 }
 
 type program =  {
