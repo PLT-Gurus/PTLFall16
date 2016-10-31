@@ -485,7 +485,7 @@ let yyact = [|
     let _2 = (Parsing.peek_val __caml_parser_env 0 : 'vdecl) in
     Obj.repr(
 # 48 "parser.mly"
-                  ({ (_2 :: _1.variables); _1.stmts; _1.funcs;})
+                  ({ variables = _2 :: _1.variables; stmts = _1.stmts; funcs = _1.funcs;})
 # 490 "parser.ml"
                : 'decls))
 ; (fun __caml_parser_env ->
@@ -493,7 +493,7 @@ let yyact = [|
     let _2 = (Parsing.peek_val __caml_parser_env 0 : 'stmt) in
     Obj.repr(
 # 49 "parser.mly"
-                 ({ _1.variables; _2 :: _1.stmts; _1.funcs })
+                 ({ variables = _1.variables; stmts = _2 :: _1.stmts; funcs = _1.funcs; })
 # 498 "parser.ml"
                : 'decls))
 ; (fun __caml_parser_env ->
@@ -501,7 +501,7 @@ let yyact = [|
     let _2 = (Parsing.peek_val __caml_parser_env 0 : 'func_decl) in
     Obj.repr(
 # 50 "parser.mly"
-                      ({ _1.variables; _1.stmts; _2 :: _1.funcs })
+                      ({ variables = _1.variables; stmts = _1.stmts; funcs = _2 :: _1.funcs; })
 # 506 "parser.ml"
                : 'decls))
 ; (fun __caml_parser_env ->
@@ -648,7 +648,7 @@ let yyact = [|
     let _2 = (Parsing.peek_val __caml_parser_env 1 : 'stmt_list) in
     Obj.repr(
 # 88 "parser.mly"
-                            (Stmtlist(List.rev _2))
+                            (Block(List.rev _2))
 # 653 "parser.ml"
                : 'stmt))
 ; (fun __caml_parser_env ->

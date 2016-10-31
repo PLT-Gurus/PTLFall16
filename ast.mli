@@ -11,7 +11,7 @@ type expr = Litint of int
 		| Sequence of string
 		| Litbool of bool
 		| Litchar of char
-		| Litdouble of double
+		| Litdouble of float
 		| Noexpr
 		| Binop of expr * op * expr
 		| Lunop of uop * expr
@@ -20,22 +20,23 @@ type expr = Litint of int
 		| Call of string * expr list
 
 type stmt = Block of stmt list
-		| If of expr * stmt * bstmt * ending
-		| For of expr * expr * expr * stmt * ending
-		| While of expr * stmt * ending
+		| If of expr * stmt * stmt
+		| Elseif of expr * stmt * stmt
+		| Else of stmt
+		| Nobraching
+		| For of expr * expr * expr * stmt
+		| While of expr * stmt
 		| Return of expr
 		| Expr of expr
 
-type bstmt = Nobraching
-		| Elseif of expr * stmt * bstmt
-		| Else of stmt
-
 type vdecl = typ * string * expr
+
+type bind = typ * string
 
 type func_decl = {
 	typ		: typ;
 	fname	: string;
-	formals	: vdecl list;
+	formals	: bind list;
 	locals	: vdecl list;
 	body	: stmt list;
 }

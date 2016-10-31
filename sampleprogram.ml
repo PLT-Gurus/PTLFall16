@@ -10,13 +10,13 @@ Litint(typ) -> Litint typ
 	match op with
 		Add -> v1 + v2
 	|   Sub -> v1 - v2
-	|   Mul -> v1 * v2
+	|   Mult -> v1 * v2
 	|   Div -> v1 / v2
 
 let string_of_typename = function
 Int -> "int"
 |  Seq -> "sequence"
- 
+
 let string_of_lit = function
 Litint(typ) -> string_of_int typ
 | Sequence(typ) -> typ
@@ -26,10 +26,8 @@ let rec stmt = function
 | 	Semi -> [||]
 
 let _ =
-	let lexbuf = Lexing.from_channel stdin in 
-	let expr = Parser.program Scanner.token lexbuf in 
-	let result = stmt expr in 
+	let lexbuf = Lexing.from_channel stdin in
+	let expr = Parser.program Scanner.token lexbuf in
+	let result = stmt expr in
 	let resultlist = Array.to_list result in
 	List.map print_endline resultlist
-
-	

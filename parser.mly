@@ -45,9 +45,9 @@ open Ast
 program:	decls EOF {$1}
 
 decls: 	{{variables = []; stmts = []; funcs = [];}}
-    |	decls vdecl {{ ($2 :: $1.variables); $1.stmts; $1.funcs;}}
-    |	decls stmt {{ $1.variables; $2 :: $1.stmts; $1.funcs }}
-    |	decls func_decl {{ $1.variables; $1.stmts; $2 :: $1.funcs }}
+    |	decls vdecl {{ variables = $2 :: $1.variables; stmts = $1.stmts; funcs = $1.funcs;}}
+    |	decls stmt {{ variables = $1.variables; stmts = $2 :: $1.stmts; funcs = $1.funcs; }}
+    |	decls func_decl {{ variables = $1.variables; stmts = $1.stmts; funcs = $2 :: $1.funcs; }}
 
 vdecl:
 	typ ID ASSIGN expr SEMI    { $1, $2, $4 }
@@ -85,7 +85,7 @@ stmt_list:
 stmt:
         expr SEMI   { Expr $1 }
     |   RETURN expr_opt SEMI    {Return $2 }
-    |	BEGIN stmt_list END   {Stmtlist(List.rev $2)}
+    |	BEGIN stmt_list END   {Block(List.rev $2)}
     |   FOR expr_opt SEMI expr SEMI expr_opt THEN stmt END { For($2, $4, $6, $8) }
     |   WHILE expr THEN stmt END  { While($2, $4) }
     |   IF expr THEN stmt bstmt END{ If($2, $4, $5) }
