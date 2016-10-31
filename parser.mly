@@ -91,9 +91,9 @@ stmt:
     |   IF expr THEN stmt bstmt END{ If($2, $4, $5) }
 
 bstmt:
-        /* nothing */   { Nobraching }
-    |   ELSEIF expr THEN stmt bstmt { ELSEIf($2, $4, $5) }
-    |   ELSE stmt   { ELSE($2)}
+        /* nothing */   {Nobranching}
+    |   ELSEIF expr THEN stmt bstmt { Elseif($2, $4, $5) }
+    |   ELSE stmt   { Else($2)}
 
 expr:
         TRUE    { Litbool(true) }
@@ -105,25 +105,25 @@ expr:
     |	SEQUENCE_LIT  { Sequence($1) }
     |	expr PLUS expr  {Binop($1,Add,$3)}
     |	expr MINUS expr {Binop($1,Sub,$3)}
-    |	expr TIMES expr {Binop($1,Mul,$3)}
+    |	expr TIMES expr {Binop($1,Mult,$3)}
     |	expr DIVIDE expr{Binop($1,Div,$3)}
     |	expr MODULO expr{Binop($1,Mod,$3)}
     |	expr EXPONENTIAL expr {Binop($1,Exp,$3)}
     |	expr AND expr {Binop($1,And,$3)}
     |	expr OR expr{Binop($1,Or,$3)}
-    |	expr EQ expr  {Binop($1,Eq,$3)}
+    |	expr EQ expr  {Binop($1,Equal,$3)}
     |	expr NEQ expr {Binop($1,Neq,$3)}
-    |	expr LT expr {Binop($1,Lt,$3)}
+    |	expr LT expr {Binop($1,Less,$3)}
     |	expr LEQ expr{Binop($1,Leq,$3)}
-    |	expr GT expr {Binop($1,Gt,$3)}
+    |	expr GT expr {Binop($1,Greater,$3)}
     |	expr GEQ expr{Binop($1,Geq,$3)}
     |   MINUS expr %prec NEG {Lunop(Neg, $2)}
     |   NOT expr {Lunop(Not, $2)}
-    |	COMPLEMENT expr {Lunop(Compl, $2)}
-    |   expr TRANSCRIBE {Runop($1, Transcribe)}
-    |   expr TRANSLATE  {Runop($1, Translate)}
-    |   expr TRANSLATETWO   {Runop($1, Translatetwo)}
-    |   ID ASSIGN expr  {ASSIGN($1, $3)}
+    |	COMPLEMENT expr {Lunop(Comp, $2)}
+    |   expr TRANSCRIBE {Runop($1, Transcb)}
+    |   expr TRANSLATE  {Runop($1, Translt)}
+    |   expr TRANSLATETWO   {Runop($1, Translttwo)}
+    |   ID ASSIGN expr  {Assign($1, $3)}
     |   LPAREN expr RPAREN  {$2}
     |   ID LPAREN actuals_opt RPAREN    {Call($1, $3)}
 

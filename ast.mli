@@ -1,6 +1,6 @@
-type uop = Expon | Neg | Comp | Transcb | Translt | Translttwo
+type uop = Expon | Neg | Comp | Transcb | Translt | Translttwo | Not
 
-type op = Add | Sub | Mult | Div | Mod | And | Or | Not | Equal | Neq | Less | Leq | Greater | Geq
+type op = Add | Sub | Mult | Div | Mod | Exp | And | Or | Equal | Neq | Less | Leq | Greater | Geq
 
 type typ = Int | Bool | Void | Char | Double | Aa | Nuc | Codon | Seq
 
@@ -21,13 +21,13 @@ type expr = Litint of int
 
 type stmt = Block of stmt list
 		| If of expr * stmt * stmt
-		| Elseif of expr * stmt * stmt
-		| Else of stmt
-		| Nobraching
 		| For of expr * expr * expr * stmt
 		| While of expr * stmt
 		| Return of expr
 		| Expr of expr
+ 		| Nobranching
+		| Elseif of expr * stmt * stmt
+		| Else of stmt
 
 type vdecl = typ * string * expr
 
