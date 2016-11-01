@@ -12,12 +12,12 @@ type expr = Litint of int
 		| Litbool of bool
 		| Litchar of char
 		| Litdouble of float
-		| Noexpr
 		| Binop of expr * op * expr
 		| Lunop of uop * expr
 		| Runop of expr * uop
 		| Assign of string * expr
 		| Call of string * expr list
+		| Noexpr
 
 type vdecl = typ * string * expr 
 
@@ -51,3 +51,7 @@ type program =  {
 	stmts: stmt list;
 	funcs: func_decl list;
 }
+
+(*printing functions*)
+
+

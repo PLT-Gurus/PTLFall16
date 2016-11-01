@@ -1,6 +1,6 @@
 #!/bin/bash
-# My first script
-
+# Run DNA#
+# If the terminal shows "can't find command", plz input "chmod +x runDNAs.sh" in terminal first.
 ocamllex scanner.mll
 
 ocamlyacc parser.mly
@@ -13,8 +13,8 @@ ocamlc -c scanner.ml # compile the scanner
 
 ocamlc -c parser.ml # compile the parser
 
-ocamlc -c sampleprogram.ml # compile the interpreter
+ocamlc -c runDNAs.ml # compile the interpreter
 
-ocamlc -o calc parser.cmo scanner.cmo sampleprogram.cmo
+ocamlc -o DNAs parser.cmo scanner.cmo runDNAs.cmo
 
-./calc
+./DNAs
