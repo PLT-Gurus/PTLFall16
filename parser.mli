@@ -45,6 +45,7 @@ type token =
   | RPAREN
   | SEMI
   | COMMA
+  | COLON
   | INCLUDE
   | RETURN
   | EOF

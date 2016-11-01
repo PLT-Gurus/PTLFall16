@@ -27,10 +27,9 @@ type stmt = Block of stmt list
 		| While of expr * stmt list * vdecl list
 		| Return of expr
 		| Expr of expr
- 		| Nobranching
 		| Elseif of expr * stmt list * vdecl list * stmt
 		| Else of stmt list * vdecl list
-
+ 		| Nobranching
 
 
 type bind = typ * string
@@ -51,7 +50,4 @@ type program =  {
 	stmts: stmt list;
 	funcs: func_decl list;
 }
-
-(*printing functions*)
-
 
