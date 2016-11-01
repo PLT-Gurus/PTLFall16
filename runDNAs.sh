@@ -1,6 +1,6 @@
 #!/bin/bash
 # Run DNA#
-
+# If the terminal shows "can't find command", plz input "chmod +x runDNAs.sh" in terminal first.
 ocamllex scanner.mll
 
 ocamlyacc parser.mly
