@@ -65,7 +65,9 @@ rule token = parse
 (* Literals *)
 | "true"    {TRUE}
 | "false"   {FALSE}
-| ['a'-'z' 'A'-'Z'] as lxm  {CHAR_LIT(lxm)}
+
+(* Removed char lit *)
+
 | ['0'-'9']+ as lxm { INT_LIT(int_of_string lxm) }
 | (((['0'-'9']+ '.' ['0'-'9']* | '.' ['0'-'9']+ )(['e''E']['+''-']? ['0'-'9']+)?) | (['0'-'9']+ (['e''E']['+''-']? ['0'-'9']+))) as lxm {DOUBLE_LIT(float_of_string lxm)}
 | ['a'-'z' 'A'-'Z' '_']['a'-'z' 'A'-'Z' '0'-'9' '_']* as lxm { ID(lxm)}

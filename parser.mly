@@ -12,7 +12,7 @@ open Ast
 %token CODON SEQUENCE
 %token TRUE FALSE
 
-%token LPAREN RPAREN
+%token LPAREN RPAREN LBRACK RBRACK
 %token SEMI COMMA COLON
 %token INCLUDE
 %token RETURN EOF
@@ -21,7 +21,6 @@ open Ast
 %token <int> INT_LIT
 %token <string> ID
 %token <string> SEQUENCE_LIT
-%token <char> CHAR_LIT
 %token <float> DOUBLE_LIT
 
 %right ASSIGN
@@ -52,8 +51,9 @@ decls: 	{{variables = []; stmts = []; funcs = [];}}
 vdecl:
 	typ ID ASSIGN expr SEMI    { $1, $2, $4 }
 
+
 func_decl:
-    typ ID LPAREN formals_opt RPAREN block COLON END
+    typ ID LPAREN formals_opt RPAREN block END
     {{ typ = $1; fname = $2; formals = $4; variables = $6.variables; stmts = $6.stmts}}
 
 formals_opt:
@@ -105,7 +105,6 @@ expr:
     |   FALSE   { Litbool(false) }
     |   ID      { Id($1) }
     |   INT_LIT {Litint($1)}
-    |   CHAR_LIT    { Litchar($1) }
     |   DOUBLE_LIT  { Litdouble($1) }
     |	SEQUENCE_LIT  { Sequence($1) }
     |	expr PLUS expr  {Binop($1,Add,$3)}
