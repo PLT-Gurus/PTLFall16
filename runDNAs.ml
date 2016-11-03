@@ -99,10 +99,11 @@ let rec string_of_expr = function
 
 (*print vari & vari list*)
 let rec string_of_vari_list l_vari=
-	String.concat "\n" (List.map string_of_vari l_vari)
+	"( " ^ String.concat " | " (List.map string_of_vari l_vari)
+	^ " )"
 
 and string_of_vari (t, id, exp) = 
-	string_of_typ t ^ " " ^ id ^ " " ^ string_of_expr exp
+	string_of_typ t ^ " " ^ id ^ " = " ^ string_of_expr exp
 
 
 (*print stmt & stmt list*)
@@ -159,14 +160,27 @@ let rec string_of_stmt n stmt=
 and string_of_stmt_list n l_stmt=
 	String.concat "" (List.map (string_of_stmt n) l_stmt)
 
+let rec string_of_bind (typ,str)=
+	string_of_typ typ ^ " " ^ str
+and string_of_bind_list l_bid=
+	"( "^String.concat ", " (List.map string_of_bind l_bid) ^ " )"
+
 let string_of_func func_decl=
-	"One func\n"
+	let f_name=func_decl.fname in
+	let f_typ=func_decl.typ in
+	let f_form=func_decl.formals in
+	let f_vari=func_decl.variables in
+	let f_body=func_decl.stmts in
+		string_of_typ f_typ ^ " function:" ^ f_name ^ string_of_bind_list f_form ^
+		"\nvari->" ^ string_of_vari_list f_vari ^
+		"\nbody->\n" ^ string_of_stmt_list 2 f_body ^ "\n"
+
 
 let string_of_program program=
 	let l_var=program.variables in
 	let l_stm=program.stmts in
 	let l_fun=program.funcs in
-		"----- Vari List -----\n" ^ String.concat "" (List.map string_of_vari l_var) ^ "\n" ^
+		"----- Vari List -----\n" ^ String.concat " | " (List.map string_of_vari l_var) ^ "\n" ^
 		"----- Stmt List -----\n" ^ String.concat "" (List.map (string_of_stmt 0) l_stm) ^ "\n" ^
 		"----- Func List -----\n" ^ String.concat "" (List.map string_of_func l_fun) ^ "\n"
 
