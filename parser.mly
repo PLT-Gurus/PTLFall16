@@ -8,7 +8,7 @@ open Ast
 %token PLUS MINUS TIMES DIVIDE MODULO EXPONENTIAL
 %token COMPLEMENT TRANSCRIBE  TRANSLATE  TRANSLATETWO
 %token BEGIN END IF ELSEIF ELSE THEN FOR WHILE CONTINUE BREAK
-%token NUC INT DOUBLE AA BOOL CHAR VOID
+%token NUC INT DOUBLE AA BOOL CHAR VOID STRING
 %token CODON SEQUENCE
 %token TRUE FALSE
 
@@ -22,6 +22,8 @@ open Ast
 %token <string> ID
 %token <string> SEQUENCE_LIT
 %token <float> DOUBLE_LIT
+%token <string> STRING_LIT
+
 
 %right ASSIGN
 %left  OR
@@ -82,6 +84,7 @@ typ:
     |   AA      {Aa}
     |   NUC     {Nuc}
     |	SEQUENCE {Seq}
+    |   STRING {Str}
 
 stmt_list:
      /* nothing */  {[]}
@@ -107,6 +110,7 @@ expr:
     |   INT_LIT {Litint($1)}
     |   DOUBLE_LIT  { Litdouble($1) }
     |	SEQUENCE_LIT  { Sequence($1) }
+    |   STRING_LIT    { Stringlit($1)}
     |	expr PLUS expr  {Binop($1,Add,$3)}
     |	expr MINUS expr {Binop($1,Sub,$3)}
     |	expr TIMES expr {Binop($1,Mult,$3)}
