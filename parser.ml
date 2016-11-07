@@ -745,7 +745,7 @@ let yyact = [|
     let _8 = (Parsing.peek_val __caml_parser_env 1 : 'block) in
     Obj.repr(
 # 101 "parser.mly"
-                                                            ( For(_2, _4, _6, _8.stmts, _8.variables) )
+                                                            ( For(_2, _4, _6, _8.stmts, _8.variables, _8.body) )
 # 750 "parser.ml"
                : 'stmt))
 ; (fun __caml_parser_env ->
@@ -753,7 +753,7 @@ let yyact = [|
     let _4 = (Parsing.peek_val __caml_parser_env 1 : 'block) in
     Obj.repr(
 # 102 "parser.mly"
-                                   ( While(_2, _4.stmts, _4.variables) )
+                                   ( While(_2, _4.stmts, _4.variables, _4.body) )
 # 758 "parser.ml"
                : 'stmt))
 ; (fun __caml_parser_env ->
@@ -762,7 +762,7 @@ let yyact = [|
     let _5 = (Parsing.peek_val __caml_parser_env 1 : 'bstmt) in
     Obj.repr(
 # 103 "parser.mly"
-                                    ( If(_2, _4.stmts, _4.variables, _5) )
+                                    ( If(_2, _4.stmts, _4.variables, _4.body, _5) )
 # 767 "parser.ml"
                : 'stmt))
 ; (fun __caml_parser_env ->
@@ -777,14 +777,14 @@ let yyact = [|
     let _5 = (Parsing.peek_val __caml_parser_env 0 : 'bstmt) in
     Obj.repr(
 # 107 "parser.mly"
-                                     ( Elseif(_2, _4.stmts, _4.variables, _5) )
+                                     ( Elseif(_2, _4.stmts, _4.variables, _4.body, _5) )
 # 782 "parser.ml"
                : 'bstmt))
 ; (fun __caml_parser_env ->
     let _2 = (Parsing.peek_val __caml_parser_env 0 : 'block) in
     Obj.repr(
 # 108 "parser.mly"
-                     ( Else(_2.stmts, _2.variables))
+                     ( Else(_2.stmts, _2.variables, _2.body))
 # 789 "parser.ml"
                : 'bstmt))
 ; (fun __caml_parser_env ->

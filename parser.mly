@@ -98,14 +98,14 @@ stmt:
         expr SEMI   { Expr $1 }
     |   RETURN expr_opt SEMI    {Return $2 }
     |	BEGIN stmt_list END   {Block(List.rev $2)}
-    |   FOR expr_opt SEMI expr SEMI expr_opt THEN block END { For($2, $4, $6, $8.stmts, $8.variables) }
-    |   WHILE expr THEN block END  { While($2, $4.stmts, $4.variables) }
-    |   IF expr THEN block bstmt END{ If($2, $4.stmts, $4.variables, $5) }
+    |   FOR expr_opt SEMI expr SEMI expr_opt THEN block END { For($2, $4, $6, $8.stmts, $8.variables, $8.body) }
+    |   WHILE expr THEN block END  { While($2, $4.stmts, $4.variables, $4.body) }
+    |   IF expr THEN block bstmt END{ If($2, $4.stmts, $4.variables, $4.body, $5) }
 
 bstmt:
         /* nothing */   {Nobranching}
-    |   ELSEIF expr THEN block bstmt { Elseif($2, $4.stmts, $4.variables, $5) }
-    |   ELSE block   { Else($2.stmts, $2.variables)}
+    |   ELSEIF expr THEN block bstmt { Elseif($2, $4.stmts, $4.variables, $4.body, $5) }
+    |   ELSE block   { Else($2.stmts, $2.variables, $2.body)}
 
 expr:
         TRUE    { Litbool(true) }

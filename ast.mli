@@ -23,25 +23,19 @@ type expr = Litint of int
 type vdecl = typ * string * expr
 
 type stmt = Block of stmt list
-		| If of expr * stmt list * vdecl list * stmt
-		| For of expr * expr * expr * stmt list * vdecl list
-		| While of expr * stmt list * vdecl list
+		| If of expr * stmt list * vdecl list * (vdecl list * stmt list) list * stmt
+		| For of expr * expr * expr * stmt list * vdecl list * (vdecl list * stmt list) list
+		| While of expr * stmt list * vdecl list * (vdecl list * stmt list) list
 		| Return of expr
 		| Expr of expr
  		| Nobranching
-		| Elseif of expr * stmt list * vdecl list * stmt
-		| Else of stmt list * vdecl list
+		| Elseif of expr * stmt list * vdecl list * (vdecl list * stmt list) list * stmt
+		| Else of stmt list * vdecl list * (vdecl list * stmt list) list
 
- type collection = vdecl list * stmt list
-
-
+type collection = vdecl list * stmt list
 
 type bind = typ * string
-type block = {
-	variables: vdecl list;
-	stmts: stmt list;
-	body: collection list;
-}
+
 type func_decl = {
 	typ		: typ;
 	fname	: string;
