@@ -37,12 +37,15 @@ type token =
   | BOOL
   | CHAR
   | VOID
+  | STRING
   | CODON
   | SEQUENCE
   | TRUE
   | FALSE
   | LPAREN
   | RPAREN
+  | LBRACK
+  | RBRACK
   | SEMI
   | COMMA
   | COLON
@@ -54,8 +57,8 @@ type token =
   | INT_LIT of (int)
   | ID of (string)
   | SEQUENCE_LIT of (string)
-  | CHAR_LIT of (char)
   | DOUBLE_LIT of (float)
+  | STRING_LIT of (string)
 
 val program :
   (Lexing.lexbuf  -> token) -> Lexing.lexbuf -> Ast.program

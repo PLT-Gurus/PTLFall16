@@ -45,10 +45,10 @@ open Ast
 
 program: decls EOF {$1}
 
-decls: 	{{variables = []; stmts = []; funcs = [];}}
-    |	decls vdecl {{ variables = $2 :: $1.variables; stmts = $1.stmts; funcs = $1.funcs;}}
-    |	decls stmt {{ variables = $1.variables; stmts = $2 :: $1.stmts; funcs = $1.funcs; }}
-    |	decls func_decl {{ variables = $1.variables; stmts = $1.stmts; funcs = $2 :: $1.funcs; }}
+decls: 	{{variables = []; stmts = []; body = []; funcs = [];}}
+    |	decls collection {{ variables = fst $2 @ $1.variables; stmts = snd $2 @ $1.stmts; body= $2 :: $1.body; funcs = $1.funcs;}}
+
+    |	decls func_decl {{ variables = $1.variables; stmts = $1.stmts; body=$1.body; funcs = $2 :: $1.funcs; }}
 
 vdecl:
 	typ ID ASSIGN expr SEMI    { $1, $2, $4 }
@@ -56,7 +56,7 @@ vdecl:
 
 func_decl:
     typ ID LPAREN formals_opt RPAREN block END
-    {{ typ = $1; fname = $2; formals = $4; variables = $6.variables; stmts = $6.stmts}}
+    {{ typ = $1; fname = $2; formals = $4; variables = $6.variables; stmts = $6.stmts; body = $6.body;}}
 
 formals_opt:
     /* nothing */ {[]}
@@ -70,10 +70,14 @@ vdecl_list:
      /* nothing */  {[]}
     |vdecl_list vdecl   { $2 :: $1 }
 
-block:  
-    {{variables = []; stmts = []; funcs = []}}
-    |   block vdecl {{ variables = $2 :: $1.variables; stmts = $1.stmts; funcs = []; }}
-    |   block stmt {{ variables = $1.variables; stmts = $2 :: $1.stmts; funcs = []; }}
+block:
+    {{variables = []; stmts = [];body=[];funcs=[];}}
+    |   block collection {{ variables = fst $2 @ $1.variables; stmts = snd $2 @ $1.stmts; body = $2 :: $1.body; funcs = [];}}
+
+
+collection:
+    |   vdecl   {($1::[],[])}
+    |   stmt    {([],$1::[])}
 
 typ:
 	    INT 	{Int}

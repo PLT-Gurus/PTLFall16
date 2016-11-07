@@ -2,13 +2,14 @@ type uop = Expon | Neg | Comp | Transcb | Translt | Translttwo | Not
 
 type op = Add | Sub | Mult | Div | Mod | Exp | And | Or | Equal | Neq | Less | Leq | Greater | Geq
 
-type typ = Int | Bool | Void | Char | Double | Aa | Nuc | Codon | Seq
+type typ = Int | Bool | Void | Char | Double | Aa | Nuc | Codon | Seq | Str
 
 type ending = End
 
 type expr = Litint of int
 		| Id of string
 		| Sequence of string
+		| Stringlit of string
 		| Litbool of bool
 		| Litchar of char
 		| Litdouble of float
@@ -19,7 +20,7 @@ type expr = Litint of int
 		| Call of string * expr list
 		| Noexpr
 
-type vdecl = typ * string * expr 
+type vdecl = typ * string * expr
 
 type stmt = Block of stmt list
 		| If of expr * stmt list * vdecl list * stmt
@@ -31,12 +32,15 @@ type stmt = Block of stmt list
 		| Elseif of expr * stmt list * vdecl list * stmt
 		| Else of stmt list * vdecl list
 
+ type collection = vdecl list * stmt list
+
 
 
 type bind = typ * string
 type block = {
 	variables: vdecl list;
-	stmts: stmt list; 
+	stmts: stmt list;
+	body: collection list;
 }
 type func_decl = {
 	typ		: typ;
@@ -44,14 +48,14 @@ type func_decl = {
 	formals	: bind list;
 	variables: vdecl list;
 	stmts: stmt list;
+	body: collection list;
 }
 
 type program =  {
 	variables: vdecl list;
 	stmts: stmt list;
+	body: collection list;
 	funcs: func_decl list;
 }
 
 (*printing functions*)
-
-
