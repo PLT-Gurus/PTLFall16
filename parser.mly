@@ -45,10 +45,10 @@ open Ast
 
 program: decls EOF {$1}
 
-decls: 	{{stmts = []; funcs = [];}}
-    |	decls stmt {{stmts = $1.stmts @ [$2] ; funcs = $1.funcs;}}
+decls:  {{stmts = []; funcs = [];}}
+    |   decls stmt {{stmts = $1.stmts @ [$2] ; funcs = $1.funcs;}}
 
-    |	decls func_decl {{stmts = $1.stmts; funcs = $1.funcs @ [$2] }}	
+    |   decls func_decl {{stmts = $1.stmts; funcs = $1.funcs @ [$2] }}  
 
 func_decl:
     typ ID LPAREN formals_opt RPAREN stmt_list END
@@ -65,14 +65,14 @@ formal_list:
 
 
 typ:
-	    INT 	{Int}
+        INT     {Int}
     |   BOOL    {Bool}
     |   VOID    {Void}
     |   CHAR    {Char}
     |   DOUBLE  {Double}
     |   AA      {Aa}
     |   NUC     {Nuc}
-    |	SEQUENCE {Seq}
+    |   SEQUENCE {Seq}
     |   STRING {Str}
 
 stmt_list:
@@ -99,25 +99,25 @@ expr:
     |   ID      { Id($1) }
     |   INT_LIT {Litint($1)}
     |   DOUBLE_LIT  { Litdouble($1) }
-    |	SEQUENCE_LIT  { Sequence($1) }
+    |   SEQUENCE_LIT  { Sequence($1) }
     |   STRING_LIT    { Stringlit($1)}
-    |	expr PLUS expr  {Binop($1,Add,$3)}
-    |	expr MINUS expr {Binop($1,Sub,$3)}
-    |	expr TIMES expr {Binop($1,Mult,$3)}
-    |	expr DIVIDE expr{Binop($1,Div,$3)}
-    |	expr MODULO expr{Binop($1,Mod,$3)}
-    |	expr EXPONENTIAL expr {Binop($1,Exp,$3)}
-    |	expr AND expr {Binop($1,And,$3)}
-    |	expr OR expr{Binop($1,Or,$3)}
-    |	expr EQ expr  {Binop($1,Equal,$3)}
-    |	expr NEQ expr {Binop($1,Neq,$3)}
-    |	expr LT expr {Binop($1,Less,$3)}
-    |	expr LEQ expr{Binop($1,Leq,$3)}
-    |	expr GT expr {Binop($1,Greater,$3)}
-    |	expr GEQ expr{Binop($1,Geq,$3)}
+    |   expr PLUS expr  {Binop($1,Add,$3)}
+    |   expr MINUS expr {Binop($1,Sub,$3)}
+    |   expr TIMES expr {Binop($1,Mult,$3)}
+    |   expr DIVIDE expr{Binop($1,Div,$3)}
+    |   expr MODULO expr{Binop($1,Mod,$3)}
+    |   expr EXPONENTIAL expr {Binop($1,Exp,$3)}
+    |   expr AND expr {Binop($1,And,$3)}
+    |   expr OR expr{Binop($1,Or,$3)}
+    |   expr EQ expr  {Binop($1,Equal,$3)}
+    |   expr NEQ expr {Binop($1,Neq,$3)}
+    |   expr LT expr {Binop($1,Less,$3)}
+    |   expr LEQ expr{Binop($1,Leq,$3)}
+    |   expr GT expr {Binop($1,Greater,$3)}
+    |   expr GEQ expr{Binop($1,Geq,$3)}
     |   MINUS expr %prec NEG {Lunop(Neg, $2)}
     |   NOT expr {Lunop(Not, $2)}
-    |	COMPLEMENT expr {Lunop(Comp, $2)}
+    |   COMPLEMENT expr {Lunop(Comp, $2)}
     |   expr TRANSCRIBE {Runop($1, Transcb)}
     |   expr TRANSLATE  {Runop($1, Translt)}
     |   expr TRANSLATETWO   {Runop($1, Translttwo)}
