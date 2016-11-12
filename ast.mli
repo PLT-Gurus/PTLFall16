@@ -20,19 +20,18 @@ type expr = Litint of int
 		| Call of string * expr list
 		| Noexpr
 
-type vdecl = typ * string * expr
 
-type stmt = Block of stmt list
-		| If of expr * stmt list * vdecl list * (vdecl list * stmt list) list * stmt
-		| For of expr * expr * expr * stmt list * vdecl list * (vdecl list * stmt list) list
-		| While of expr * stmt list * vdecl list * (vdecl list * stmt list) list
+type stmt = 
+		Block of stmt list
+		| If of expr * stmt list * stmt
+		| For of expr * expr * expr * stmt list 
+		| While of expr * stmt list 
 		| Return of expr
 		| Expr of expr
  		| Nobranching
-		| Elseif of expr * stmt list * vdecl list * (vdecl list * stmt list) list * stmt
-		| Else of stmt list * vdecl list * (vdecl list * stmt list) list
-
-type collection = vdecl list * stmt list
+		| Elseif of expr * stmt list * stmt
+		| Else of stmt list 
+		| VDecl of typ * string * expr
 
 type bind = typ * string
 
@@ -40,15 +39,12 @@ type func_decl = {
 	typ		: typ;
 	fname	: string;
 	formals	: bind list;
-	variables: vdecl list;
 	stmts: stmt list;
-	body: collection list;
+	
 }
 
 type program =  {
-	variables: vdecl list;
 	stmts: stmt list;
-	body: collection list;
 	funcs: func_decl list;
 }
 

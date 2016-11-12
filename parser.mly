@@ -45,24 +45,14 @@ open Ast
 
 program: decls EOF {$1}
 
-decls: 	{{variables = []; stmts = []; body = []; funcs = [];}}
-    |	decls collection {{ variables = $1.variables @ fst $2 ; stmts = $1.stmts @ snd $2 ; body= $1.body @ [$2]; funcs = $1.funcs;}}
+decls: 	{{stmts = []; funcs = [];}}
+    |	decls stmt {{stmts = $1.stmts @ [$2] ; funcs = $1.funcs;}}
 
-    |	decls func_decl {{ variables = $1.variables; stmts = $1.stmts; body=$1.body; funcs = $1.funcs @ [$2] }}
-
-
-block:
-    {{variables = []; stmts = [];body=[];funcs=[];}}
-    |   block collection {{ variables = $1.variables @ fst $2 ; stmts = $1.stmts @ snd $2 ; body= $1.body @ [$2]; funcs = [];}}
-
-
-vdecl:
-	typ ID ASSIGN expr SEMI    { $1, $2, $4 }
-
+    |	decls func_decl {{stmts = $1.stmts; funcs = $1.funcs @ [$2] }}	
 
 func_decl:
-    typ ID LPAREN formals_opt RPAREN block END
-    {{ typ = $1; fname = $2; formals = $4; variables = $6.variables; stmts = $6.stmts; body = $6.body;}}
+    typ ID LPAREN formals_opt RPAREN stmt_list END
+    {{ typ = $1; fname = $2; formals = $4; stmts = List.rev $6;}}
 
 formals_opt:
     /* nothing */ {[]}
@@ -72,13 +62,7 @@ formal_list:
      typ ID {[($1, $2)]}
     |formal_list COMMA typ ID { ($3, $4) :: $1 }
 
-vdecl_list:
-     /* nothing */  {[]}
-    |vdecl_list vdecl   { $2 :: $1 }
 
-collection:
-    |   vdecl   {($1::[],[])}
-    |   stmt    {([],$1::[])}
 
 typ:
 	    INT 	{Int}
@@ -93,20 +77,21 @@ typ:
 
 stmt_list:
      /* nothing */  {[]}
-    |stmt_list stmt { $2 :: $1 }
-
+|   stmt_list stmt { $2 :: $1 }
+   
 stmt:
         expr SEMI   { Expr $1 }
     |   RETURN expr_opt SEMI    {Return $2 }
-    |	BEGIN stmt_list END   {Block(List.rev $2)}
-    |   FOR expr_opt SEMI expr SEMI expr_opt THEN block END { For($2, $4, $6, $8.stmts, $8.variables, $8.body) }
-    |   WHILE expr THEN block END  { While($2, $4.stmts, $4.variables, $4.body) }
-    |   IF expr THEN block bstmt END{ If($2, $4.stmts, $4.variables, $4.body, $5) }
+    |   BEGIN stmt_list END   {Block(List.rev $2)}
+    |   FOR expr_opt SEMI expr SEMI expr_opt THEN stmt_list END { For($2, $4, $6, List.rev $8) }
+    |   WHILE expr THEN stmt_list END  { While($2, List.rev $4) }
+    |   IF expr THEN stmt_list bstmt END{ If($2, List.rev $4, $5) }
+    |   typ ID ASSIGN expr SEMI    { VDecl($1, $2, $4)}
 
 bstmt:
         /* nothing */   {Nobranching}
-    |   ELSEIF expr THEN block bstmt { Elseif($2, $4.stmts, $4.variables, $4.body, $5) }
-    |   ELSE block   { Else($2.stmts, $2.variables, $2.body)}
+    |   ELSEIF expr THEN stmt_list bstmt { Elseif($2, List.rev $4, $5) }
+    |   ELSE stmt_list   { Else(List.rev $2)}
 
 expr:
         TRUE    { Litbool(true) }
