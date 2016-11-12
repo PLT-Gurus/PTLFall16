@@ -1,14 +1,15 @@
-(* Semantic checking for the MicroC compiler *)
+(* Semantic checking for the DNA# compiler *)
 
 open Ast
 
 module StringMap = Map.Make(String)
 
-(* Semantic checking of a program. Returns void if successful,
-   throws an exception if something is wrong.
+(* 
+Semantic checking of a program. Returns void if successful,
+throws an exception if something is wrong.
+*)
 
-   Check each global variable, then check each function *)
-
+(*Check each global variable, then check each function*)
 let check (globals, functions) =
   (* helper function to determine if duplicates exist in a list *)
   let report_duplicate exceptf list = 
