@@ -46,9 +46,15 @@ open Ast
 program: decls EOF {$1}
 
 decls: 	{{variables = []; stmts = []; body = []; funcs = [];}}
-    |	decls collection {{ variables = fst $2 @ $1.variables; stmts = snd $2 @ $1.stmts; body= $2 :: $1.body; funcs = $1.funcs;}}
+    |	decls collection {{ variables = $1.variables @ fst $2 ; stmts = $1.stmts @ snd $2 ; body= $1.body @ [$2]; funcs = $1.funcs;}}
 
-    |	decls func_decl {{ variables = $1.variables; stmts = $1.stmts; body=$1.body; funcs = $2 :: $1.funcs; }}
+    |	decls func_decl {{ variables = $1.variables; stmts = $1.stmts; body=$1.body; funcs = $1.funcs @ [$2] }}
+
+
+block:
+    {{variables = []; stmts = [];body=[];funcs=[];}}
+    |   block collection {{ variables = $1.variables @ fst $2 ; stmts = $1.stmts @ snd $2 ; body= $1.body @ [$2]; funcs = [];}}
+
 
 vdecl:
 	typ ID ASSIGN expr SEMI    { $1, $2, $4 }
@@ -69,11 +75,6 @@ formal_list:
 vdecl_list:
      /* nothing */  {[]}
     |vdecl_list vdecl   { $2 :: $1 }
-
-block:
-    {{variables = []; stmts = [];body=[];funcs=[];}}
-    |   block collection {{ variables = fst $2 @ $1.variables; stmts = snd $2 @ $1.stmts; body = $2 :: $1.body; funcs = [];}}
-
 
 collection:
     |   vdecl   {($1::[],[])}

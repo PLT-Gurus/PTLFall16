@@ -56,6 +56,7 @@ let string_of_typ = function
 	| Nuc 		->"nuc"
 	| Codon 	->"codon"
 	| Seq 		->"seq"
+	| Str       ->"str"
 
 let string_of_uop = function
 	  Expon 	-> "^" (*not quite sure about this one*)
@@ -72,6 +73,8 @@ let rec string_of_expr = function
 	| Id(str)->
 	  	str
 	| Sequence(str)->
+		str
+	| Stringlit(str)->
 		str
 	| Litbool(true)->
 		"true"
@@ -113,14 +116,14 @@ let rec string_of_stmt n stmt=
 	|Block(l_stmt)->
 	 	blk ^ "{\n" ^ string_of_stmt_list n l_stmt ^ blk ^ "}\n"
 	
-	|If(cond,l_stmt,l_vari,next_stmt)->
+	|If(cond,l_stmt,l_vari,_,next_stmt)->
 		blk ^ "if->\n" ^ 
 		blk ^ "  cond= (" ^ string_of_expr cond ^ ")\n" ^
 		blk ^ "  vari= " ^ string_of_vari_list l_vari ^ "\n" ^
 		blk ^ "  body={\n" ^ string_of_stmt_list (n+2) l_stmt ^ blk ^ "  }\n" ^
 		string_of_stmt n next_stmt
 	
-	|For(strt,cond,step,l_stmt,l_vari)->
+	|For(strt,cond,step,l_stmt,l_vari,_)->
 		blk ^ "for->\n" ^ 
 		blk ^ "  init= " ^ string_of_expr strt ^ "\n" ^ 
 		blk ^ "  cond= " ^ string_of_expr cond ^ "\n" ^ 
@@ -128,7 +131,7 @@ let rec string_of_stmt n stmt=
 		blk ^ "  vari= " ^ string_of_vari_list l_vari ^ "\n" ^
 		blk ^ "  body={\n" ^ string_of_stmt_list (n+2) l_stmt ^ blk ^ "  }\n"
 	
-	|While(cond,l_stmt,l_vari)->
+	|While(cond,l_stmt,l_vari,_)->
 		blk ^ "while->\n" ^ 
 		blk ^ "  cond= (" ^ string_of_expr cond ^ ")\n" ^
 		blk ^ "  vari= " ^ string_of_vari_list l_vari ^ "\n" ^
@@ -142,14 +145,14 @@ let rec string_of_stmt n stmt=
 		blk ^ "expr->\n" ^ 
 		blk ^ "  value= " ^ string_of_expr exp ^ "\n"
 	
-	|Elseif(cond,l_stmt,l_vari,b_stmt)->
+	|Elseif(cond,l_stmt,l_vari,_,b_stmt)->
 		blk ^ "elseif->\n" ^ 
 		blk ^ "  cond= (" ^ string_of_expr cond ^ ")\n" ^
 		blk ^ "  vari= " ^ string_of_vari_list l_vari ^ "\n" ^
 		blk ^ "  body={\n" ^ string_of_stmt_list (n+2) l_stmt ^ blk ^ "  }\n" ^
 		string_of_stmt n b_stmt
 	
-	|Else(l_stmt,l_vari)->
+	|Else(l_stmt,l_vari,_)->
 		blk ^ "else->\n" ^ 
 		blk ^ "  vari= " ^ string_of_vari_list l_vari ^ "\n" ^
 		blk ^ "  body={\n" ^ string_of_stmt_list (n+2) l_stmt ^ blk ^ "  }\n"
