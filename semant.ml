@@ -22,17 +22,6 @@ let check (globals, functions) =
   let getVars (a, b, c) = b in
   (* Semantically check global variables *)
   report_duplicate (fun n -> "duplicate global variable " ^ n) (List.map getVars globals);
-
-(*
-let check (globals, functions) =
-
-  (* Raise an exception if the given list has a duplicate *)
-  let report_duplicate exceptf list =
-    let rec helper = function
-	n1 :: n2 :: _ when n1 = n2 -> raise (Failure (exceptf n1))
-      | _ :: t -> helper t
-      | [] -> ()
-    in helper (List.sort compare list)
   in
 
   (* Raise an exception if a given binding is to a void type *)
@@ -41,7 +30,7 @@ let check (globals, functions) =
     | _ -> ()
   in
   
-  (* Raise an exception of the given rvalue type cannot be assigned to
+  (* Raise an exception if the given rvalue type cannot be assigned to
      the given lvalue type *)
   let check_assign lvaluet rvaluet err =
      if lvaluet == rvaluet then lvaluet else raise err
@@ -172,4 +161,4 @@ let check (globals, functions) =
   in
   List.iter check_function functions
 
-*)
+
