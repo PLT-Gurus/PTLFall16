@@ -1,24 +1,27 @@
-int i=1;
-int j=2;
-double pi=3.14;
 
-int k=i+j;
-k=k+i+j;
 
-void func0()
-	/*nothing*/
+
+int add_three(int a,int b,int c)
+	int ret=a+b+c;
+	return ret;
 end
 
-int func1(int a,int b)
-	int c=1;
-	return a+b+c;
+int i=1;
+int j=2;
+int k=3;
+int sum=add_three(i,j,k);
+
+int ans=1;
+if sum==6 then
+	ans=2;
+elseif sum==7 then
+	ans=3;
+end
+
+while(i<10) then
+	i=i+i;
 end
 
 for i=1;i<10;i=i+1 then
-	bool keep=true;
-	if keep==false then
-		func1(1,2);
-	end
-	j=j+i*pi;
+	j=j-1;
 end
-

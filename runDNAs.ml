@@ -26,7 +26,8 @@ let _ =
 	let lexbuf = Lexing.from_string file_str in
 	let program = Parser.program Scanner.token lexbuf in
 	let res_str = string_of_program program in
-	(*let llvm_prog = Codegen.translate program in*)
-    	print_endline res_str;
+	let llvm_prog = Codegen.translate program in
+    print_endline res_str;
 		(*Llvm_analysis.assert_valid_module m;*)
-        (*print_string (Llvm.string_of_llmodule llvm_prog);;*)
+		print_endline "\n\n------ LLVM # ------";
+    print_string (Llvm.string_of_llmodule llvm_prog);;

@@ -4,8 +4,8 @@
 
 # Easiest way to build: using ocamlbuild, which in turn uses ocamlfind
 
-.PHONY : microc.native
+.PHONY : runDNAs.native
 
-microc.native :
+runDNAs.native :
 	ocamlbuild -use-ocamlfind -pkgs llvm,llvm.analysis -cflags -w,+a-4 \
-		microc.native
+		runDNAs.native
