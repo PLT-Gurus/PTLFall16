@@ -1,1 +1,4 @@
 The DNA# compiler
+
+If the terminal shows "can't find command", plz input:
+ "chmod 777 ./runDNAs.sh"  
