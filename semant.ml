@@ -1,27 +1,23 @@
-(* Semantic checking for the DNA# compiler *)
+(* Semantic checking for the MicroC compiler *)
 
 open Ast
 
 module StringMap = Map.Make(String)
 
-(* 
-Semantic checking of a program. Returns void if successful,
-throws an exception if something is wrong.
-*)
+(* Semantic checking of a program. Returns void if successful,
+   throws an exception if something is wrong.
 
-(*Check each global variable, then check each function*)
+   Check each global variable, then check each function *)
+
 let check (globals, functions) =
-  (* helper function to determine if duplicates exist in a list *)
-  let report_duplicate exceptf list = 
+
+  (* Raise an exception if the given list has a duplicate *)
+  let report_duplicate exceptf list =
     let rec helper = function
-    n1 :: n2 :: __ when n1 = n2 -> raise (Failure (exceptf n1))
-      | _:: t -> helper t
+	n1 :: n2 :: _ when n1 = n2 -> raise (Failure (exceptf n1))
+      | _ :: t -> helper t
       | [] -> ()
     in helper (List.sort compare list)
-  in
-  let getVars (a, b, c) = b in
-  (* Semantically check global variables *)
-  report_duplicate (fun n -> "duplicate global variable " ^ n) (List.map getVars globals);
   in
 
   (* Raise an exception if a given binding is to a void type *)
@@ -30,7 +26,7 @@ let check (globals, functions) =
     | _ -> ()
   in
   
-  (* Raise an exception if the given rvalue type cannot be assigned to
+  (* Raise an exception of the given rvalue type cannot be assigned to
      the given lvalue type *)
   let check_assign lvaluet rvaluet err =
      if lvaluet == rvaluet then lvaluet else raise err
@@ -160,5 +156,3 @@ let check (globals, functions) =
    
   in
   List.iter check_function functions
-
-
