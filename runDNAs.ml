@@ -1,5 +1,5 @@
 open Ast
-(*Help print things *)
+open Printf
 
 let read_whole_chan chan =
   let buf = Buffer.create 65536 in
@@ -20,14 +20,24 @@ let read_whole_file filename =
 let file="test.dnas";;
 let file_str=read_whole_file file;;
 
-print_endline "\n\n------ DNA # ------";;
+print_endline "\n\n------ DNA AST# ------";;
+let lexbuf = Lexing.from_string file_str;;
+let program = Parser.program Scanner.token lexbuf;;
+let res_str = string_of_program program;;
+print_endline res_str;;
 
-let _ =
-	let lexbuf = Lexing.from_string file_str in
-	let program = Parser.program Scanner.token lexbuf in
-	let res_str = string_of_program program in
-	let llvm_prog = Codegen.translate program in
-    print_endline res_str;
-		(*Llvm_analysis.assert_valid_module m;*)
-		print_endline "\n\n------ LLVM # ------";
-    print_string (Llvm.string_of_llmodule llvm_prog);;
+let ast_file="dnas_ast.txt" in
+  let oc=open_out ast_file in
+    fprintf oc "%s\n" res_str;;
+
+print_endline "\n\n------ LLVM # ------";;
+let llvm_prog = Codegen.translate program;;
+print_string (Llvm.string_of_llmodule llvm_prog);;
+
+let lvm_file="dnas_llvm.ll" in
+  let oc=open_out lvm_file in
+    fprintf oc "%s\n" (Llvm.string_of_llmodule llvm_prog);;
+
+  (*Llvm_analysis.assert_valid_module m;*)
+
+  

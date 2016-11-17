@@ -1,3 +1,12 @@
+(*LLVM tutorial: Make sure to read the OCaml version of the tutorial
+
+http://llvm.org/docs/tutorial/index.html
+
+Detailed documentation on the OCaml LLVM library:
+
+http://llvm.moe/
+http://llvm.moe/ocaml/
+*)
 
 module L = Llvm
 module A = Ast
@@ -52,8 +61,9 @@ let translate prog =
     let (the_function, _) = StringMap.find fdecl.A.fname function_decls in
     let builder = L.builder_at_end context (L.entry_block the_function) in
 
-    let int_format_str = L.build_global_stringptr "%d\n" "fmt" builder in
-
+    let int_format_str = L.build_global_stringptr "%d\n" "fmt_int" builder in
+    let str_format_str = L.build_global_stringptr "%s\n" "fmt_str" builder in
+     
     let add_formal map (v_typ, v_name) param = 
       L.set_value_name v_name param;
       let local = L.build_alloca (ltype_of_typ v_typ) v_name builder in
@@ -130,19 +140,28 @@ let translate prog =
       | A.Assign (s, e) -> let e' = add_expr builder e in
           ignore (L.build_store e' (lookup s) builder); e'
       
-      | A.Call ("print", [e]) | A.Call ("printb", [e]) ->
+      | A.Call ("print_int", [e] ) ->
           L.build_call printf_func [| int_format_str ; (add_expr builder e) |]
           "printf" builder
       
+      | A.Call ("print_str", [s]) ->
+          let A.Stringlit(str)=s in
+          let lvm_str=L.build_global_stringptr str "context" builder in
+          L.build_call printf_func [| str_format_str ; lvm_str |]
+          "printf" builder
+
       | A.Call (f, act) ->
           let (fdef, fdecl) = StringMap.find f function_decls in
           let actuals = List.rev (List.map (add_expr builder) (List.rev act)) in
           let result = (match fdecl.A.typ with A.Void -> ""
                                               | _ -> f ^ "_result") in
           L.build_call fdef (Array.of_list actuals) result builder
-          
+     
+      | A.Stringlit(str) ->
+          L.const_int i8_t (456) (*god help me*)
+
       | A.Noexpr -> L.const_int i32_t 0
-      
+
       | _ -> L.const_int i32_t 0 (*todo# finish all the exprs*)
     in
 
