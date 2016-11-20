@@ -116,7 +116,33 @@ let check (statements, functions) =
 
     in
 
+  let check_statements stmt =
 
+     let rec stmt = function
+  Block sl -> let rec check_block = function
+           [Return _ as s] -> stmt s
+         | Return _ :: _ -> raise (Failure "nothing may follow a return")
+         | Block sl :: ss -> check_block (sl @ ss)
+         | s :: ss -> stmt s ; check_block ss
+         | [] -> ()
+        in check_block sl
+      | Expr e -> ignore (expr e)
+      | Return e -> let t = expr e in if t = func.typ then () else
+         raise (Failure ("return gives " ^ string_of_typ t ^ " expected " ^
+                         string_of_typ func.typ ^ " in " ^ string_of_expr e))
+           
+      | If(p, b1, b2) -> check_bool_expr p; stmt b1; stmt b2
+      | For(e1, e2, e3, st) -> ignore (expr e1); check_bool_expr e2;
+                               ignore (expr e3); stmt st
+      | While(p, s) -> check_bool_expr p; stmt s
+      | Elseif (p, s1, s2) -> check_bool_expr p; stmt s1; stmt s2
+      | Else (st) -> stmt st
+      | VDecl(typ, )  (*not sure how to do this one*)
+      | Nobranching -> void (*is this correct?*)
+
+    in
+
+  List.iter check_statements statements
 
 
 
@@ -144,41 +170,9 @@ let check (statements, functions) =
     
   in
 
-  let check_statements stmt =
-
-     let rec stmt = function
-  Block sl -> let rec check_block = function
-           [Return _ as s] -> stmt s
-         | Return _ :: _ -> raise (Failure "nothing may follow a return")
-         | Block sl :: ss -> check_block (sl @ ss)
-         | s :: ss -> stmt s ; check_block ss
-         | [] -> ()
-        in check_block sl
-      | Expr e -> ignore (expr e)
-      | Return e -> let t = expr e in if t = func.typ then () else
-         raise (Failure ("return gives " ^ string_of_typ t ^ " expected " ^
-                         string_of_typ func.typ ^ " in " ^ string_of_expr e))
-           
-      | If(p, b1, b2) -> check_bool_expr p; stmt b1; stmt b2
-      | For(e1, e2, e3, st) -> ignore (expr e1); check_bool_expr e2;
-                               ignore (expr e3); stmt st
-      | While(p, s) -> check_bool_expr p; stmt s
-      | Elseif (p, s1, s2) -> check_bool_expr p; stmt s1; stmt s2
-      | Else (st) -> stmt st
-      | VDecl(typ, )  (*not sure how to do this one*)
-      | Nobranching -> void (*is this correct?*)
-
-    in
-
 
   List.iter check_function functions
-  List.iter check_statements statements
+
 
 
   
-
-(*
-  can probably fairly easily contruct expressions, operators, other terminals and perhaps wrap them inside a  function that can be called from statements check and from functions check
-
-
-*)
