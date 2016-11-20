@@ -1,27 +1,11 @@
 
-
-
-int add_three(int a,int b,int c)
-	int ret=a+b+c;
-	return ret;
-end
-
 int i=1;
-int j=2;
-int k=3;
-int sum=add_three(i,j,k);
-
-int ans=1;
-if sum==6 then
-	ans=2;
-elseif sum==7 then
-	ans=3;
+for i=1;i<2;i=i+1 then
+	print_str("Hello World !");
 end
 
-while(i<10) then
-	i=i+i;
-end
 
-for i=1;i<10;i=i+1 then
-	j=j-1;
+while i>1 then
+	i=i-1;
+	print_str("What is next?");
 end

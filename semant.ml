@@ -1,4 +1,4 @@
-(* Semantic checking for DNA# compiler *)
+(* Semantic checking for the MicroC compiler *)
 
 open Ast
 
@@ -9,16 +9,19 @@ module StringMap = Map.Make(String)
 
    Check each global variable, then check each function *)
 
-let check (statements, functions) =
-
-  (* Raise an exception if the given list has a duplicate *)
+let check (globals, functions) =
+  (* helper function to determine if duplicates exist in a list *)
   let report_duplicate exceptf list = 
     let rec helper = function
-  n1 :: n2 :: _ when n1 = n2 -> raise (Failure (exceptf n1))
-      | _ :: t -> helper t
+    n1 :: n2 :: __ when n1 = n2 -> raise (Failure (exceptf n1))
+      | _:: t -> helper t
       | [] -> ()
     in helper (List.sort compare list)
   in
+  let getVars (a, b, c) = b in
+  (* Semantically check global variables *)
+  report_duplicate (fun n -> "duplicate global variable " ^ n) (List.map getVars globals);
+
 
   (* Raise an exception if a given binding is to a void type *)
   let check_not_void exceptf = function
