@@ -4,7 +4,8 @@
 
 rule token = parse
   [' ' '\t' '\r' '\n'] { token lexbuf } (* Whitespace *)
-| "/*"     { comment lexbuf }           (* Comments *)
+| "/*"      { comment lexbuf }           (* Comments *)
+| "//"      {singlecom lexbuf}          (* single line comment*)
 | "variable"{VARIABLE}					(* Test, remove after *)
 (* Assignment Bop *)
 | '='		{ASSIGN}
@@ -68,7 +69,6 @@ rule token = parse
 | "false"   {FALSE}
 
 (* Removed char lit *)
-
 | ['0'-'9']+ as lxm { INT_LIT(int_of_string lxm) }
 
 | (((['0'-'9']+ '.' ['0'-'9']* | '.' ['0'-'9']+ )(['e''E']['+''-']? ['0'-'9']+)?) | (['0'-'9']+ (['e''E']['+''-']? ['0'-'9']+))) as lxm {DOUBLE_LIT(float_of_string lxm)}
@@ -86,6 +86,10 @@ rule token = parse
 and comment = parse
   "*/" { token lexbuf }
 | _    { comment lexbuf }
+
+and singlecom = parse
+  ['\n' '\r']    {token lexbuf}
+| _     {singlecom lexbuf}
 
 and stringparse= parse
   '#'   {token lexbuf}
