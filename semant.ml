@@ -140,7 +140,7 @@ let check (globals, functions) =
       | While(p, s) -> check_bool_expr p; stmt s
       | Elseif (p, s1, s2) -> check_bool_expr p; stmt s1; stmt s2
       | Else (st) -> stmt st
-      | VDecl(typ, )  (*not sure how to do this one*)
+      | VDecl(t, s, e) -> List.find (fun s -> fst s = string_of_typ t) ["int";"bool";"void";"char";"double";"aa";"nuc";"codon";"seq";"str"];ignore(expr e) (*not sure how to do this one*)
       | Nobranching -> void (*is this correct?*)
 
     in
