@@ -2,8 +2,8 @@
 
 @fmt_int = private unnamed_addr constant [4 x i8] c"%d\0A\00"
 @fmt_str = private unnamed_addr constant [4 x i8] c"%s\0A\00"
-@context = private unnamed_addr constant [16 x i8] c"\22Hello World !\22\00"
-@context.1 = private unnamed_addr constant [16 x i8] c"\22What is next?\22\00"
+@context = private unnamed_addr constant [14 x i8] c"Hello World !\00"
+@context.1 = private unnamed_addr constant [14 x i8] c"What is next?\00"
 
 declare i32 @printf(i8*, ...)
 
@@ -20,7 +20,7 @@ while:                                            ; preds = %while_body, %entry
   br i1 %bop3, label %while_body, label %merge
 
 while_body:                                       ; preds = %while
-  %printf = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @fmt_str, i32 0, i32 0), i8* getelementptr inbounds ([16 x i8], [16 x i8]* @context, i32 0, i32 0))
+  %printf = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @fmt_str, i32 0, i32 0), i8* getelementptr inbounds ([14 x i8], [14 x i8]* @context, i32 0, i32 0))
   %i1 = load i32, i32* %i
   %bop = add i32 %i1, 1
   store i32 %bop, i32* %i
@@ -38,7 +38,7 @@ while_body5:                                      ; preds = %while4
   %i6 = load i32, i32* %i
   %bop7 = sub i32 %i6, 1
   store i32 %bop7, i32* %i
-  %printf8 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @fmt_str, i32 0, i32 0), i8* getelementptr inbounds ([16 x i8], [16 x i8]* @context.1, i32 0, i32 0))
+  %printf8 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @fmt_str, i32 0, i32 0), i8* getelementptr inbounds ([14 x i8], [14 x i8]* @context.1, i32 0, i32 0))
   br label %while4
 
 merge11:                                          ; preds = %while4

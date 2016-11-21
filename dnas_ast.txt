@@ -8,7 +8,7 @@ for->
   body=
     {
     expr->
-      value= print_str("Hello World !")
+      value= print_str(Hello World !)
     }
 while->
   cond= (i>1)
@@ -17,7 +17,7 @@ while->
     expr->
       value= i=i-1
     expr->
-      value= print_str("What is next?")
+      value= print_str(What is next?)
     }
 
 ----- Func List -----
