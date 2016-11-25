@@ -49,9 +49,9 @@
 					| Litbool _ -> Bool
 					| Litchar _ -> Char
 					| Id s -> type_of_identifier s
-					| Sequence _ -> String (* not sure how to do this one*)
-					| Stringlist _ -> String (* not sure how to do this one *)
-					| Litdouble _ -> Double (*or is this float?*)
+					| Sequence _ -> String (* is this correct? *)
+					| Stringlist _ -> String (* is this correct?  *)
+					| Litdouble _ -> Double (*is this correct? *)
 					| Binop(e1, op, e2) as e -> let t1 = expr e1 and t2 = expr e2 in
 					(match op with
 						Add | Sub | Mult | Div | Exp when t1 = Int && t2 = Int -> Int | t1 = Double && t2 = Double -> Double
@@ -70,7 +70,7 @@
 						| Not when t = Bool -> Bool
 						| _ -> raise (Failure ("illegal left unary operator " ^ string_of_uop op ^
 							string_of_typ t ^ " in " ^ string_of_expr ex)))
-					| Runop(op, e) as ex -> let t = expr e in (*how do I show that this is left*)
+					| Runop(op, e) as ex -> let t = expr e in (*is this backwards?*)
 					(match op with
 						Expon when t = Int -> Int | t = Int -> Int
 						| Transcb when t = Seq -> Seq
@@ -108,11 +108,11 @@
 
 				let rec stmt = function
 					Block sl -> let rec check_block = function
-					[Return _ as s] -> stmt s
-					| Return _ :: _ -> raise (Failure "nothing may follow a return")
-					| Block sl :: ss -> check_block (sl @ ss)
-					| s :: ss -> stmt s ; check_block ss
-					| [] -> ()
+						[Return _ as s] -> stmt s
+						| Return _ :: _ -> raise (Failure "nothing may follow a return")
+						| Block sl :: ss -> check_block (sl @ ss)
+						| s :: ss -> stmt s ; check_block ss
+						| [] -> ()
 					in check_block sl
 					| Expr e -> ignore (expr e)
 					| Return e -> let t = expr e in if t = func.typ then () else
@@ -171,7 +171,7 @@
 				in
 
 
-				List.iter check_statements statements
+				stmt (Block func.stmts)
 
 			in
 
