@@ -38,16 +38,12 @@
 
 
 
-	(**** Checking Statements and expressions within statements****)
-
-
-
-
+			(**** Checking Statements and expressions within statements****)
 			let check_statements stmt =
 
 
 
-					(* Return the type of an expression or throw an exception:    *)
+				(* Return the type of an expression or throw an exception:    *)
 				let rec expr = function
 					Litint _ -> Int
 					| Litbool _ -> Bool
@@ -142,10 +138,8 @@
 
 
 			(**** Checking Functions ****)
-
 			report_duplicate (fun n -> "duplicate function " ^ n)
 			(List.map (fun fd -> fd.fname) functions);
-
 
 
 			let function_decls = List.fold_left (fun m fd -> StringMap.add fd.fname fd m)
@@ -177,7 +171,7 @@
 				in
 
 
-				check_statements stmt
+				List.iter check_statements statements
 
 			in
 
