@@ -171,7 +171,7 @@
 				in
 
 
-				stmt (Block func.stmts)
+				stmt (Block func.stmts) (* or should it be List.iter check_statements statements*)
 
 			in
 
