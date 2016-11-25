@@ -4,7 +4,8 @@
 
 rule token = parse
   [' ' '\t' '\r' '\n'] { token lexbuf } (* Whitespace *)
-| "/*"     { comment lexbuf }           (* Comments *)
+| "/*"      { comment lexbuf }           (* Comments *)
+| "//"      {singlecom lexbuf}          (* single line comment*)
 | "variable"{VARIABLE}					(* Test, remove after *)
 (* Assignment Bop *)
 | '='		{ASSIGN}
@@ -68,7 +69,6 @@ rule token = parse
 | "false"   {FALSE}
 
 (* Removed char lit *)
-
 | ['0'-'9']+ as lxm { INT_LIT(int_of_string lxm) }
 
 | (((['0'-'9']+ '.' ['0'-'9']* | '.' ['0'-'9']+ )(['e''E']['+''-']? ['0'-'9']+)?) | (['0'-'9']+ (['e''E']['+''-']? ['0'-'9']+))) as lxm {DOUBLE_LIT(float_of_string lxm)}
@@ -77,8 +77,7 @@ rule token = parse
 
 | '#'       {stringparse lexbuf}
 
-| '"' ['0'-'9' 'a'-'z' 'A'-'Z' '!' '@' '#' '$' '%' '^' '&' '*' '_' '+' 
-	'=' '/' ' ' '?']* '"' as lxm	{STRING_LIT(lxm)}	
+| '"'([^'"']* as lxm)'"'  {STRING_LIT(lxm)}
 
 | eof { EOF }
 
@@ -88,7 +87,11 @@ and comment = parse
   "*/" { token lexbuf }
 | _    { comment lexbuf }
 
-and stringparse= parse
- ['A'-'D''G''H''K''M''N''R'-'T''U'-'W''a'-'d''g''h''k''m''n''r'-'t''u'-'w']+ as lxm	{SEQUENCE_LIT(lxm)}		(*Why does this work? Shouldn't it register new line as an illegal character?? *)
-| _ as char {raise (Failure("SCAN ERROR : illegal character in sequence " ^ Char.escaped char))}
+and singlecom = parse
+  ['\n' '\r']    {token lexbuf}
+| _     {singlecom lexbuf}
 
+and stringparse= parse
+  '#'   {token lexbuf}
+| ['A'-'D''G''H''K''M''N''R'-'T''U'-'W''a'-'d''g''h''k''m''n''r'-'t''u'-'w']+ as lxm	{SEQUENCE_LIT(lxm)}		(*Why does this work? Shouldn't it register new line as an illegal character?? *)
+| _ as char {raise (Failure("SCAN ERROR : illegal character in sequence " ^ Char.escaped char))}
