@@ -17,6 +17,8 @@ error=0
 globalerror=0
 
 keep=0
+passed=0
+failed=0
 
 Usage() {
     echo "Usage:test_DNAs.sh [options] [.dnas files]"
@@ -92,6 +94,7 @@ Check() {
 	fi
 	echo "OK"
 	echo "###### SUCCESS" 1>&2
+	passed=$((passed+1))
     else
 	echo "###### FAILED" 1>&2
 	globalerror=$error
@@ -124,9 +127,12 @@ CheckFail() {
 	fi
 	echo "OK"
 	echo "###### SUCCESS" 1>&2
+	failed=$((failed+1))
+	
     else
 	echo "###### FAILED" 1>&2
 	globalerror=$error
+	
     fi
 }
 
@@ -174,5 +180,7 @@ do
 	    ;;
     esac
 done
+echo "# of test cases passed: " $passed
+echo "# of test cases failed: " $failed
 
 exit $globalerror
