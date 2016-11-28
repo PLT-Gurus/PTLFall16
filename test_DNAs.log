@@ -18,6 +18,22 @@ lli test-hw3.ll > test-hw3.out
 diff -b test-hw3.out dnas_tests/test-hw3.out > test-hw3.diff
 ###### SUCCESS
 
+###### Testing test-hw4
+./DNAs.native < dnas_tests/test-hw4.dnas > test-hw4.ll
+lli test-hw4.ll > test-hw4.out
+diff -b test-hw4.out dnas_tests/test-hw4.out > test-hw4.diff
+###### SUCCESS
+
+###### Testing test-hw5
+./DNAs.native < dnas_tests/test-hw5.dnas > test-hw5.ll
+Cannot allocate unsized type
+  %hi = alloca void
+Stored value type does not match pointer operand type!
+  store i32 0, void* %hi
+ voidLLVM ERROR: Broken module found, compilation aborted!
+./test_DNAs.sh: 33: ./test_DNAs.sh: error: not found
+###### SUCCESS
+
 ###### Testing fail-assign1
 ./DNAs.native < dnas_tests/fail-assign1.dnas 2> fail-assign1.err >> test_DNAs.log
 diff -b fail-assign1.err dnas_tests/fail-assign1.err > fail-assign1.diff

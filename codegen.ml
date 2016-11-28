@@ -31,7 +31,8 @@ let translate prog =
     | A.Char -> i8_t
     | A.Bool -> i1_t
     | A.Void -> void_t
-    | A.Str -> str_t   
+    | A.Str -> str_t 
+    | A.Seq -> str_t  
     | _ -> void_t (*todo# add later*) 
   in
 
@@ -147,7 +148,7 @@ let translate prog =
           "printf" builder
       
       | A.Call ("print_str", [s]) ->
-          L.build_call printf_func [| str_format_str ; (add_expr builder s) |]
+          L.build_call printf_func [| str_format_str ; (add_expr builder s) |] (*CHANGE THIS TO A GENERAL PRINT FUNCTION THAT WILL PRINT INT, STRINGS, SEQ, ETC.*)
           "printf" builder
 
       | A.Call (f, act) ->
@@ -158,6 +159,9 @@ let translate prog =
           L.build_call fdef (Array.of_list actuals) result builder
      
       | A.Stringlit(str) ->
+          L.build_global_stringptr str "context" builder
+
+      | A.Sequence(str) ->
           L.build_global_stringptr str "context" builder
 
       | A.Noexpr -> L.const_int i32_t 0

@@ -31,7 +31,8 @@ let translate prog =
     | A.Char -> i8_t
     | A.Bool -> i1_t
     | A.Void -> void_t
-    | A.Str -> str_t   
+    | A.Str -> str_t 
+    | A.Seq -> str_t  
     | _ -> void_t (*todo# add later*) 
   in
 
@@ -158,6 +159,9 @@ let translate prog =
           L.build_call fdef (Array.of_list actuals) result builder
      
       | A.Stringlit(str) ->
+          L.build_global_stringptr str "context" builder
+
+      | A.Sequence(str) ->
           L.build_global_stringptr str "context" builder
 
       | A.Noexpr -> L.const_int i32_t 0

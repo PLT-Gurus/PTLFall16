@@ -63,7 +63,7 @@ rule token = parse
 | "codon"   {CODON}
 | "DNA"     {SEQUENCE}						(* MAKE GENERAL FUNCTION TO ALLOW RNA INPUT*)
 | "RNA"     {SEQUENCE}
-| "peptide" {SEQUENCE}
+| "peptide" {SEQUENCE}						(*WRITE CODE TO ALLOW FOR PEPTIDE ENTRIES *)
 (* Literals *)
 | "true"    {TRUE}
 | "false"   {FALSE}
