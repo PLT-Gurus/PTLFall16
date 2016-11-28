@@ -1,0 +1,3 @@
+string hi = "hello";
+print_str(hi);
+print_str("hi");

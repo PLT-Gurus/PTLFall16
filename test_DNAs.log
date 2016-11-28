@@ -1,0 +1,26 @@
+/usr/bin/lli
+
+###### Testing test-hw
+./DNAs.native < dnas_tests/test-hw.dnas > test-hw.ll
+lli test-hw.ll > test-hw.out
+diff -b test-hw.out dnas_tests/test-hw.out > test-hw.diff
+###### SUCCESS
+
+###### Testing test-hw2
+./DNAs.native < dnas_tests/test-hw2.dnas > test-hw2.ll
+lli test-hw2.ll > test-hw2.out
+diff -b test-hw2.out dnas_tests/test-hw2.out > test-hw2.diff
+###### SUCCESS
+
+###### Testing test-hw3
+./DNAs.native < dnas_tests/test-hw3.dnas > test-hw3.ll
+lli test-hw3.ll > test-hw3.out
+diff -b test-hw3.out dnas_tests/test-hw3.out > test-hw3.diff
+###### SUCCESS
+
+###### Testing fail-assign1
+./DNAs.native < dnas_tests/fail-assign1.dnas 2> fail-assign1.err >> test_DNAs.log
+diff -b fail-assign1.err dnas_tests/fail-assign1.err > fail-assign1.diff
+./test_DNAs.sh: 33: ./test_DNAs.sh: error: not found
+FAILED fail-assign1.err differs from dnas_tests/fail-assign1.err
+###### SUCCESS
