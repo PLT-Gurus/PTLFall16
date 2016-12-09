@@ -12,6 +12,8 @@ rule token = parse
 (* Non-functional stuff & flow control key words *)
 | '('       {LPAREN}
 | ')'       {RPAREN}
+| '['		{LBRACK}
+| ']' 		{RBRACK}
 | ';'       {SEMI}
 | ','       {COMMA}
 | "begin"   {BEGIN}
@@ -27,6 +29,7 @@ rule token = parse
 | "local"   {LOCAL}
 | "then"    {THEN}
 | "return"  {RETURN}
+(*| "import"	{IMPORT} *)
 (* Arithmetic Binary Operators*)
 | '+'		{PLUS}
 | '-'		{MINUS}
@@ -61,8 +64,8 @@ rule token = parse
 | "string" 	{STRING}
 (*Complex Data Types *)
 | "codon"   {CODON}
-| "DNA"     {SEQUENCE}						(* MAKE GENERAL FUNCTION TO ALLOW RNA INPUT*)
-| "RNA"     {SEQUENCE}
+| "DNA"     {DNA}						(* MAKE GENERAL FUNCTION TO ALLOW RNA INPUT*)
+| "RNA"     {RNA}
 | "peptide" {SEQUENCE}						(*WRITE CODE TO ALLOW FOR PEPTIDE ENTRIES *)
 (* Literals *)
 | "true"    {TRUE}

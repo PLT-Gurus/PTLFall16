@@ -8,7 +8,7 @@ open Ast
 %token PLUS MINUS TIMES DIVIDE MODULO EXPONENTIAL
 %token COMPLEMENT TRANSCRIBE  TRANSLATE  TRANSLATETWO
 %token BEGIN END IF ELSEIF ELSE THEN FOR WHILE CONTINUE BREAK
-%token NUC INT DOUBLE AA BOOL CHAR VOID STRING
+%token NUC INT DOUBLE AA BOOL CHAR VOID STRING DNA RNA
 %token CODON SEQUENCE
 %token TRUE FALSE
 
@@ -72,7 +72,9 @@ typ:
     |   DOUBLE  {Double}
     |   AA      {Aa}
     |   NUC     {Nuc}
-    |   SEQUENCE {Seq}
+    |   SEQUENCE {Seq} /* remove later */
+    |   DNA     {DNA}
+    |   RNA     {RNA}
     |   STRING {Str}
 
 stmt_list:
@@ -87,6 +89,7 @@ stmt:
     |   WHILE expr THEN stmt_list END  { While($2, Block(List.rev $4)) }
     |   IF expr THEN stmt_list bstmt END{ If($2, Block(List.rev $4), $5) }
     |   typ ID ASSIGN expr SEMI    { VDecl($1, $2, $4)}
+    |   typ LBRACK expr RBRACK SEMI { ArrayDecl($1,$3)} /* CHANGE LATER TO FORCE ASSIGNMENT */
 
 bstmt:
         /* nothing */   {Nobranching}
@@ -122,6 +125,7 @@ expr:
     |   expr TRANSLATE  {Runop($1, Translt)}
     |   expr TRANSLATETWO   {Runop($1, Translttwo)}
     |   ID ASSIGN expr  {Assign($1, $3)}
+    |   ID LBRACK expr RBRACK ASSIGN expr {ArrayAssign($1,$3,$6)}
     |   LPAREN expr RPAREN  {$2}
     |   ID LPAREN actuals_opt RPAREN    {Call($1, $3)}
 

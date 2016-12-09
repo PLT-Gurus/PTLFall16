@@ -3,7 +3,7 @@ type uop = Neg | Not | Expon | Comp | Transcb | Translt | Translttwo
 type op = Add | Sub | Mult | Div | Mod | Exp | And | Or | Equal |
 		 Neq | Less | Leq | Greater | Geq
 
-type typ = Int | Bool | Void | Char | Double | Aa | Nuc | Codon | Seq | Str
+type typ = Int | Bool | Void | Char | Double | Aa | Nuc | Codon | Seq | Str | DNA | RNA
 
 type ending = End
 
@@ -19,6 +19,7 @@ type expr =
 		| Lunop of uop * expr 		(*added into Codegen*)
 		| Runop of expr * uop 		(*added into Codegen*)
 		| Assign of string * expr 	(*added into Codegen*)
+		| ArrayAssign of string * expr * expr
 		| Call of string * expr list(*added into Codegen*)
 		| Noexpr 					(*added into Codegen*)
 
@@ -33,6 +34,7 @@ type stmt =
 		| Elseif of expr * stmt * stmt
 		| Else of stmt
 		| VDecl of typ * string * expr
+		| ArrayDecl of typ * expr
 		| Nobranching
 
 type bind = typ * string
