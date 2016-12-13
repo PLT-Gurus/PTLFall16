@@ -8,7 +8,7 @@
 
 runDNAs.native :
 	ocamlbuild -use-ocamlfind -pkgs llvm,llvm.analysis -cflags -w,+a-4 \
-		DNAs.native
+		runDNAs.native
 
 # "make clean" removes all generated files
 

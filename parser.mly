@@ -9,7 +9,7 @@ open Ast
 %token COMPLEMENT TRANSCRIBE  TRANSLATE  TRANSLATETWO
 %token BEGIN END IF ELSEIF ELSE THEN FOR WHILE CONTINUE BREAK
 %token NUC INT DOUBLE AA BOOL CHAR VOID STRING DNA RNA
-%token CODON SEQUENCE
+%token CODON SEQUENCE PEPTIDE
 %token TRUE FALSE
 
 %token LPAREN RPAREN LBRACK RBRACK
@@ -21,6 +21,9 @@ open Ast
 %token <int> INT_LIT
 %token <string> ID
 %token <string> SEQUENCE_LIT
+%token <string> DNA_LIT
+%token <string> RNA_LIT
+%token <string> PEP_LIT
 %token <float> DOUBLE_LIT
 %token <string> STRING_LIT
 
@@ -48,7 +51,7 @@ program: decls EOF {$1}
 decls:  {{stmts = []; funcs = [];}}
     |   decls stmt {{stmts = $1.stmts @ [$2] ; funcs = $1.funcs;}}
 
-    |   decls func_decl {{stmts = $1.stmts; funcs = $1.funcs @ [$2] }}  
+    |   decls func_decl {{stmts = $1.stmts; funcs = $1.funcs @ [$2] }}
 
 func_decl:
     typ ID LPAREN formals_opt RPAREN stmt_list END
@@ -72,15 +75,17 @@ typ:
     |   DOUBLE  {Double}
     |   AA      {Aa}
     |   NUC     {Nuc}
-    |   SEQUENCE {Seq} /* remove later */
+    |   CODON   {Codon}
+    |   SEQUENCE {Seq}
     |   DNA     {DNA}
     |   RNA     {RNA}
-    |   STRING {Str}
+    |   PEPTIDE {Pep}
+    |   STRING  {Str}
 
 stmt_list:
      /* nothing */  {[]}
     |   stmt_list stmt { $2 :: $1 }
-   
+
 stmt:
         expr SEMI   { Expr $1 }
     |   RETURN expr_opt SEMI    {Return $2 }
@@ -103,6 +108,9 @@ expr:
     |   INT_LIT {Litint($1)}
     |   DOUBLE_LIT  { Litdouble($1) }
     |   SEQUENCE_LIT  { Sequence($1) }
+    |   DNA_LIT  { Litdna($1) }
+    |   RNA_LIT  { Litrna($1) }
+    |   PEP_LIT  { Litpep($1) }
     |   STRING_LIT    { Stringlit($1)}
     |   expr PLUS expr  {Binop($1,Add,$3)}
     |   expr MINUS expr {Binop($1,Sub,$3)}

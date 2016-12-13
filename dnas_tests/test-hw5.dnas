@@ -1,2 +1,2 @@
-DNA hi = #atgc;
+Seq hi = #agcgcaagcca;
 print_str(hi);

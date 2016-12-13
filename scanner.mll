@@ -2,6 +2,12 @@
 
 { open Parser }
 
+let seq = ['A''G''C''a''g''c']+
+let dna = ['A'-'D''G''H''K''M''N''R'-'T''V'-'W''a'-'d''g''h''k''m''n''r'-'t''v'-'w']+
+let rna = ['A''G''U''C''a''g''u''c']+
+let aa = ['A''C'-'I''K'-'N''P'-'T''U'-'W''Y''a''c'-'i''k'-'n''p'-'t''u'-'w''y']
+let pep = (aa '-')+ aa
+
 rule token = parse
   [' ' '\t' '\r' '\n'] { token lexbuf } (* Whitespace *)
 | "/*"      { comment lexbuf }           (* Comments *)
@@ -63,10 +69,11 @@ rule token = parse
 | "nuc"     {NUC}
 | "string" 	{STRING}
 (*Complex Data Types *)
+| "Seq"     {SEQUENCE}
 | "codon"   {CODON}
 | "DNA"     {DNA}						(* MAKE GENERAL FUNCTION TO ALLOW RNA INPUT*)
 | "RNA"     {RNA}
-| "peptide" {SEQUENCE}						(*WRITE CODE TO ALLOW FOR PEPTIDE ENTRIES *)
+| "Pep"     {PEPTIDE}						(*WRITE CODE TO ALLOW FOR PEPTIDE ENTRIES *)
 (* Literals *)
 | "true"    {TRUE}
 | "false"   {FALSE}
@@ -78,9 +85,12 @@ rule token = parse
 
 | ['a'-'z' 'A'-'Z' '_']['a'-'z' 'A'-'Z' '0'-'9' '_']* as lxm { ID(lxm)}
 
-| '#'       {stringparse lexbuf}
-
 | '"'([^'"']* as lxm)'"'  {STRING_LIT(lxm)}
+
+| '#'(seq as lxm)       {SEQUENCE_LIT(lxm)}
+| '#'(dna as lxm)       {DNA_LIT(lxm)}
+| '#'(rna as lxm)       {RNA_LIT(lxm)}
+| '#'(pep as lxm)       {PEP_LIT(lxm)}
 
 | eof { EOF }
 

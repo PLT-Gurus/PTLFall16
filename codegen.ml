@@ -31,9 +31,12 @@ let translate prog =
     | A.Char -> i8_t
     | A.Bool -> i1_t
     | A.Void -> void_t
-    | A.Str -> str_t 
-    | A.Seq -> str_t  
-    | _ -> void_t (*todo# add later*) 
+    | A.Str -> str_t
+    | A.Seq -> str_t
+    | A.DNA -> str_t
+    | A.RNA -> str_t
+    | A.Pep -> str_t
+    | _ -> void_t (*todo# add later*)
   in
 
   let main_func={
@@ -45,7 +48,7 @@ let translate prog =
 
   (* Declare printf(), which the print built-in function will call *)
   let printf_t = L.var_arg_function_type i32_t [| L.pointer_type i8_t |] in
-  let printf_func = L.declare_function "printf" printf_t the_module 
+  let printf_func = L.declare_function "printf" printf_t the_module
   in
 
   let p_funcs=p_funcs@[main_func] in
@@ -57,17 +60,17 @@ let translate prog =
         Array.of_list (List.map (fun (t,_) -> ltype_of_typ t) fdecl.A.formals) in
       let f_type = L.function_type (ltype_of_typ fdecl.A.typ) f_formals in
       StringMap.add f_name (L.define_function f_name f_type the_module, fdecl) m in
-    List.fold_left function_decl StringMap.empty p_funcs 
+    List.fold_left function_decl StringMap.empty p_funcs
   in
 
-  let build_function_body fdecl = 
+  let build_function_body fdecl =
     let (the_function, _) = StringMap.find fdecl.A.fname function_decls in
     let builder = L.builder_at_end context (L.entry_block the_function) in
 
     let int_format_str = L.build_global_stringptr "%d\n" "fmt_int" builder in
     let str_format_str = L.build_global_stringptr "%s\n" "fmt_str" builder in
-     
-    let add_formal map (v_typ, v_name) param = 
+
+    let add_formal map (v_typ, v_name) param =
       L.set_value_name v_name param;
       let local = L.build_alloca (ltype_of_typ v_typ) v_name builder in
       ignore (L.build_store param local builder);
@@ -83,26 +86,26 @@ let translate prog =
     let p_varis=ref varis in
 
     let add_local bdr (v_typ, v_name) =
-      let local_var = L.build_alloca (ltype_of_typ v_typ) v_name bdr in 
+      let local_var = L.build_alloca (ltype_of_typ v_typ) v_name bdr in
       p_varis := StringMap.add v_name local_var (!p_varis)
     in
-    
+
     (*todo# consider the scope problem
     let lookup n = try StringMap.find n local_vars
       with Not_found -> StringMap.find n global_vars
     in*)
     let lookup n = StringMap.find n (!p_varis) in
-    
+
     (*add_expr builder*)
     let rec add_expr builder = function
         A.Litint i  -> L.const_int i32_t i
-      
+
       | A.Litbool b -> L.const_int i1_t (if b then 1 else 0)
-      
+
       | A.Litchar c -> L.const_int i8_t (int_of_char c)
-      
+
       | A.Id s -> L.build_load (lookup s) s builder
-      
+
       | A.Binop (e1, op, e2) ->
           let e1' = add_expr builder e1
           and e2' = add_expr builder e2 in
@@ -142,11 +145,11 @@ let translate prog =
 
       | A.Assign (s, e) -> let e' = add_expr builder e in
           ignore (L.build_store e' (lookup s) builder); e'
-      
+
       | A.Call ("print_int", [e] ) ->
           L.build_call printf_func [| int_format_str ; (add_expr builder e) |]
           "printf" builder
-      
+
       | A.Call ("print_str", [s]) ->
           L.build_call printf_func [| str_format_str ; (add_expr builder s) |] (*CHANGE THIS TO A GENERAL PRINT FUNCTION THAT WILL PRINT INT, STRINGS, SEQ, ETC.*)
           "printf" builder
@@ -157,12 +160,19 @@ let translate prog =
           let result = (match fdecl.A.typ with A.Void -> ""
                                               | _ -> f ^ "_result") in
           L.build_call fdef (Array.of_list actuals) result builder
-     
+
       | A.Stringlit(str) ->
           L.build_global_stringptr str "context" builder
 
       | A.Sequence(str) ->
           L.build_global_stringptr str "context" builder
+          
+      | A.Litdna(str) ->
+              L.build_global_stringptr str "context" builder
+        | A.Litrna(str) ->
+                L.build_global_stringptr str "context" builder
+        | A.Litpep(str) ->
+                L.build_global_stringptr str "context" builder
 
       | A.Noexpr -> L.const_int i32_t 0
 
@@ -174,7 +184,7 @@ let translate prog =
       match L.block_terminator (L.insertion_block builder) with
         Some _ -> ()
       | None -> ignore (f builder) in
-  
+
     (*add_stmt*)
     let rec add_stmt builder = function
         A.Block sl -> List.fold_left add_stmt builder sl
@@ -188,7 +198,7 @@ let translate prog =
       | A.Return e -> ignore (match fdecl.A.typ with
             A.Void -> L.build_ret_void builder
           | _ -> L.build_ret (add_expr builder e) builder); builder
-      
+
       | A.If (cond, then_stmt, sub_stmt) ->
           let bool_val = add_expr builder cond in
           let merge_bb = L.append_block context "merge" the_function in
@@ -207,9 +217,9 @@ let translate prog =
       | A.Elseif(cond,then_stmt,sub_stmt) ->
           add_stmt builder (A.If (cond,then_stmt,sub_stmt))
 
-      | A.Else (then_stmts) -> 
-          add_stmt builder then_stmts    
-      
+      | A.Else (then_stmts) ->
+          add_stmt builder then_stmts
+
       | A.While (cond, do_stmt) ->
           let pred_bb = L.append_block context "while" the_function in
             ignore (L.build_br pred_bb builder);
@@ -240,6 +250,6 @@ let translate prog =
       | t -> L.build_ret (L.const_int (ltype_of_typ t) 0))
   in
 
-  List.iter build_function_body p_funcs; 
+  List.iter build_function_body p_funcs;
 
   the_module

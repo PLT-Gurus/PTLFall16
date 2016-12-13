@@ -5,8 +5,8 @@ type action = Ast | Llvm | Compile
 
 let _ =
    let action = if Array.length Sys.argv > 1 then
-    List.assoc Sys.argv.(1) [ ("-a", Ast); 
-            ("-l", Llvm);  
+    List.assoc Sys.argv.(1) [ ("-a", Ast);
+            ("-l", Llvm);
             ("-c", Compile) ]
   else Compile in
 
@@ -18,4 +18,3 @@ let _ =
   | Compile->let m = Codegen.translate ast in
     Llvm_analysis.assert_valid_module m;
     print_string (Llvm.string_of_llmodule m)
-
