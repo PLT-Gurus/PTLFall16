@@ -2,14 +2,14 @@ DNAS_SRC=src/
 DNAS_LIB=lib/
 TARGET=DNAs
 LIBS=-I,/usr/lib/ocaml/
-FLAGS= -use-ocamlfind -pkgs llvm,llvm.analysis,llvm.bitwriter,llvm.bitreader,llvm.linker,llvm.target -cflags -w,+a-4 
+FLAGS= -use-ocamlfind -pkgs llvm,llvm.analysis,llvm.bitwriter,llvm.bitreader,llvm.linker,llvm.target -cflags -w,+a-4
 OCAMLBUILD=ocamlbuild
 OPAM=opam config env
 
 
 .PHONY: master.all native byte depend
 
-all: clib native 
+all: clib native
 	@ echo "Finished!"
 
 clib:
@@ -28,5 +28,13 @@ byte:
 	@ cd ..
 
 depend:
-	@ echo "Not needed." 
+	@ echo "Not needed."
 
+
+# "make clean" removes all generated files
+.PHONY : clean
+
+clean :
+	ocamlbuild -clean
+	rm -rf test_DNAs.log *.diff DNAs scanner.ml parser.ml parser.mli
+	rm -rf *.cmx *.cmi *.cmo *.cmx *.o *.ll
