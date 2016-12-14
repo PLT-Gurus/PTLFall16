@@ -8,8 +8,8 @@ open Ast
 %token PLUS MINUS TIMES DIVIDE MODULO EXPONENTIAL
 %token COMPLEMENT TRANSCRIBE  TRANSLATE  TRANSLATETWO
 %token BEGIN END IF ELSEIF ELSE THEN FOR WHILE CONTINUE BREAK
-%token NUC INT DOUBLE AA BOOL CHAR VOID STRING DNA RNA
-%token CODON SEQUENCE PEPTIDE
+%token NUC INT DOUBLE AA BOOL CHAR VOID STRING
+%token CODON SEQUENCE
 %token TRUE FALSE
 
 %token LPAREN RPAREN LBRACK RBRACK
@@ -21,9 +21,6 @@ open Ast
 %token <int> INT_LIT
 %token <string> ID
 %token <string> SEQUENCE_LIT
-%token <string> DNA_LIT
-%token <string> RNA_LIT
-%token <string> PEP_LIT
 %token <float> DOUBLE_LIT
 %token <string> STRING_LIT
 
@@ -51,7 +48,7 @@ program: decls EOF {$1}
 decls:  {{stmts = []; funcs = [];}}
     |   decls stmt {{stmts = $1.stmts @ [$2] ; funcs = $1.funcs;}}
 
-    |   decls func_decl {{stmts = $1.stmts; funcs = $1.funcs @ [$2] }}
+    |   decls func_decl {{stmts = $1.stmts; funcs = $1.funcs @ [$2] }}  
 
 func_decl:
     typ ID LPAREN formals_opt RPAREN stmt_list END
@@ -75,17 +72,13 @@ typ:
     |   DOUBLE  {Double}
     |   AA      {Aa}
     |   NUC     {Nuc}
-    |   CODON   {Codon}
     |   SEQUENCE {Seq}
-    |   DNA     {DNA}
-    |   RNA     {RNA}
-    |   PEPTIDE {Pep}
-    |   STRING  {Str}
+    |   STRING {Str}
 
 stmt_list:
      /* nothing */  {[]}
     |   stmt_list stmt { $2 :: $1 }
-
+   
 stmt:
         expr SEMI   { Expr $1 }
     |   RETURN expr_opt SEMI    {Return $2 }
@@ -94,7 +87,6 @@ stmt:
     |   WHILE expr THEN stmt_list END  { While($2, Block(List.rev $4)) }
     |   IF expr THEN stmt_list bstmt END{ If($2, Block(List.rev $4), $5) }
     |   typ ID ASSIGN expr SEMI    { VDecl($1, $2, $4)}
-    |   typ LBRACK expr RBRACK SEMI { ArrayDecl($1,$3)} /* CHANGE LATER TO FORCE ASSIGNMENT */
 
 bstmt:
         /* nothing */   {Nobranching}
@@ -108,9 +100,6 @@ expr:
     |   INT_LIT {Litint($1)}
     |   DOUBLE_LIT  { Litdouble($1) }
     |   SEQUENCE_LIT  { Sequence($1) }
-    |   DNA_LIT  { Litdna($1) }
-    |   RNA_LIT  { Litrna($1) }
-    |   PEP_LIT  { Litpep($1) }
     |   STRING_LIT    { Stringlit($1)}
     |   expr PLUS expr  {Binop($1,Add,$3)}
     |   expr MINUS expr {Binop($1,Sub,$3)}
@@ -133,7 +122,6 @@ expr:
     |   expr TRANSLATE  {Runop($1, Translt)}
     |   expr TRANSLATETWO   {Runop($1, Translttwo)}
     |   ID ASSIGN expr  {Assign($1, $3)}
-    |   ID LBRACK expr RBRACK ASSIGN expr {ArrayAssign($1,$3,$6)}
     |   LPAREN expr RPAREN  {$2}
     |   ID LPAREN actuals_opt RPAREN    {Call($1, $3)}
 
