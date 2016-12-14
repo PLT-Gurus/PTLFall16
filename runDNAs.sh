@@ -2,22 +2,16 @@
 # Run DNA#
 # If the terminal shows "can't find command", plz input "chmod +x runDNAs.sh" in terminal first.
 
-ocamlbuild -use-ocamlfind -pkgs llvm,llvm.analysis -cflags -w,+a-4 \
-		runDNAs.native
-
-
-#lli dnas_llvm.ll
-
 LLI="lli"
 #LLI="/usr/local/opt/llvm/bin/lli"
 
-DNAS="./runDNAs.native"
+DNAS="./DNAs.native"
 #DNAs="_build/DNAs.native"
 
 DEFAULT_PATH="./dnas_tests"
 
 Run() {
-    eval $*
+    eval $* 
 }
 
 Usage() {
@@ -52,7 +46,7 @@ CompileFile(){
     echo "# compiling ${basename}.dnas"
     Run "$DNAS" "<" $1 ">" "${DEFAULT_PATH}/${basename}.ll"
     echo "     ${basename}.ll ... Done"
-    Run "$LLI" "${DEFAULT_PATH}/${basename}.ll" ">" "${DEFAULT_PATH}/${basename}.out"
+    Run "$LLI" "${DEFAULT_PATH}/${basename}.ll" ">" "${DEFAULT_PATH}/${basename}.out" 
     echo "     ${basename}.out ... Done"
 
 }
@@ -117,3 +111,4 @@ do
 	    ;;
     esac
 done
+
