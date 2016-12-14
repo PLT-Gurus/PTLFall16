@@ -4,17 +4,22 @@ target triple = "x86_64-pc-linux-gnu"
 
 @fmt_int = private unnamed_addr constant [4 x i8] c"%d\0A\00"
 @fmt_str = private unnamed_addr constant [4 x i8] c"%s\0A\00"
-@context = private unnamed_addr constant [12 x i8] c"agcgcaagcca\00"
+@context = private unnamed_addr constant [8 x i8] c"uaugccu\00"
+@context.1 = private unnamed_addr constant [8 x i8] c"a-k-w-y\00"
 @.str = private unnamed_addr constant [16 x i8] c"Hello I'm in C\0A\00", align 1
 
 declare i32 @printf(i8*, ...)
 
 define i32 @main() {
 entry:
-  %hi = alloca i8*
-  store i8* getelementptr inbounds ([12 x i8], [12 x i8]* @context, i32 0, i32 0), i8** %hi
-  %hi1 = load i8*, i8** %hi
-  %printf = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @fmt_str, i32 0, i32 0), i8* %hi1)
+  %r1 = alloca i8*
+  store i8* getelementptr inbounds ([8 x i8], [8 x i8]* @context, i32 0, i32 0), i8** %r1
+  %p1 = alloca i8*
+  store i8* getelementptr inbounds ([8 x i8], [8 x i8]* @context.1, i32 0, i32 0), i8** %p1
+  %r11 = load i8*, i8** %r1
+  %printf = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @fmt_str, i32 0, i32 0), i8* %r11)
+  %p12 = load i8*, i8** %p1
+  %printf3 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @fmt_str, i32 0, i32 0), i8* %p12)
   ret i32 0
 }
 

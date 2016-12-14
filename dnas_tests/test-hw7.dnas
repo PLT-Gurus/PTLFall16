@@ -1,0 +1,6 @@
+/*  %%;  parsing need to catch an error spit out the wrong input. */
+RNA r1 = #uaugccu;
+Pep p1 = #a-k-w-y;
+// print_str(d1);
+print_str(r1);
+print_str(p1);

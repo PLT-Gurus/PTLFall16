@@ -65,18 +65,18 @@ let translate prog =
         Array.of_list (List.map (fun (t,_) -> ltype_of_typ t) fdecl.A.formals) in
       let f_type = L.function_type (ltype_of_typ fdecl.A.typ) f_formals in
       StringMap.add f_name (L.define_function f_name f_type the_module, fdecl) m in
-    List.fold_left function_decl StringMap.empty p_funcs 
+    List.fold_left function_decl StringMap.empty p_funcs
   in
 
-  let build_function_body fdecl = 
+  let build_function_body fdecl =
     let (the_function, _) = StringMap.find fdecl.A.fname function_decls in
     let builder = L.builder_at_end context (L.entry_block the_function) in
 
 
     let int_format_str = L.build_global_stringptr "%d\n" "fmt_int" builder in
     let str_format_str = L.build_global_stringptr "%s\n" "fmt_str" builder in
-     
-    let add_formal map (v_typ, v_name) param = 
+
+    let add_formal map (v_typ, v_name) param =
       L.set_value_name v_name param;
       let local = L.build_alloca (ltype_of_typ v_typ) v_name builder in
       ignore (L.build_store param local builder);
@@ -90,24 +90,24 @@ let translate prog =
     in
 
     let add_local bvtup (v_typ, v_name) =
-      let local_var = L.build_alloca (ltype_of_typ v_typ) v_name (fst bvtup) in 
+      let local_var = L.build_alloca (ltype_of_typ v_typ) v_name (fst bvtup) in
       ((fst bvtup),StringMap.add v_name local_var (snd bvtup))
     in
-    
+
     let lookup n varis = StringMap.find n varis in
 
     let bvtup=(builder,varis) in
-    
+
     (*add_expr bvtup*)
     let rec add_expr bvtup = function
         A.Litint i  -> L.const_int i32_t i
-      
+
       | A.Litbool b -> L.const_int i1_t (if b then 1 else 0)
-      
+
       | A.Litchar c -> L.const_int i8_t (int_of_char c)
-      
+
       | A.Id s -> L.build_load (lookup s (snd bvtup)) s (fst bvtup)
-      
+
       | A.Binop (e1, op, e2) ->
           let e1' = add_expr bvtup e1
           and e2' = add_expr bvtup e2 in
@@ -147,7 +147,7 @@ let translate prog =
 
       | A.Assign (s, e) -> let e' = add_expr bvtup e in
           ignore (L.build_store e' (lookup s (snd bvtup)) (fst bvtup)); e'
-      
+
       | A.Call ("test", arg) ->
           let arg=List.map (add_expr bvtup) (List.rev arg) in
           let arg=Array.of_list arg in
@@ -158,9 +158,8 @@ let translate prog =
           "printf" (fst bvtup)
       
       | A.Call ("print_str", [s]) ->
-          let A.Stringlit(str)=s in
-          let lvm_str=L.build_global_stringptr str "context" (fst bvtup) in
-          L.build_call printf_func [| str_format_str ; lvm_str |]
+
+          L.build_call printf_func [| str_format_str ; (add_expr bvtup s) |]
           "printf" (fst bvtup)
 
       | A.Call (f, act) ->
@@ -169,22 +168,22 @@ let translate prog =
           let result = (match fdecl.A.typ with A.Void -> ""
                                               | _ -> f ^ "_result") in
           L.build_call fdef (Array.of_list actuals) result (fst bvtup)
-     
+
       | A.Stringlit(str) ->
-           L.build_global_stringptr str "context" (fst bvtup) 
-      
+           L.build_global_stringptr str "context" (fst bvtup)
+
       | A.Sequence(str) ->
           L.build_global_stringptr str "context" (fst bvtup)
-          
+
       | A.Litdna(str) ->
               L.build_global_stringptr str "context" (fst bvtup)
-      
+
       | A.Litrna(str) ->
                 L.build_global_stringptr str "context" (fst bvtup)
-      
+
       | A.Litpep(str) ->
                 L.build_global_stringptr str "context" (fst bvtup)
-      
+
       | A.Noexpr -> L.const_int i32_t 0
 
       | _ -> L.const_int i32_t 0 (*todo# finish all the exprs*)
@@ -195,7 +194,7 @@ let translate prog =
       match L.block_terminator (L.insertion_block builder) with
         Some _ -> ()
       | None -> ignore (f builder) in
-  
+
     (*add_stmt*)
     let rec add_stmt bvtup = function
         A.Block sl -> List.fold_left add_stmt bvtup sl
@@ -207,12 +206,12 @@ let translate prog =
           ignore(add_stmt bvtup (A.Expr (A.Assign (id, expr))));
           bvtup
 
-      | A.Return e -> 
+      | A.Return e ->
           ignore (match fdecl.A.typ with
               A.Void -> L.build_ret_void (fst bvtup)
-            | _ -> L.build_ret (add_expr bvtup e) (fst bvtup)); 
+            | _ -> L.build_ret (add_expr bvtup e) (fst bvtup));
           bvtup
-      
+
       | A.If (cond, then_stmt, sub_stmt) ->
           let bool_val = add_expr bvtup cond in
           let merge_bb = L.append_block context "merge" the_function in
@@ -231,9 +230,9 @@ let translate prog =
       | A.Elseif(cond,then_stmt,sub_stmt) ->
           add_stmt bvtup (A.If (cond,then_stmt,sub_stmt))
 
-      | A.Else (then_stmts) -> 
-          add_stmt bvtup then_stmts    
-      
+      | A.Else (then_stmts) ->
+          add_stmt bvtup then_stmts
+
       | A.While (cond, do_stmt) ->
           let pred_bb = L.append_block context "while" the_function in
             ignore (L.build_br pred_bb (fst bvtup));
@@ -247,7 +246,7 @@ let translate prog =
 
           let merge_bb = L.append_block context "merge" the_function in
             ignore (L.build_cond_br bool_val body_bb merge_bb pred_builder);
-          
+
           (L.builder_at_end context merge_bb,snd bvtup)
 
       | A.For (e1, e2, e3, for_stmt) -> add_stmt bvtup
@@ -257,7 +256,7 @@ let translate prog =
     in
 
     (* create the Tuple_of_Builder_and_Varis -> bvtup *)
-    
+
     (* Build the code for each statement in the function *)
     let bvtup = add_stmt bvtup (A.Block fdecl.A.stmts) in
 
@@ -266,10 +265,10 @@ let translate prog =
         A.Void -> L.build_ret_void
       | t -> L.build_ret (L.const_int (ltype_of_typ t) 0))
   in
-  List.iter build_function_body p_funcs; 
+  List.iter build_function_body p_funcs;
 
   (*link external C funcs*)
   LK.link_bc the_module LK.c_lib_path;
-  
+
   (*return the_module*)
   the_module
