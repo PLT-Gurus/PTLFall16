@@ -1,0 +1,9 @@
+int foo() end
+
+int bar()
+  int a = 2;
+  void b; /* Error: illegal void local b */
+  bool c = 3;
+
+  return 0;
+end

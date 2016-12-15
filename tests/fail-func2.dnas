@@ -1,0 +1,7 @@
+int foo(int a, bool b, int c) end
+void bar(int a, bool b, int a) end /* Error: duplicate formal a in bar */
+
+int main()
+
+  return 0;
+end

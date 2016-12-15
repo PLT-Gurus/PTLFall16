@@ -1,0 +1,11 @@
+int foo() end
+
+void bar() end
+
+int print() end /* Should not be able to define print */
+
+void baz() end
+
+int main()
+  return 0;
+end

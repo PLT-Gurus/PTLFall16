@@ -1,0 +1,12 @@
+bool i = false;
+
+int main()
+
+  int i = 9; /* Should hide the global i */
+
+  i = 42;
+  print(i + i);
+  return 0;
+end
+
+main();

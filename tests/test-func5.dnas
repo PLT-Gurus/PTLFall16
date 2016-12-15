@@ -1,0 +1,11 @@
+int foo(int a)
+  return a;
+end
+
+int main()
+
+  return 0;
+end
+
+print(foo(2));
+print(main());

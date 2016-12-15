@@ -1,0 +1,10 @@
+void foo(bool i)
+
+  int i = 0; /* Should hide the formal i */
+
+  i = 42;
+  print(i + i);
+end
+
+
+  foo(true);

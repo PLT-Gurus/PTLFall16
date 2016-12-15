@@ -1,0 +1,7 @@
+void foo(int a)
+  print(a + 3);
+end
+
+
+  foo(40);
+ 

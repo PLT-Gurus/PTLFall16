@@ -1,0 +1,12 @@
+int foo(int a, bool b)
+
+  int c = 0;
+  bool d = b;
+
+  c = a;
+
+  return c + 10;
+end
+
+
+ print(foo(37, false));

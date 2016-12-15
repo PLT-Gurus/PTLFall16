@@ -1,0 +1,6 @@
+int main()
+
+  if (true) then
+    foo; /* Error: undeclared variable */
+  end
+end

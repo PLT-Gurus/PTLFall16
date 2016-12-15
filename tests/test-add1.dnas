@@ -1,0 +1,8 @@
+int add(int x, int y)
+  return x + y;
+end
+
+int main()
+  print( add(17, 25) );
+  return 0;
+end

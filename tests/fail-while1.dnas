@@ -1,0 +1,11 @@
+int main()
+  int i = 2;
+
+  while (true) then
+    i = i + 1;
+  end
+
+  while (42) { /* Should be boolean */
+    i = i + 1;
+  end
+end

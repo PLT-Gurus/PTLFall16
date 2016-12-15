@@ -1,0 +1,8 @@
+void myvoid()
+  return;
+end
+
+int main()
+  int i;
+  i = myvoid(); /* Fail: assigning a void to an integer */
+end
