@@ -13,6 +13,7 @@ module A = Ast
 module LK=Linker
 module StringMap = Map.Make(String)
 
+type ext_func={name:string;ret:L.lltype;arg:L.lltype array}
 
 let translate prog =
   let p_stmts=prog.A.stmts in
@@ -48,13 +49,44 @@ let translate prog =
     A.stmts=p_stmts;
   } in
 
-  (* Declare printf(), which the print built-in function will call *)
+  let ext_func_lst=[
+    {name="test"          ;ret=i32_t;       arg=[|i32_t;i32_t|]           };
+    {name="printf"        ;ret=i32_t;       arg=[| L.pointer_type i8_t |] };
+    {name="complement"    ;ret=str_t;       arg=[|str_t|]                 };
+    {name="transcribe"    ;ret=str_t;       arg=[|str_t|]                 }
+  ]
+  in
+
+  let build_ext_func map ef=
+    let func_typ=L.var_arg_function_type ef.ret ef.arg in
+    let func_dec=L.declare_function ef.name func_typ the_module in
+      StringMap.add ef.name func_dec map
+  in
+
+  let ext_funcs=List.fold_left build_ext_func StringMap.empty ext_func_lst in
+              
+          
+  (* Declare printf(), which the print built-in function will call 
   let printf_t = L.var_arg_function_type i32_t [| L.pointer_type i8_t |] in
   let printf_func = L.declare_function "printf" printf_t the_module in
 
   let test_t=L.var_arg_function_type i32_t [|i32_t;i32_t|] in
   let test_func=L.declare_function "test" test_t the_module in
 
+  let complement_t=L.var_arg_function_type str_t [|str_t|] in
+  let complement_func= L.declare_function "complement" complement_t the_module
+
+  let transcribe_t=L.var_arg_function_type str_t [|str_t|] in
+  let transcribe_func=L.declare_function "transcribe" transcribe_t the_module in
+  *)
+(*
+  let build_extern_call func arg bvtup=
+    (*arg should be a list of arguments of func call*)
+    let arg=List.map (add_expr bvtup) (List.rev arg) in
+      let arg=Array.of_list arg in
+        L.build_call test_func arg "test" (fst bvtup)
+  in
+  *)
 
   let p_funcs=p_funcs@[main_func] in
 
@@ -71,7 +103,6 @@ let translate prog =
   let build_function_body fdecl =
     let (the_function, _) = StringMap.find fdecl.A.fname function_decls in
     let builder = L.builder_at_end context (L.entry_block the_function) in
-
 
     let int_format_str = L.build_global_stringptr "%d\n" "fmt_int" builder in
     let str_format_str = L.build_global_stringptr "%s\n" "fmt_str" builder in
@@ -100,7 +131,7 @@ let translate prog =
 
     (*add_expr bvtup*)
     let rec add_expr bvtup = function
-        A.Litint i  -> L.const_int i32_t i
+      | A.Litint i  -> L.const_int i32_t i
 
       | A.Litbool b -> L.const_int i1_t (if b then 1 else 0)
 
@@ -131,35 +162,31 @@ let translate prog =
       | A.Lunop(op, e) ->
           let e' = add_expr bvtup e in
           (match op with
-              A.Neg         -> L.build_neg
-            | A.Not         -> L.build_not
-            | A.Expon       -> L.build_not (*todo# make it work later*)
-            | A.Comp        -> L.build_not (*todo# make it work later*)
-           ) e' "left_uop" (fst bvtup)
+              A.Neg         -> L.build_neg e' "left_uop" (fst bvtup)
+            | A.Not         -> L.build_not e' "left_uop" (fst bvtup)
+            | A.Expon       -> L.build_not e' "left_uop" (fst bvtup) (*todo# make it work later*)
+            | A.Comp        -> ext_call "complement" [e] bvtup
+           )
 
       | A.Runop(e, op) ->
-          let e' = add_expr bvtup e in
           (match op with
-            | A.Transcb     -> L.build_not (*todo# make it work later*)
-            | A.Translt     -> L.build_not (*todo# make it work later*)
-            | A.Translttwo  -> L.build_not (*todo# make it work later*)
-          ) e' "right_uop" (fst bvtup)
+            | A.Transcb     -> ext_call "transcribe" 
+            | A.Translt     -> ext_call "transcribe"  (*todo# change name*)
+            | A.Translttwo  -> ext_call "transcribe"  (*todo# change name*)
+          ) [e] bvtup
 
       | A.Assign (s, e) -> let e' = add_expr bvtup e in
           ignore (L.build_store e' (lookup s (snd bvtup)) (fst bvtup)); e'
 
       | A.Call ("test", arg) ->
-          let arg=List.map (add_expr bvtup) (List.rev arg) in
-          let arg=Array.of_list arg in
-          L.build_call test_func arg "test" (fst bvtup)
+          ext_call "test" arg bvtup
 
       | A.Call ("print_int", [e] ) ->
-          L.build_call printf_func [| int_format_str ; (add_expr bvtup e) |]
+          L.build_call (StringMap.find "printf" ext_funcs) [| int_format_str ; (add_expr bvtup e) |]
           "printf" (fst bvtup)
       
       | A.Call ("print_str", [s]) ->
-
-          L.build_call printf_func [| str_format_str ; (add_expr bvtup s) |]
+          L.build_call (StringMap.find "printf" ext_funcs) [| str_format_str ; (add_expr bvtup s) |]
           "printf" (fst bvtup)
 
       | A.Call (f, act) ->
@@ -187,6 +214,11 @@ let translate prog =
       | A.Noexpr -> L.const_int i32_t 0
 
       | _ -> L.const_int i32_t 0 (*todo# finish all the exprs*)
+     
+    and ext_call f_name arg bvtup=
+      let arg=List.map (add_expr bvtup) (List.rev arg) in
+        let arg=Array.of_list arg in
+          L.build_call (StringMap.find f_name ext_funcs) arg f_name (fst bvtup)
     in
 
    (*add_terminal*)
