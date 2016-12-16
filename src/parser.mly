@@ -94,7 +94,7 @@ stmt:
     |   WHILE expr THEN stmt_list END  { While($2, Block(List.rev $4)) }
     |   IF expr THEN stmt_list bstmt END{ If($2, Block(List.rev $4), $5) }
     |   typ ID ASSIGN expr SEMI    { VDecl($1, $2, $4)}
-    |   typ LBRACK expr RBRACK SEMI { ArrayDecl($1,$3)} /* CHANGE LATER TO FORCE ASSIGNMENT */
+    |   typ LBRACK expr RBRACK ID SEMI { ArrayDecl($1,$3, $5)} /* CHANGE LATER TO FORCE ASSIGNMENT */
 
 bstmt:
         /* nothing */   {Nobranching}

@@ -41,6 +41,7 @@ let translate prog =
   | _ -> void_t (*todo# add later*)
   in
 
+
   let main_func={
     A.fname="main";
     A.typ=A.Int;
@@ -93,6 +94,9 @@ let translate prog =
       let local_var = L.build_alloca (ltype_of_typ v_typ) v_name (fst bvtup) in
       ((fst bvtup),StringMap.add v_name local_var (snd bvtup))
     in
+
+ (*    (* create array *)
+    let create_array *)
 
     let lookup n varis = StringMap.find n varis in
 
@@ -205,6 +209,10 @@ let translate prog =
           let bvtup=add_local bvtup (typ, id) in
           ignore(add_stmt bvtup (A.Expr (A.Assign (id, expr))));
           bvtup
+      | A.ArrayDecl(typ, size, id)-> 
+          (* Make this work with non-hardcoded size and with our scoping rules. What is bvtup? *)
+         ignore(L.build_array_alloca (ltype_of_typ typ) (L.const_int i32_t 10) id builder);
+         bvtup   
 
       | A.Return e ->
           ignore (match fdecl.A.typ with
