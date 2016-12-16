@@ -5,11 +5,15 @@ int test(int a,int b)
 {
 	printf("Hello I'm in C\n");
 	return a+b;
-	
+
 }
 
 char* complement(char* str){
-    /*int length = sizeof(str);
+	if(!str)
+        return str;
+    int i = 0;
+    while(str[i] != 0) i++;
+    int length = i;
     char* retstr = malloc(length);
     char curr;
     for(int i = 0; i<length; i++){
@@ -23,14 +27,16 @@ char* complement(char* str){
         else if(curr == 99 || curr == 103)
             retstr[i] = 170 - curr;
     }
-    retstr[length] = '\n';
-    return retstr;*/
-    char* retstr = "test#$T@#TGF$%G$WSDAF";
+    retstr[length] = '\0';
     return retstr;
 }
 
 char* transcribe(char* str){
-    int length = sizeof(str);
+	if(!str)
+        return str;
+    int i = 0;
+    while(str[i] != 0) i++;
+    int length = i;
     char* retstr = malloc(length);
     char curr;
     for(int i = 0; i<length; i++){
@@ -46,6 +52,6 @@ char* transcribe(char* str){
         else if(curr == 65 || curr == 97)
             retstr[i] = 85;
     }
-    retstr[length] = '\n';
+    retstr[length] = '\0';
     return retstr;
 }

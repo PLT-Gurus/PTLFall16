@@ -94,9 +94,9 @@ rule token = parse
 | '#'(dna as lxm)       {DNA_LIT(lxm)}
 | '#'(rna as lxm)       {RNA_LIT(lxm)}
 | '#'(pep as lxm)       {PEP_LIT(lxm)}
-| '#'(dna)(_ as char)  {raise (Failure("SCAN ERROR : illegal character '"^ Char.escaped char ^ "' in DNA sequence ."))}
-| '#'(rna)(_ as char)  {raise (Failure("SCAN ERROR : illegal character '"^ Char.escaped char ^ "' in RNA sequence ."))}
-| '#'(aa '-')*(_ as char)   {raise (Failure("SCAN ERROR : illegal character '"^ Char.escaped char ^ "' in Peptide sequence ."))}
+| '#'(dna)([^';'] as char)  {raise (Failure("SCAN ERROR : illegal character '" ^ Char.escaped char ^ "' in DNA sequence ."))}
+| '#'(rnuc)+([^';'] as char)  {raise (Failure("SCAN ERROR : illegal character '" ^ Char.escaped char ^ "' in RNA sequence ."))}
+| '#'(aa '-')*([^';'] as char)   {raise (Failure("SCAN ERROR : illegal character '" ^ Char.escaped char ^ "' in Peptide sequence ."))}
 | eof { EOF }
 
 | _ as char { raise (Failure("Main: illegal character " ^ Char.escaped char)) }

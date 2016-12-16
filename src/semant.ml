@@ -4,9 +4,9 @@
 open Ast
 
 module StringMap = Map.Make(String)
-(* Semantic checking of a program. 
+(* Semantic checking of a program.
    Returns void if successful,throws an exception if something is wrong.
-   Check each global statement, then check each function 
+   Check each global statement, then check each function
 *)
 	let check (statements, functions) =
 		(* check for duplicates *)
@@ -116,7 +116,7 @@ module StringMap = Map.Make(String)
 				| Elseif (p, s1, s2) -> check_bool_expr p; stmt s1; stmt s2
 				| Else (st) -> stmt st
 				| VDecl(t, s, e) -> List.find (fun s -> fst s = string_of_typ t) ["int";"bool";"void";"char";"double";"aa";"nuc";"codon";"seq";"str"];ignore(expr e) (*not sure how to do this one*)
-				| Nobranching -> void (*is this correct?*)  
+				| Nobranching -> void (*is this correct?*)
 			in
 
 		List.iter check_statements statements

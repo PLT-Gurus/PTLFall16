@@ -61,153 +61,191 @@ define i32 @test(i32 %a, i32 %b) #0 {
 ; Function Attrs: nounwind uwtable
 define i8* @complement(i8* %str) #0 {
   %1 = alloca i8*, align 8
+  %2 = alloca i8*, align 8
+  %i = alloca i32, align 4
   %length = alloca i32, align 4
   %retstr = alloca i8*, align 8
   %curr = alloca i8, align 1
-  %i = alloca i32, align 4
-  store i8* %str, i8** %1, align 8
-  store i32 8, i32* %length, align 4
-  %2 = load i32, i32* %length, align 4
-  %3 = sext i32 %2 to i64
-  %4 = call noalias i8* @malloc(i64 %3) #2
-  store i8* %4, i8** %retstr, align 8
+  %i1 = alloca i32, align 4
+  store i8* %str, i8** %2, align 8
+  %3 = load i8*, i8** %2, align 8
+  %4 = icmp ne i8* %3, null
+  br i1 %4, label %7, label %5
+
+; <label>:5                                       ; preds = %0
+  %6 = load i8*, i8** %2, align 8
+  store i8* %6, i8** %1, align 8
+  br label %114
+
+; <label>:7                                       ; preds = %0
   store i32 0, i32* %i, align 4
-  br label %5
+  br label %8
 
-; <label>:5                                       ; preds = %86, %0
-  %6 = load i32, i32* %i, align 4
-  %7 = load i32, i32* %length, align 4
-  %8 = icmp slt i32 %6, %7
-  br i1 %8, label %9, label %89
+; <label>:8                                       ; preds = %16, %7
+  %9 = load i32, i32* %i, align 4
+  %10 = sext i32 %9 to i64
+  %11 = load i8*, i8** %2, align 8
+  %12 = getelementptr inbounds i8, i8* %11, i64 %10
+  %13 = load i8, i8* %12, align 1
+  %14 = sext i8 %13 to i32
+  %15 = icmp ne i32 %14, 0
+  br i1 %15, label %16, label %19
 
-; <label>:9                                       ; preds = %5
-  %10 = load i32, i32* %i, align 4
-  %11 = sext i32 %10 to i64
-  %12 = load i8*, i8** %1, align 8
-  %13 = getelementptr inbounds i8, i8* %12, i64 %11
-  %14 = load i8, i8* %13, align 1
-  store i8 %14, i8* %curr, align 1
-  %15 = load i8, i8* %curr, align 1
-  %16 = sext i8 %15 to i32
-  %17 = icmp eq i32 %16, 65
-  br i1 %17, label %22, label %18
+; <label>:16                                      ; preds = %8
+  %17 = load i32, i32* %i, align 4
+  %18 = add nsw i32 %17, 1
+  store i32 %18, i32* %i, align 4
+  br label %8
 
-; <label>:18                                      ; preds = %9
-  %19 = load i8, i8* %curr, align 1
-  %20 = sext i8 %19 to i32
-  %21 = icmp eq i32 %20, 84
-  br i1 %21, label %22, label %31
+; <label>:19                                      ; preds = %8
+  %20 = load i32, i32* %i, align 4
+  store i32 %20, i32* %length, align 4
+  %21 = load i32, i32* %length, align 4
+  %22 = sext i32 %21 to i64
+  %23 = call noalias i8* @malloc(i64 %22) #2
+  store i8* %23, i8** %retstr, align 8
+  store i32 0, i32* %i1, align 4
+  br label %24
 
-; <label>:22                                      ; preds = %18, %9
-  %23 = load i8, i8* %curr, align 1
-  %24 = sext i8 %23 to i32
-  %25 = sub nsw i32 149, %24
-  %26 = trunc i32 %25 to i8
-  %27 = load i32, i32* %i, align 4
-  %28 = sext i32 %27 to i64
-  %29 = load i8*, i8** %retstr, align 8
-  %30 = getelementptr inbounds i8, i8* %29, i64 %28
-  store i8 %26, i8* %30, align 1
-  br label %85
+; <label>:24                                      ; preds = %105, %19
+  %25 = load i32, i32* %i1, align 4
+  %26 = load i32, i32* %length, align 4
+  %27 = icmp slt i32 %25, %26
+  br i1 %27, label %28, label %108
 
-; <label>:31                                      ; preds = %18
-  %32 = load i8, i8* %curr, align 1
-  %33 = sext i8 %32 to i32
-  %34 = icmp eq i32 %33, 67
-  br i1 %34, label %39, label %35
+; <label>:28                                      ; preds = %24
+  %29 = load i32, i32* %i1, align 4
+  %30 = sext i32 %29 to i64
+  %31 = load i8*, i8** %2, align 8
+  %32 = getelementptr inbounds i8, i8* %31, i64 %30
+  %33 = load i8, i8* %32, align 1
+  store i8 %33, i8* %curr, align 1
+  %34 = load i8, i8* %curr, align 1
+  %35 = sext i8 %34 to i32
+  %36 = icmp eq i32 %35, 65
+  br i1 %36, label %41, label %37
 
-; <label>:35                                      ; preds = %31
-  %36 = load i8, i8* %curr, align 1
-  %37 = sext i8 %36 to i32
-  %38 = icmp eq i32 %37, 71
-  br i1 %38, label %39, label %48
+; <label>:37                                      ; preds = %28
+  %38 = load i8, i8* %curr, align 1
+  %39 = sext i8 %38 to i32
+  %40 = icmp eq i32 %39, 84
+  br i1 %40, label %41, label %50
 
-; <label>:39                                      ; preds = %35, %31
-  %40 = load i8, i8* %curr, align 1
-  %41 = sext i8 %40 to i32
-  %42 = sub nsw i32 138, %41
-  %43 = trunc i32 %42 to i8
-  %44 = load i32, i32* %i, align 4
-  %45 = sext i32 %44 to i64
-  %46 = load i8*, i8** %retstr, align 8
-  %47 = getelementptr inbounds i8, i8* %46, i64 %45
-  store i8 %43, i8* %47, align 1
-  br label %84
+; <label>:41                                      ; preds = %37, %28
+  %42 = load i8, i8* %curr, align 1
+  %43 = sext i8 %42 to i32
+  %44 = sub nsw i32 149, %43
+  %45 = trunc i32 %44 to i8
+  %46 = load i32, i32* %i1, align 4
+  %47 = sext i32 %46 to i64
+  %48 = load i8*, i8** %retstr, align 8
+  %49 = getelementptr inbounds i8, i8* %48, i64 %47
+  store i8 %45, i8* %49, align 1
+  br label %104
 
-; <label>:48                                      ; preds = %35
-  %49 = load i8, i8* %curr, align 1
-  %50 = sext i8 %49 to i32
-  %51 = icmp eq i32 %50, 97
-  br i1 %51, label %56, label %52
+; <label>:50                                      ; preds = %37
+  %51 = load i8, i8* %curr, align 1
+  %52 = sext i8 %51 to i32
+  %53 = icmp eq i32 %52, 67
+  br i1 %53, label %58, label %54
 
-; <label>:52                                      ; preds = %48
-  %53 = load i8, i8* %curr, align 1
-  %54 = sext i8 %53 to i32
-  %55 = icmp eq i32 %54, 116
-  br i1 %55, label %56, label %65
+; <label>:54                                      ; preds = %50
+  %55 = load i8, i8* %curr, align 1
+  %56 = sext i8 %55 to i32
+  %57 = icmp eq i32 %56, 71
+  br i1 %57, label %58, label %67
 
-; <label>:56                                      ; preds = %52, %48
-  %57 = load i8, i8* %curr, align 1
-  %58 = sext i8 %57 to i32
-  %59 = sub nsw i32 181, %58
-  %60 = trunc i32 %59 to i8
-  %61 = load i32, i32* %i, align 4
-  %62 = sext i32 %61 to i64
-  %63 = load i8*, i8** %retstr, align 8
-  %64 = getelementptr inbounds i8, i8* %63, i64 %62
-  store i8 %60, i8* %64, align 1
-  br label %83
+; <label>:58                                      ; preds = %54, %50
+  %59 = load i8, i8* %curr, align 1
+  %60 = sext i8 %59 to i32
+  %61 = sub nsw i32 138, %60
+  %62 = trunc i32 %61 to i8
+  %63 = load i32, i32* %i1, align 4
+  %64 = sext i32 %63 to i64
+  %65 = load i8*, i8** %retstr, align 8
+  %66 = getelementptr inbounds i8, i8* %65, i64 %64
+  store i8 %62, i8* %66, align 1
+  br label %103
 
-; <label>:65                                      ; preds = %52
-  %66 = load i8, i8* %curr, align 1
-  %67 = sext i8 %66 to i32
-  %68 = icmp eq i32 %67, 99
-  br i1 %68, label %73, label %69
+; <label>:67                                      ; preds = %54
+  %68 = load i8, i8* %curr, align 1
+  %69 = sext i8 %68 to i32
+  %70 = icmp eq i32 %69, 97
+  br i1 %70, label %75, label %71
 
-; <label>:69                                      ; preds = %65
-  %70 = load i8, i8* %curr, align 1
-  %71 = sext i8 %70 to i32
-  %72 = icmp eq i32 %71, 103
-  br i1 %72, label %73, label %82
+; <label>:71                                      ; preds = %67
+  %72 = load i8, i8* %curr, align 1
+  %73 = sext i8 %72 to i32
+  %74 = icmp eq i32 %73, 116
+  br i1 %74, label %75, label %84
 
-; <label>:73                                      ; preds = %69, %65
-  %74 = load i8, i8* %curr, align 1
-  %75 = sext i8 %74 to i32
-  %76 = sub nsw i32 170, %75
-  %77 = trunc i32 %76 to i8
-  %78 = load i32, i32* %i, align 4
-  %79 = sext i32 %78 to i64
-  %80 = load i8*, i8** %retstr, align 8
-  %81 = getelementptr inbounds i8, i8* %80, i64 %79
-  store i8 %77, i8* %81, align 1
-  br label %82
+; <label>:75                                      ; preds = %71, %67
+  %76 = load i8, i8* %curr, align 1
+  %77 = sext i8 %76 to i32
+  %78 = sub nsw i32 181, %77
+  %79 = trunc i32 %78 to i8
+  %80 = load i32, i32* %i1, align 4
+  %81 = sext i32 %80 to i64
+  %82 = load i8*, i8** %retstr, align 8
+  %83 = getelementptr inbounds i8, i8* %82, i64 %81
+  store i8 %79, i8* %83, align 1
+  br label %102
 
-; <label>:82                                      ; preds = %73, %69
-  br label %83
+; <label>:84                                      ; preds = %71
+  %85 = load i8, i8* %curr, align 1
+  %86 = sext i8 %85 to i32
+  %87 = icmp eq i32 %86, 99
+  br i1 %87, label %92, label %88
 
-; <label>:83                                      ; preds = %82, %56
-  br label %84
+; <label>:88                                      ; preds = %84
+  %89 = load i8, i8* %curr, align 1
+  %90 = sext i8 %89 to i32
+  %91 = icmp eq i32 %90, 103
+  br i1 %91, label %92, label %101
 
-; <label>:84                                      ; preds = %83, %39
-  br label %85
+; <label>:92                                      ; preds = %88, %84
+  %93 = load i8, i8* %curr, align 1
+  %94 = sext i8 %93 to i32
+  %95 = sub nsw i32 170, %94
+  %96 = trunc i32 %95 to i8
+  %97 = load i32, i32* %i1, align 4
+  %98 = sext i32 %97 to i64
+  %99 = load i8*, i8** %retstr, align 8
+  %100 = getelementptr inbounds i8, i8* %99, i64 %98
+  store i8 %96, i8* %100, align 1
+  br label %101
 
-; <label>:85                                      ; preds = %84, %22
-  br label %86
+; <label>:101                                     ; preds = %92, %88
+  br label %102
 
-; <label>:86                                      ; preds = %85
-  %87 = load i32, i32* %i, align 4
-  %88 = add nsw i32 %87, 1
-  store i32 %88, i32* %i, align 4
-  br label %5
+; <label>:102                                     ; preds = %101, %75
+  br label %103
 
-; <label>:89                                      ; preds = %5
-  %90 = load i32, i32* %length, align 4
-  %91 = sext i32 %90 to i64
-  %92 = load i8*, i8** %retstr, align 8
-  %93 = getelementptr inbounds i8, i8* %92, i64 %91
-  store i8 0, i8* %93, align 1
-  %94 = load i8*, i8** %retstr, align 8
-  ret i8* %94
+; <label>:103                                     ; preds = %102, %58
+  br label %104
+
+; <label>:104                                     ; preds = %103, %41
+  br label %105
+
+; <label>:105                                     ; preds = %104
+  %106 = load i32, i32* %i1, align 4
+  %107 = add nsw i32 %106, 1
+  store i32 %107, i32* %i1, align 4
+  br label %24
+
+; <label>:108                                     ; preds = %24
+  %109 = load i32, i32* %length, align 4
+  %110 = sext i32 %109 to i64
+  %111 = load i8*, i8** %retstr, align 8
+  %112 = getelementptr inbounds i8, i8* %111, i64 %110
+  store i8 0, i8* %112, align 1
+  %113 = load i8*, i8** %retstr, align 8
+  store i8* %113, i8** %1, align 8
+  br label %114
+
+; <label>:114                                     ; preds = %108, %5
+  %115 = load i8*, i8** %1, align 8
+  ret i8* %115
 }
 
 ; Function Attrs: nounwind
@@ -216,156 +254,194 @@ declare noalias i8* @malloc(i64) #1
 ; Function Attrs: nounwind uwtable
 define i8* @transcribe(i8* %str) #0 {
   %1 = alloca i8*, align 8
+  %2 = alloca i8*, align 8
+  %i = alloca i32, align 4
   %length = alloca i32, align 4
   %retstr = alloca i8*, align 8
   %curr = alloca i8, align 1
-  %i = alloca i32, align 4
-  store i8* %str, i8** %1, align 8
-  store i32 8, i32* %length, align 4
-  %2 = load i32, i32* %length, align 4
-  %3 = sext i32 %2 to i64
-  %4 = call noalias i8* @malloc(i64 %3) #2
-  store i8* %4, i8** %retstr, align 8
+  %i1 = alloca i32, align 4
+  store i8* %str, i8** %2, align 8
+  %3 = load i8*, i8** %2, align 8
+  %4 = icmp ne i8* %3, null
+  br i1 %4, label %7, label %5
+
+; <label>:5                                       ; preds = %0
+  %6 = load i8*, i8** %2, align 8
+  store i8* %6, i8** %1, align 8
+  br label %112
+
+; <label>:7                                       ; preds = %0
   store i32 0, i32* %i, align 4
-  br label %5
+  br label %8
 
-; <label>:5                                       ; preds = %84, %0
-  %6 = load i32, i32* %i, align 4
-  %7 = load i32, i32* %length, align 4
-  %8 = icmp slt i32 %6, %7
-  br i1 %8, label %9, label %87
+; <label>:8                                       ; preds = %16, %7
+  %9 = load i32, i32* %i, align 4
+  %10 = sext i32 %9 to i64
+  %11 = load i8*, i8** %2, align 8
+  %12 = getelementptr inbounds i8, i8* %11, i64 %10
+  %13 = load i8, i8* %12, align 1
+  %14 = sext i8 %13 to i32
+  %15 = icmp ne i32 %14, 0
+  br i1 %15, label %16, label %19
 
-; <label>:9                                       ; preds = %5
-  %10 = load i32, i32* %i, align 4
-  %11 = sext i32 %10 to i64
-  %12 = load i8*, i8** %1, align 8
-  %13 = getelementptr inbounds i8, i8* %12, i64 %11
-  %14 = load i8, i8* %13, align 1
-  store i8 %14, i8* %curr, align 1
-  %15 = load i8, i8* %curr, align 1
-  %16 = sext i8 %15 to i32
-  %17 = icmp eq i32 %16, 84
-  br i1 %17, label %18, label %23
+; <label>:16                                      ; preds = %8
+  %17 = load i32, i32* %i, align 4
+  %18 = add nsw i32 %17, 1
+  store i32 %18, i32* %i, align 4
+  br label %8
 
-; <label>:18                                      ; preds = %9
-  %19 = load i32, i32* %i, align 4
-  %20 = sext i32 %19 to i64
-  %21 = load i8*, i8** %retstr, align 8
-  %22 = getelementptr inbounds i8, i8* %21, i64 %20
-  store i8 65, i8* %22, align 1
-  br label %83
+; <label>:19                                      ; preds = %8
+  %20 = load i32, i32* %i, align 4
+  store i32 %20, i32* %length, align 4
+  %21 = load i32, i32* %length, align 4
+  %22 = sext i32 %21 to i64
+  %23 = call noalias i8* @malloc(i64 %22) #2
+  store i8* %23, i8** %retstr, align 8
+  store i32 0, i32* %i1, align 4
+  br label %24
 
-; <label>:23                                      ; preds = %9
-  %24 = load i8, i8* %curr, align 1
-  %25 = sext i8 %24 to i32
-  %26 = icmp eq i32 %25, 67
-  br i1 %26, label %31, label %27
+; <label>:24                                      ; preds = %103, %19
+  %25 = load i32, i32* %i1, align 4
+  %26 = load i32, i32* %length, align 4
+  %27 = icmp slt i32 %25, %26
+  br i1 %27, label %28, label %106
 
-; <label>:27                                      ; preds = %23
-  %28 = load i8, i8* %curr, align 1
-  %29 = sext i8 %28 to i32
-  %30 = icmp eq i32 %29, 71
-  br i1 %30, label %31, label %40
+; <label>:28                                      ; preds = %24
+  %29 = load i32, i32* %i1, align 4
+  %30 = sext i32 %29 to i64
+  %31 = load i8*, i8** %2, align 8
+  %32 = getelementptr inbounds i8, i8* %31, i64 %30
+  %33 = load i8, i8* %32, align 1
+  store i8 %33, i8* %curr, align 1
+  %34 = load i8, i8* %curr, align 1
+  %35 = sext i8 %34 to i32
+  %36 = icmp eq i32 %35, 84
+  br i1 %36, label %37, label %42
 
-; <label>:31                                      ; preds = %27, %23
-  %32 = load i8, i8* %curr, align 1
-  %33 = sext i8 %32 to i32
-  %34 = sub nsw i32 138, %33
-  %35 = trunc i32 %34 to i8
-  %36 = load i32, i32* %i, align 4
-  %37 = sext i32 %36 to i64
-  %38 = load i8*, i8** %retstr, align 8
-  %39 = getelementptr inbounds i8, i8* %38, i64 %37
-  store i8 %35, i8* %39, align 1
-  br label %82
+; <label>:37                                      ; preds = %28
+  %38 = load i32, i32* %i1, align 4
+  %39 = sext i32 %38 to i64
+  %40 = load i8*, i8** %retstr, align 8
+  %41 = getelementptr inbounds i8, i8* %40, i64 %39
+  store i8 65, i8* %41, align 1
+  br label %102
 
-; <label>:40                                      ; preds = %27
-  %41 = load i8, i8* %curr, align 1
-  %42 = sext i8 %41 to i32
-  %43 = icmp eq i32 %42, 116
-  br i1 %43, label %44, label %49
+; <label>:42                                      ; preds = %28
+  %43 = load i8, i8* %curr, align 1
+  %44 = sext i8 %43 to i32
+  %45 = icmp eq i32 %44, 67
+  br i1 %45, label %50, label %46
 
-; <label>:44                                      ; preds = %40
-  %45 = load i32, i32* %i, align 4
-  %46 = sext i32 %45 to i64
-  %47 = load i8*, i8** %retstr, align 8
-  %48 = getelementptr inbounds i8, i8* %47, i64 %46
-  store i8 65, i8* %48, align 1
-  br label %81
+; <label>:46                                      ; preds = %42
+  %47 = load i8, i8* %curr, align 1
+  %48 = sext i8 %47 to i32
+  %49 = icmp eq i32 %48, 71
+  br i1 %49, label %50, label %59
 
-; <label>:49                                      ; preds = %40
-  %50 = load i8, i8* %curr, align 1
-  %51 = sext i8 %50 to i32
-  %52 = icmp eq i32 %51, 99
-  br i1 %52, label %57, label %53
+; <label>:50                                      ; preds = %46, %42
+  %51 = load i8, i8* %curr, align 1
+  %52 = sext i8 %51 to i32
+  %53 = sub nsw i32 138, %52
+  %54 = trunc i32 %53 to i8
+  %55 = load i32, i32* %i1, align 4
+  %56 = sext i32 %55 to i64
+  %57 = load i8*, i8** %retstr, align 8
+  %58 = getelementptr inbounds i8, i8* %57, i64 %56
+  store i8 %54, i8* %58, align 1
+  br label %101
 
-; <label>:53                                      ; preds = %49
-  %54 = load i8, i8* %curr, align 1
-  %55 = sext i8 %54 to i32
-  %56 = icmp eq i32 %55, 103
-  br i1 %56, label %57, label %66
+; <label>:59                                      ; preds = %46
+  %60 = load i8, i8* %curr, align 1
+  %61 = sext i8 %60 to i32
+  %62 = icmp eq i32 %61, 116
+  br i1 %62, label %63, label %68
 
-; <label>:57                                      ; preds = %53, %49
-  %58 = load i8, i8* %curr, align 1
-  %59 = sext i8 %58 to i32
-  %60 = sub nsw i32 170, %59
-  %61 = trunc i32 %60 to i8
-  %62 = load i32, i32* %i, align 4
-  %63 = sext i32 %62 to i64
-  %64 = load i8*, i8** %retstr, align 8
-  %65 = getelementptr inbounds i8, i8* %64, i64 %63
-  store i8 %61, i8* %65, align 1
-  br label %80
+; <label>:63                                      ; preds = %59
+  %64 = load i32, i32* %i1, align 4
+  %65 = sext i32 %64 to i64
+  %66 = load i8*, i8** %retstr, align 8
+  %67 = getelementptr inbounds i8, i8* %66, i64 %65
+  store i8 65, i8* %67, align 1
+  br label %100
 
-; <label>:66                                      ; preds = %53
-  %67 = load i8, i8* %curr, align 1
-  %68 = sext i8 %67 to i32
-  %69 = icmp eq i32 %68, 65
-  br i1 %69, label %74, label %70
+; <label>:68                                      ; preds = %59
+  %69 = load i8, i8* %curr, align 1
+  %70 = sext i8 %69 to i32
+  %71 = icmp eq i32 %70, 99
+  br i1 %71, label %76, label %72
 
-; <label>:70                                      ; preds = %66
-  %71 = load i8, i8* %curr, align 1
-  %72 = sext i8 %71 to i32
-  %73 = icmp eq i32 %72, 97
-  br i1 %73, label %74, label %79
+; <label>:72                                      ; preds = %68
+  %73 = load i8, i8* %curr, align 1
+  %74 = sext i8 %73 to i32
+  %75 = icmp eq i32 %74, 103
+  br i1 %75, label %76, label %85
 
-; <label>:74                                      ; preds = %70, %66
-  %75 = load i32, i32* %i, align 4
-  %76 = sext i32 %75 to i64
-  %77 = load i8*, i8** %retstr, align 8
-  %78 = getelementptr inbounds i8, i8* %77, i64 %76
-  store i8 85, i8* %78, align 1
-  br label %79
+; <label>:76                                      ; preds = %72, %68
+  %77 = load i8, i8* %curr, align 1
+  %78 = sext i8 %77 to i32
+  %79 = sub nsw i32 170, %78
+  %80 = trunc i32 %79 to i8
+  %81 = load i32, i32* %i1, align 4
+  %82 = sext i32 %81 to i64
+  %83 = load i8*, i8** %retstr, align 8
+  %84 = getelementptr inbounds i8, i8* %83, i64 %82
+  store i8 %80, i8* %84, align 1
+  br label %99
 
-; <label>:79                                      ; preds = %74, %70
-  br label %80
+; <label>:85                                      ; preds = %72
+  %86 = load i8, i8* %curr, align 1
+  %87 = sext i8 %86 to i32
+  %88 = icmp eq i32 %87, 65
+  br i1 %88, label %93, label %89
 
-; <label>:80                                      ; preds = %79, %57
-  br label %81
+; <label>:89                                      ; preds = %85
+  %90 = load i8, i8* %curr, align 1
+  %91 = sext i8 %90 to i32
+  %92 = icmp eq i32 %91, 97
+  br i1 %92, label %93, label %98
 
-; <label>:81                                      ; preds = %80, %44
-  br label %82
+; <label>:93                                      ; preds = %89, %85
+  %94 = load i32, i32* %i1, align 4
+  %95 = sext i32 %94 to i64
+  %96 = load i8*, i8** %retstr, align 8
+  %97 = getelementptr inbounds i8, i8* %96, i64 %95
+  store i8 85, i8* %97, align 1
+  br label %98
 
-; <label>:82                                      ; preds = %81, %31
-  br label %83
+; <label>:98                                      ; preds = %93, %89
+  br label %99
 
-; <label>:83                                      ; preds = %82, %18
-  br label %84
+; <label>:99                                      ; preds = %98, %76
+  br label %100
 
-; <label>:84                                      ; preds = %83
-  %85 = load i32, i32* %i, align 4
-  %86 = add nsw i32 %85, 1
-  store i32 %86, i32* %i, align 4
-  br label %5
+; <label>:100                                     ; preds = %99, %63
+  br label %101
 
-; <label>:87                                      ; preds = %5
-  %88 = load i32, i32* %length, align 4
-  %89 = sext i32 %88 to i64
-  %90 = load i8*, i8** %retstr, align 8
-  %91 = getelementptr inbounds i8, i8* %90, i64 %89
-  store i8 0, i8* %91, align 1
-  %92 = load i8*, i8** %retstr, align 8
-  ret i8* %92
+; <label>:101                                     ; preds = %100, %50
+  br label %102
+
+; <label>:102                                     ; preds = %101, %37
+  br label %103
+
+; <label>:103                                     ; preds = %102
+  %104 = load i32, i32* %i1, align 4
+  %105 = add nsw i32 %104, 1
+  store i32 %105, i32* %i1, align 4
+  br label %24
+
+; <label>:106                                     ; preds = %24
+  %107 = load i32, i32* %length, align 4
+  %108 = sext i32 %107 to i64
+  %109 = load i8*, i8** %retstr, align 8
+  %110 = getelementptr inbounds i8, i8* %109, i64 %108
+  store i8 0, i8* %110, align 1
+  %111 = load i8*, i8** %retstr, align 8
+  store i8* %111, i8** %1, align 8
+  br label %112
+
+; <label>:112                                     ; preds = %106, %5
+  %113 = load i8*, i8** %1, align 8
+  ret i8* %113
 }
 
 attributes #0 = { nounwind uwtable "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+fxsr,+mmx,+sse,+sse2" "unsafe-fp-math"="false" "use-soft-float"="false" }
