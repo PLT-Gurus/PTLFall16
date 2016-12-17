@@ -55,7 +55,7 @@ type func_decl = {
 }
 
 type program =  {
-	stmts: stmt list;
+	pstmts: stmt list;
 	funcs: func_decl list;
 }
 
@@ -212,7 +212,7 @@ let string_of_func func_decl=
 
 
 let string_of_program program=
-	let l_stm=program.stmts in
+	let l_stm=program.pstmts in
 	let l_fun=program.funcs in
 		"----- Stmt List -----\n" ^ String.concat "" (List.map (string_of_stmt 0) l_stm) ^ "\n" ^
 		"----- Func List -----\n" ^ String.concat "" (List.map string_of_func l_fun) ^ "\n"

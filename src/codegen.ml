@@ -16,7 +16,7 @@ module StringMap = Map.Make(String)
 type ext_func={name:string;ret:L.lltype;arg:L.lltype array}
 
 let translate prog =
-  let p_stmts=prog.A.stmts in
+  let p_stmts=prog.A.pstmts in
   let p_funcs=prog.A.funcs in
 
 
@@ -65,9 +65,9 @@ let translate prog =
   in
 
   let ext_funcs=List.fold_left build_ext_func StringMap.empty ext_func_lst in
-              
-          
-  (* Declare printf(), which the print built-in function will call 
+
+
+  (* Declare printf(), which the print built-in function will call
   let printf_t = L.var_arg_function_type i32_t [| L.pointer_type i8_t |] in
   let printf_func = L.declare_function "printf" printf_t the_module in
 
@@ -137,9 +137,9 @@ let translate prog =
 
       | A.Id s -> L.build_load (lookup s (snd bvtup)) s (fst bvtup)
 
-      | A.ArrayAcc(id, index) -> 
-          let index = add_expr bvtup index in 
-          let arr = lookup id (snd bvtup) in 
+      | A.ArrayAcc(id, index) ->
+          let index = add_expr bvtup index in
+          let arr = lookup id (snd bvtup) in
           let val1 = L.build_gep arr [|index|] id (fst bvtup) in
           let testPrint = L.build_load val1 "tmp" (fst bvtup) in
           testPrint
@@ -178,7 +178,7 @@ let translate prog =
       | A.Runop(e, op) ->
           (match op with
 
-            | A.Transcb     -> ext_call "transcribe" 
+            | A.Transcb     -> ext_call "transcribe"
             | A.Translt     -> ext_call "transcribe"  (*todo# change name*)
             | A.Translttwo  -> ext_call "transcribe"  (*todo# change name*)
           ) [e] bvtup
@@ -188,10 +188,10 @@ let translate prog =
 
       | A.ArrayAssign (id, index, exprhs) ->
           let exprValue = add_expr bvtup exprhs in
-          let index = add_expr bvtup index in 
-          let arr = lookup id (snd bvtup) in 
+          let index = add_expr bvtup index in
+          let arr = lookup id (snd bvtup) in
           let val1 = L.build_gep arr [|index|] id (fst bvtup) in
-          let testPrint = L.build_store exprValue val1 (fst bvtup) in 
+          let testPrint = L.build_store exprValue val1 (fst bvtup) in
           exprValue
 
 
@@ -201,12 +201,12 @@ let translate prog =
       | A.Call ("print_int", [e] ) ->
 
          (*  let astType = L.type_of (add_expr bvtup e) in
-          let throwaway = (match astType with 
+          let throwaway = (match astType with
             -> print_endline "here1"
             | _ -> print_endline "here2") in *)
           L.build_call (StringMap.find "printf" ext_funcs) [| int_format_str ; (add_expr bvtup e) |]
           "printf" (fst bvtup)
-      
+
       | A.Call ("print_str", [s]) ->
           L.build_call (StringMap.find "printf" ext_funcs) [| str_format_str ; (add_expr bvtup s) |]
           "printf" (fst bvtup)
@@ -236,7 +236,7 @@ let translate prog =
       | A.Noexpr -> L.const_int i32_t 0
 
       | _ -> L.const_int i32_t 0 (*todo# finish all the exprs*)
-     
+
     and ext_call f_name arg bvtup=
       let arg=List.map (add_expr bvtup) (List.rev arg) in
         let arg=Array.of_list arg in
@@ -249,12 +249,12 @@ let translate prog =
       true -> let local_var = L.build_array_alloca (ltype_of_typ v_typ) arrSize v_name (fst bvtup) in
       ((fst bvtup),StringMap.add v_name local_var (snd bvtup));
 
-      | false -> 
+      | false ->
       (* check for strings *)
 
       let local_var = L.build_alloca (ltype_of_typ v_typ) v_name (fst bvtup) in
       ((fst bvtup),StringMap.add v_name local_var (snd bvtup))
-    
+
     in
    (*add_terminal*)
     let add_terminal builder f =
@@ -272,13 +272,13 @@ let translate prog =
           let bvtup=add_local bvtup (typ, id, false, (L.const_int i32_t 0) ) in
           ignore(add_stmt bvtup (A.Expr (A.Assign (id, expr))));
           bvtup
-      | A.ArrayDecl(typ, size, id)-> 
+      | A.ArrayDecl(typ, size, id)->
           (* Make this work with non-hardcoded size and with our scoping rules. What is bvtup? *)
-         let size = add_expr bvtup size in  
+         let size = add_expr bvtup size in
          let bvtup = add_local bvtup (typ, id, true, size) in
-        
-        (* L.build_call test_func [|testPrint;toStore|] "test" (fst bvtup);  *)       
-         bvtup  
+
+        (* L.build_call test_func [|testPrint;toStore|] "test" (fst bvtup);  *)
+         bvtup
 
       | A.Return e ->
           ignore (match fdecl.A.typ with

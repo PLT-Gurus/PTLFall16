@@ -48,10 +48,10 @@ open Ast
 
 program: decls EOF {$1}
 
-decls:  {{stmts = []; funcs = [];}}
-    |   decls stmt {{stmts = $1.stmts @ [$2] ; funcs = $1.funcs;}}
+decls:  {{pstmts = []; funcs = [];}}
+    |   decls stmt {{pstmts = $1.pstmts @ [$2] ; funcs = $1.funcs;}}
 
-    |   decls func_decl {{stmts = $1.stmts; funcs = $1.funcs @ [$2] }}
+    |   decls func_decl {{pstmts = $1.pstmts; funcs = $1.funcs @ [$2] }}
 
 func_decl:
     typ ID LPAREN formals_opt RPAREN stmt_list END
