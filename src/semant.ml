@@ -8,6 +8,76 @@ module StringMap = Map.Make(String)
    Returns void if successful,throws an exception if something is wrong.
    Check each global statement, then check each function
 *)
+
+let expr e =
+print_string "checks exp"
+
+
+;;
+
+
+let check_bool_expr e = ()
+
+(*
+if expr e != Bool
+	then raise (Failure ("expected Boolean expression in " ^ string_of_expr e))
+	else ()
+	*)
+;;
+
+
+
+
+
+
+let rec stmt = function
+	Block sl -> let rec check_block = function
+		[Return _ as s] -> stmt s
+		| Return _ :: _ -> raise (Failure "nothing may follow a return")
+		| Block sl :: ss -> check_block (sl @ ss)
+		| s :: ss -> stmt s ; check_block ss
+		| [] -> ()
+	in check_block sl
+	| Expr e -> ignore (expr e)
+	(*
+	| Return e -> let t = expr e in if t = func.typ then () else
+	raise (Failure ("return gives " ^ string_of_typ t ^ " expected " ^
+		string_of_typ func.typ ^ " in " ^ string_of_expr e))
+*)
+	| If(p, b1, b2) -> check_bool_expr p; stmt b1; stmt b2
+	| For(e1, e2, e3, st) -> ignore (expr e1); check_bool_expr e2;
+	ignore (expr e3); stmt st
+	| While(p, s) -> check_bool_expr p; stmt s
+	| Elseif (p, s1, s2) -> check_bool_expr p; stmt s1; stmt s2
+	| Else (st) -> stmt st
+(*
+	| VDecl(t, s, e) -> List.find (fun s -> fst s = string_of_typ t) ["int";"bool";"void";"char";"double";"aa";"nuc";"codon";"seq";"str"];ignore(expr e) (*not sure how to do this one*)
+
+	| Nobranching -> Void (*is this correct?*)
+*)
+
+;;
+
+
+let check_stmt stmts =
+
+	stmt (Block stmts)
+
+;;
+
+let check_func func = ()
+;;
+
+let check prog =
+	check_stmt prog.stmts;
+	List.iter check_func prog.funcs
+
+	(*match prog with (st, f_decl) -> check_stmt st; check_func f_decl *)
+
+
+
+
+(*
 	let check (statements, functions) =
 		(* check for duplicates *)
 		let report_duplicate exceptf list =
@@ -30,6 +100,7 @@ module StringMap = Map.Make(String)
 		in
 
 		List.iter (check_not_void (fun n -> "illegal void statements " ^ n)) statements;
+*)
 (*		(**** Checking Statements and expressions within statements****)
 		let check_statements stmt =
 			(* Return the type of an expression or throw an exception:    *)
