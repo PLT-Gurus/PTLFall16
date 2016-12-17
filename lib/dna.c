@@ -56,12 +56,14 @@ char* translate(char* str){
     while(str[i] != 0) i++;
     int length = i;
     char* retstr = malloc(length);
+    int* start = malloc(3);
+    int* ending = malloc(3);
     char curr;
     //bool trans = false;
     char* retdef = "No possible translation available.";
     int start, end;
-    if(length > 6){
-
+    for(i = 0; i<length-3; i++){
+        
     }
 
     return retdef;
