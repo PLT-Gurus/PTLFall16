@@ -108,6 +108,7 @@ expr:
     |   INT_LIT {Litint($1)}
     |   DOUBLE_LIT  { Litdouble($1) }
     |   SEQUENCE_LIT  { Sequence($1) }
+    |   ID LBRACK expr RBRACK {ArrayAcc($1, $3)}
     |   DNA_LIT  { Litdna($1) }
     |   RNA_LIT  { Litrna($1) }
     |   PEP_LIT  { Litpep($1) }

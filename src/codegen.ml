@@ -25,8 +25,8 @@ let translate prog =
   and i8_t   = L.i8_type   context
   and i1_t   = L.i1_type   context
   and void_t = L.void_type context in
-  let str_t  = L.pointer_type i8_t
-  in
+  let str_t  = L.pointer_type i8_t in
+  let intptr_t = L.pointer_type i32_t in
 
   let ltype_of_typ = function
     A.Int  -> i32_t
@@ -52,6 +52,8 @@ let translate prog =
   (* Declare printf(), which the print built-in function will call *)
   let printf_t = L.var_arg_function_type i32_t [| L.pointer_type i8_t |] in
   let printf_func = L.declare_function "printf" printf_t the_module in
+
+
 
   let test_t=L.var_arg_function_type i32_t [|i32_t;i32_t|] in
   let test_func=L.declare_function "test" test_t the_module in
@@ -90,14 +92,6 @@ let translate prog =
           (Array.to_list (L.params the_function))
     in
 
-    let add_local bvtup (v_typ, v_name) =
-      let local_var = L.build_alloca (ltype_of_typ v_typ) v_name (fst bvtup) in
-      ((fst bvtup),StringMap.add v_name local_var (snd bvtup))
-    in
-
- (*    (* create array *)
-    let create_array *)
-
     let lookup n varis = StringMap.find n varis in
 
     let bvtup=(builder,varis) in
@@ -111,6 +105,15 @@ let translate prog =
       | A.Litchar c -> L.const_int i8_t (int_of_char c)
 
       | A.Id s -> L.build_load (lookup s (snd bvtup)) s (fst bvtup)
+
+      | A.ArrayAcc(id, index) -> 
+          let index = add_expr bvtup index in 
+          let arr = lookup id (snd bvtup) in 
+          let val1 = L.build_gep arr [|index|] id (fst bvtup) in
+          let testPrint = L.build_load val1 "tmp" (fst bvtup) in
+          testPrint
+
+
 
       | A.Binop (e1, op, e2) ->
           let e1' = add_expr bvtup e1
@@ -147,10 +150,20 @@ let translate prog =
             | A.Transcb     -> L.build_not (*todo# make it work later*)
             | A.Translt     -> L.build_not (*todo# make it work later*)
             | A.Translttwo  -> L.build_not (*todo# make it work later*)
+
           ) e' "right_uop" (fst bvtup)
 
       | A.Assign (s, e) -> let e' = add_expr bvtup e in
           ignore (L.build_store e' (lookup s (snd bvtup)) (fst bvtup)); e'
+
+      | A.ArrayAssign (id, index, exprhs) ->
+          let exprValue = add_expr bvtup exprhs in
+          let index = add_expr bvtup index in 
+          let arr = lookup id (snd bvtup) in 
+          let val1 = L.build_gep arr [|index|] id (fst bvtup) in
+          let testPrint = L.build_store exprValue val1 (fst bvtup) in 
+          exprValue
+
 
       | A.Call ("test", arg) ->
           let arg=List.map (add_expr bvtup) (List.rev arg) in
@@ -158,6 +171,10 @@ let translate prog =
           L.build_call test_func arg "test" (fst bvtup)
 
       | A.Call ("print_int", [e] ) ->
+         (*  let astType = L.type_of (add_expr bvtup e) in
+          let throwaway = (match astType with 
+            -> print_endline "here1"
+            | _ -> print_endline "here2") in *)
           L.build_call printf_func [| int_format_str ; (add_expr bvtup e) |]
           "printf" (fst bvtup)
       
@@ -193,6 +210,19 @@ let translate prog =
       | _ -> L.const_int i32_t 0 (*todo# finish all the exprs*)
     in
 
+    let add_local bvtup (v_typ, v_name, isArray, arrSize) =
+      match isArray with
+
+      true -> let local_var = L.build_array_alloca (ltype_of_typ v_typ) arrSize v_name (fst bvtup) in
+      ((fst bvtup),StringMap.add v_name local_var (snd bvtup));
+
+      | false -> 
+      (* check for strings *)
+
+      let local_var = L.build_alloca (ltype_of_typ v_typ) v_name (fst bvtup) in
+      ((fst bvtup),StringMap.add v_name local_var (snd bvtup))
+    
+    in
    (*add_terminal*)
     let add_terminal builder f =
       match L.block_terminator (L.insertion_block builder) with
@@ -206,13 +236,16 @@ let translate prog =
       | A.Expr e -> ignore (add_expr bvtup e); bvtup
 
       | A.VDecl(typ,id,expr) ->
-          let bvtup=add_local bvtup (typ, id) in
+          let bvtup=add_local bvtup (typ, id, false, (L.const_int i32_t 0) ) in
           ignore(add_stmt bvtup (A.Expr (A.Assign (id, expr))));
           bvtup
       | A.ArrayDecl(typ, size, id)-> 
           (* Make this work with non-hardcoded size and with our scoping rules. What is bvtup? *)
-         ignore(L.build_array_alloca (ltype_of_typ typ) (L.const_int i32_t 10) id builder);
-         bvtup   
+         let size = add_expr bvtup size in  
+         let bvtup = add_local bvtup (typ, id, true, size) in
+        
+        (* L.build_call test_func [|testPrint;toStore|] "test" (fst bvtup);  *)       
+         bvtup  
 
       | A.Return e ->
           ignore (match fdecl.A.typ with

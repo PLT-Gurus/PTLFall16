@@ -21,6 +21,7 @@ type expr =
 		| Sequence of string
 		| Stringlit of string
 		| Litdouble of float
+		| ArrayAcc of string * expr
 		| Binop of expr * op * expr (*added into Codegen*)
 		| Lunop of uop * expr 		(*added into Codegen*)
 		| Runop of expr * uop 		(*added into Codegen*)

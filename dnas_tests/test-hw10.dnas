@@ -1,0 +1,2 @@
+DNA hi = "atgc";
+print_int(true);
