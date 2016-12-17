@@ -185,6 +185,12 @@ let check_func func =
 ;;
 
 let check prog =
+	let dummy_func = {
+		typ = Void;
+		fname = "dummy_func";
+		formals = [];
+		stmts = prog.stmts
+	} in
 	stmt (Block prog.stmts);
 	check_UDF_conflict prog.funcs;
 	let function_decls = List.fold_left (fun m fd -> StringMap.add fd.fname fd m) built_in_decls prog.funcs
