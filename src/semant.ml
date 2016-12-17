@@ -8,11 +8,40 @@ module StringMap = Map.Make(String)
    Returns void if successful,throws an exception if something is wrong.
    Check each global statement, then check each function
 *)
+(* Top-level functions - global checking functions *)
+
+let globals = [];;
+
+(* check for duplicates *)
+let report_duplicate exceptf list =
+	let rec helper = function
+		n1 :: n2 :: __ when n1 = n2 -> raise (Failure (exceptf n1))
+		| _:: t -> helper t
+		| [] -> ()
+	in helper (List.sort compare list)
+;;
+(* Raise an exception if a given binding is to a void type *)
+let check_not_void exceptf = function
+	(Void, n) -> raise (Failure (exceptf n))
+	| _ -> ()
+;;
+
+(* Raise an exception of the given rvalue type cannot be assigned to
+the given lvalue type *)
+let check_assign lvaluet rvaluet err =
+	if lvaluet == rvaluet then lvaluet else raise err
+;;
+
+
+
+
+
+
+
+
 
 let expr e =
 print_string "checks exp"
-
-
 ;;
 
 
@@ -65,12 +94,52 @@ let check_stmt stmts =
 
 ;;
 
-let check_func func = ()
+
+(* function checking starts from here *)
+(*  check user defined functions conflict with built-in functions
+	function over loading to change this later  *)
+let check_UDF_conflict funcs =
+	if List.mem "print_int" (List.map (fun fd -> fd.fname) funcs)
+	then raise (Failure ("function print_int may not be defined")) else ();
+	report_duplicate (fun n -> "duplicate function " ^ n) (List.map (fun fd -> fd.fname) funcs)
+;;
+
+let built_in_decls = StringMap.add "print_int"
+	{ typ = Void; fname = "print_int"; formals = [(Int, "x")];
+	  stmts = [] } (StringMap.singleton "print_str"
+	{ typ = Void; fname = "print_str"; formals = [(Str, "x")];
+	  stmts = [] })
+;;
+(*  the following needs to be nested
+let function_decl s = try StringMap.find s function_decls
+	with Not_found -> raise (Failure ("unrecognized function " ^ s))
+;;
+*)
+let type_of_identifier s syms =
+	try StringMap.find s syms
+	with Not_found -> raise (Failure ("undeclared identifier " ^ s))
+;;
+
+
+let check_func func =
+	List.iter (check_not_void (fun n -> "illegal void formal " ^ n ^ " in " ^ func.fname)) func.formals;
+
+	report_duplicate (fun n -> "duplicate formal " ^ n ^ " in " ^ func.fname) (List.map snd func.formals);
+(*
+	let symbols = List.fold_left (fun m (t, n) -> StringMap.add n t m) StringMap.empty func.formals
+	in
+*)
+	check_stmt func.stmts;
+
+
 ;;
 
 let check prog =
 	check_stmt prog.stmts;
-	List.iter check_func prog.funcs
+	check_UDF_conflict prog.funcs;
+	let function_decls = List.fold_left (fun m fd -> StringMap.add fd.fname fd m) built_in_decls prog.funcs
+	in
+		List.iter check_func prog.funcs
 
 	(*match prog with (st, f_decl) -> check_stmt st; check_func f_decl *)
 
@@ -79,24 +148,14 @@ let check prog =
 
 (*
 	let check (statements, functions) =
-		(* check for duplicates *)
-		let report_duplicate exceptf list =
-			let rec helper = function
-				n1 :: n2 :: __ when n1 = n2 -> raise (Failure (exceptf n1))
-				| _:: t -> helper t
-				| [] -> ()
-			in helper (List.sort compare list)
-		in
-		(* Raise an exception if a given binding is to a void type *)
-		let check_not_void exceptf = function
-			(Void, n) -> raise (Failure (exceptf n))
-			| _ -> ()
+
 
 		in
-		(* Raise an exception of the given rvalue type cannot be assigned to
-		the given lvalue type *)
-		let check_assign lvaluet rvaluet err =
-			if lvaluet == rvaluet then lvaluet else raise err
+
+
+
+		in
+
 		in
 
 		List.iter (check_not_void (fun n -> "illegal void statements " ^ n)) statements;
@@ -199,26 +258,18 @@ let check prog =
 		(List.map (fun fd -> fd.fname) functions)
 
 
-		let function_decls = List.fold_left (fun m fd -> StringMap.add fd.fname fd m)
-			functions
+
 		in
 
 
-		let function_decl s = try StringMap.find s function_decls
-			with Not_found -> raise (Failure ("unrecognized function " ^ s))
-		in
+
 
 
 		let check_function func =
-			List.iter (check_not_void (fun n -> "illegal void formal " ^ n ^
-				" in " ^ func.fname)) func.formals;
-
-			report_duplicate (fun n -> "duplicate formal " ^ n ^ " in " ^ func.fname)
-			(List.map snd func.formals);
 
 
 			(* Type of each variable (global, formal, or local *)
-			let symbols = List.fold_left (fun m (t, n) -> StringMap.add n t m) StringMap.empty func.formals
+
 			in
 
 			let type_of_identifier s =
