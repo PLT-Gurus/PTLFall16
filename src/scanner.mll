@@ -5,6 +5,9 @@
 let seq = ['A''G''C''a''g''c']*
 let dna = ['A''G''T''C''a''g''t''c']+
 let rna = ['A''G''U''C''a''g''u''c']+
+let nuc = ['A''G''U''C''a''g''u''c''T''t']
+let dnuc = ['A''G''T''C''a''g''t''c']
+let rnuc = ['A''G''U''C''a''g''u''c']
 let aa = ['A''C'-'I''K'-'N''P'-'T''U'-'W''Y''a''c'-'i''k'-'n''p'-'t''u'-'w''y']
 let pep = (aa '-')+ aa
 
@@ -91,7 +94,9 @@ rule token = parse
 | '#'(dna as lxm)       {DNA_LIT(lxm)}
 | '#'(rna as lxm)       {RNA_LIT(lxm)}
 | '#'(pep as lxm)       {PEP_LIT(lxm)}
-| '#'               {stringparse lexbuf}
+| '#'(dna)([^';'] as char)  {raise (Failure("SCAN ERROR : illegal character '" ^ Char.escaped char ^ "' in DNA sequence ."))}
+| '#'(rnuc)+([^';'] as char)  {raise (Failure("SCAN ERROR : illegal character '" ^ Char.escaped char ^ "' in RNA sequence ."))}
+| '#'(aa '-')*([^';'] as char)   {raise (Failure("SCAN ERROR : illegal character '" ^ Char.escaped char ^ "' in Peptide sequence ."))}
 | eof { EOF }
 
 | _ as char { raise (Failure("Main: illegal character " ^ Char.escaped char)) }

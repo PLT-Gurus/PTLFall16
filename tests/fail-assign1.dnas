@@ -1,6 +1,6 @@
 
-  int i;
-  bool b;
+  int i = 2;
+  bool b = false;
 
   i = 42;
   i = 10;

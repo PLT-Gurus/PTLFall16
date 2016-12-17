@@ -1,8 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
-// A 65 C 67 G 71 T 84 97 99 103 116
+
+int test(int a,int b)
+{
+	printf("Hello I'm in C\n");
+	return a+b;
+
+}
+
 char* complement(char* str){
-    if(!str)
+	if(!str)
         return str;
     int i = 0;
     while(str[i] != 0) i++;
@@ -25,7 +32,7 @@ char* complement(char* str){
 }
 
 char* transcribe(char* str){
-    if(!str)
+	if(!str)
         return str;
     int i = 0;
     while(str[i] != 0) i++;
@@ -47,36 +54,4 @@ char* transcribe(char* str){
     }
     retstr[length] = '\0';
     return retstr;
-}
-
-char* translate(char* str){
-    if(!str)
-        return str;
-    int i = 0;
-    while(str[i] != 0) i++;
-    int length = i;
-    char* retstr = malloc(length);
-    int* start = malloc(3);
-    int* ending = malloc(3);
-    char curr;
-    //bool trans = false;
-    char* retdef = "No possible translation available.";
-    int start, end;
-    for(i = 0; i<length-3; i++){
-        
-    }
-
-    return retdef;
-}
-
-int main(){
-    char* str = complement("ATAgcGcAT");
-    char* str2 = transcribe("ATAgcGcAT");
-    char* str3 = translate("ATA");
-    printf("%s\n", str);
-    printf("%s\n", str2);
-    printf("%s\n", str3);
-    free(str);
-
-    return 1;
 }
