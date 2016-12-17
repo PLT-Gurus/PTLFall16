@@ -1,0 +1,4 @@
+DNA [8] David;
+David[0] = "atgc ";
+print_str(David[0]);
+
