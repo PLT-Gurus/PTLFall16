@@ -11,7 +11,11 @@ module StringMap = Map.Make(String)
 (* Top-level functions - global checking functions *)
 
 
-let globals = [];;
+let globals_list = ref StringMap.empty;;
+let locals_list = ref StringMap.empty;;
+let count = ref true;;
+let v_types_list = ["int"; "bool"; "char"; "double"; "aa"; "nuc"; "codon"; "seq"; "string"; "DNA"; "RNA"];;
+let types_map = List.fold_left (fun m (t) -> StringMap.add t true m) StringMap.empty v_types_list;;
 
 
 (* Raise an exception if a given binding is to a void type *)
@@ -20,6 +24,9 @@ let check_not_void exceptf = function
 	| _ -> ()
 ;;
 
+let check_v_type t = try ignore(StringMap.find (string_of_typ t) types_map)
+	with Not_found -> raise (Failure ("unrecognized type " ^ (string_of_typ t)))
+;;
 
 
 (* check for duplicates *)
@@ -48,16 +55,12 @@ let check_assign lvaluet rvaluet err =
 (*  check user defined functions conflict with built-in functions
 	function over loading to change this later  *)
 let check_UDF_conflict funcs =
-	if List.mem "print_int" (List.map (fun fd -> fd.fname) funcs)
-	then raise (Failure ("function print_int may not be defined")) else ();
+	if List.mem "print" (List.map (fun fd -> fd.fname) funcs)
+	then raise (Failure ("function print may not be defined")) else ();
 	report_duplicate (fun n -> "duplicate function " ^ n) (List.map (fun fd -> fd.fname) funcs)
 ;;
 
-let built_in_decls = StringMap.add "print_int"
-	{ typ = Void; fname = "print_int"; formals = [(Int, "x")];
-	  stmts = [] } (StringMap.singleton "print_str"
-	{ typ = Void; fname = "print_str"; formals = [(Str, "x")];
-	  stmts = [] })
+let built_in_decls = StringMap.empty
 ;;
 
 let function_decl s function_decls = try StringMap.find s function_decls
@@ -75,13 +78,11 @@ let type_of_identifier s syms =
 
 let check_stmt func function_decls =
 
-	let symbols =
-		List.fold_left (fun m (t, n) -> StringMap.add n t m) StringMap.empty func.formals
-	in
+
 
 	let type_of_identifier s =
 
-		try StringMap.find s symbols
+		try StringMap.find s !(locals_list)
 			with Not_found -> raise (Failure ("undeclared identifier " ^ s))
 	in
 
@@ -130,17 +131,18 @@ let check_stmt func function_decls =
 		check_assign lt rt (Failure ("illegal assignment " ^ string_of_typ lt ^
 			" = " ^ string_of_typ rt ^ " in " ^
 		string_of_expr ex))
-		| Call(fname, actuals) as call -> let fd = function_decl fname function_decls in
-		if List.length actuals != List.length fd.formals then
-		raise (Failure ("expecting " ^ string_of_int
-			(List.length fd.formals) ^ " arguments in " ^ string_of_expr call))
-		else
-			List.iter2 (fun (ft, _) e -> let et = expr e in
-				ignore (check_assign ft et
-					(Failure ("illegal actual argument found " ^ string_of_typ et ^
+		| Call(fname, actuals) as call -> if fname = "print" then Void
+			else( let fd = function_decl fname function_decls in
+				if List.length actuals != List.length fd.formals then
+					raise (Failure ("expecting " ^ string_of_int
+					(List.length fd.formals) ^ " arguments in " ^ string_of_expr call))
+				else
+					List.iter2 (fun (ft, _) e -> let et = expr e in
+					ignore (check_assign ft et
+						(Failure ("illegal actual argument found " ^ string_of_typ et ^
 						" expected " ^ string_of_typ ft ^ " in " ^ string_of_expr e))))
-			fd.formals actuals;
-			fd.typ
+						fd.formals actuals;
+						fd.typ	)
 
 		in	(* end of expression checking *)
 
@@ -168,7 +170,13 @@ let check_stmt func function_decls =
 			| While(p, s) -> check_bool_expr p; stmt s
 			| Elseif (p, s1, s2) -> check_bool_expr p; stmt s1; stmt s2
 			| Else (st) -> stmt st
-			| VDecl(t, s, e) -> () (* List.find (fun s -> fst s = string_of_typ t) ["Int"; "Bool"; "Void"; "Char"; "Double"; "Aa"; "Nuc"; "Codon"; "Seq"; "Str"; "DNA"; "RNA"]; ignore(expr e) *)(*not sure how to do this one*)
+			| VDecl(t, s, e) ->
+				ignore(check_v_type t);
+				(locals_list) := StringMap.add s t !(locals_list);
+				ignore(let lt = t and rt = expr e in check_assign lt rt (Failure ("illegal assignment " ^ string_of_typ lt ^
+					" = " ^ string_of_typ rt ^ " in " ^ s ^" = "^
+				string_of_expr e)))
+
 			| Nobranching -> () (*is this correct?*)
 
 		in
@@ -177,14 +185,22 @@ let check_stmt func function_decls =
 ;;
 
 let check_func func function_decls =
+
 	List.iter (check_not_void (fun n -> "illegal void formal " ^ n ^ " in " ^ func.fname)) func.formals;
 
 	report_duplicate (fun n -> "duplicate formal " ^ n ^ " in " ^ func.fname) (List.map snd func.formals);
+	if !(count) then ()
+	else (locals_list) := List.fold_left (fun m (t, n) -> StringMap.add n t m) !(locals_list) func.formals;
 (*
 	let symbols = List.fold_left (fun m (t, n) -> StringMap.add n t m) StringMap.empty func.formals
 	in
 *)
-	check_stmt func function_decls
+	check_stmt func function_decls;
+	if !(count) then (
+		(globals_list) := !(locals_list);
+		(count) := false;	)
+	else
+		(locals_list) := StringMap.empty
 ;;
 
 

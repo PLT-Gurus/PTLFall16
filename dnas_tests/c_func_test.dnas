@@ -1,1 +1,1 @@
-print_int(test(1,2));
+print(2);

@@ -5,20 +5,21 @@ int k=0;
 int cnt=0;
 
 while i<10 then
-	print_str("# i loop#");
+	// print("# i loop#");
 	i=i+1;
 	int k=i;
 	for j=i;j<10;j=j+1 then
 		int k=i*j;
 		cnt=cnt+1;
-		print_int(k);
+		// print(k);
 	end
-	print_str("# i loop scope # Value of k:");
-	print_int(k);
+	// print("# i loop scope # Value of k:");
+	// print(k);
 end
+/*
+print("# global scope # Value of k:");
+	print(k);
 
-print_str("# global scope # Value of k:");
-	print_int(k);
-
-print_str("# global scope # Value of cnt:");
-	print_int(cnt);
+print("# global scope # Value of cnt:");
+	print(cnt);
+*/
