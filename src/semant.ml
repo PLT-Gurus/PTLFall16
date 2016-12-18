@@ -84,6 +84,8 @@ let check_stmt func function_decls =
 		| Sequence _ -> Seq (* is this correct? *)
 		| Stringlit _ -> Str (* is this correct?  *)
 		| Litdouble _ -> Double (*is this correct? *)
+	(*	| ArrayAcc(s,e) =
+		| Strcat(e,e) = *)
 		| Binop(e1, op, e2) as e -> let t1 = expr e1 and t2 = expr e2 in
 		(match op with
 			Add | Sub | Mult | Div | Exp when t1 = Int && t2 = Int -> Int
@@ -117,6 +119,11 @@ let check_stmt func function_decls =
 		check_assign lt rt (Failure ("illegal assignment " ^ string_of_typ lt ^
 			" = " ^ string_of_typ rt ^ " in " ^
 		string_of_expr ex))
+	(*	| ArrayAssign(s,e1,e2) =()
+		| SizeOf = ()
+		| Typecast =()
+		| Fread = ()
+		| Read = () *)
 		| Call(fname, actuals) as call -> if fname = "print" then (
 				if List.length actuals != 1 then
 					raise (Failure ("expecting " ^ string_of_int 1 ^ " argument in print function call."))
@@ -168,8 +175,12 @@ let check_stmt func function_decls =
 				ignore(let lt = t and rt = expr e in check_assign lt rt (Failure ("illegal assignment " ^ string_of_typ lt ^
 					" = " ^ string_of_typ rt ^ " in " ^ s ^" = "^
 				string_of_expr e)))
-
-			| Nobranching -> () (*is this correct?*)
+			| ArrayDecl(t, e, s) -> ignore(check_v_type t);
+			(locals_list) := StringMap.add s t !(locals_list);
+			ignore(let lt = t and rt = expr e in check_assign lt rt (Failure ("illegal assignment " ^ string_of_typ lt ^
+				" = " ^ string_of_typ rt ^ " in " ^ s ^" = "^
+			string_of_expr e)))
+			| Nobranching -> ()
 
 		in
 
