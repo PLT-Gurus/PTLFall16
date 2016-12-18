@@ -32,6 +32,8 @@ type token =
   | CONTINUE
   | BREAK
   | SIZEOF
+  | FREAD
+  | READ
   | NUC
   | INT
   | DOUBLE

@@ -40,6 +40,8 @@ rule token = parse
 | "local"   {LOCAL}
 | "then"    {THEN}
 | "return"  {RETURN}
+| "readFASTA" {FREAD}
+| "read" 	{READ}
 (*| "import"	{IMPORT} *)
 (* Concat operator, specifically for data of string types (strings, DNA, RNA, etc. ) *)
 | "+=" 		{STRCAT}

@@ -81,3 +81,50 @@ int strlength(char * input)
     while (input[i] != 0) i++;
     return i;
 }
+char* readFASTAFile(char * string) //currently only supports single sequence FASTA of char length < 10000
+{
+    //Reference for code help: http://stackoverflow.com/questions/4823177/reading-a-file-character-by-character-in-c
+    FILE *file = fopen(string, "r");
+    char code [10000]; // NOTE: Maybe decrease size???
+    size_t n = 0;
+    int c;
+    int start = -1; 
+    if (file == NULL)
+        return NULL; //could not open file
+    while ((c = fgetc(file)) != EOF) // NOTE: Should we make capital or make lowercase? 
+    {
+        if (((char) c) == '\n')
+        {
+            start = 1; 
+            continue;
+        }
+        if ((start >= 0) && ((((char) c) == 'a') || (((char) c) == 't') || (((char) c) == 'g') || (((char) c) == 'c') || (((char) c) == 'A') || (((char) c) == 'T') || (((char) c) == 'G') ||(((char) c) == 'C')) )
+        {            
+        code[n++] = (char) c;
+        }
+    }
+
+    // don't forget to terminate with the null character
+    code[n] = '\0';    
+    return code; 
+}
+char* readFile(char * string) //currently only supports single sequence FASTA of char length < 10000
+{
+    //Reference for code help: http://stackoverflow.com/questions/4823177/reading-a-file-character-by-character-in-c
+    FILE *file = fopen(string, "r");
+    char code [10000]; // NOTE: Maybe decrease size???
+    size_t n = 0;
+    int c;
+    int start = -1; 
+    if (file == NULL)
+        return NULL; //could not open file
+    while ((c = fgetc(file)) != EOF) // NOTE: Should we make capital or make lowercase? 
+    {
+              
+        code[n++] = (char) c;
+    }
+
+    // don't forget to terminate with the null character
+    code[n] = '\0';    
+    return code; 
+}

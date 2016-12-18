@@ -31,6 +31,8 @@ type expr =
 		| Call of string * expr list(*added into Codegen*)
 		| SizeOf of string
 		| Typecast of typ * expr
+		| Fread of string
+		| Read of string
 		| Noexpr 					(*added into Codegen*)
 
 
