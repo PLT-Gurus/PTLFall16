@@ -130,7 +130,7 @@ let translate prog =
       L.set_value_name v_name param;
       let local = L.build_alloca (ltype_of_typ v_typ) v_name builder in
       ignore (L.build_store param local builder);
-      StringMap.add v_name (local, L.const_int i32_t 1) map
+      StringMap.add v_name ((local, v_typ), L.const_int i32_t 1) map
 
       (* NOTE:  make size work for add_formal*)
     in
@@ -156,11 +156,11 @@ let translate prog =
 
       | A.Litchar c -> L.const_int i8_t (int_of_char c)
 
-      | A.Id s -> L.build_load (fst (lookup s (snd bvtup))) s (fst bvtup)
+      | A.Id s -> L.build_load (fst (fst (lookup s (snd bvtup)))) s (fst bvtup)
 
       | A.ArrayAcc(id, index) -> 
           let index = add_expr bvtup index in 
-          let arr = fst (lookup id (snd bvtup)) in 
+          let arr = fst (fst (lookup id (snd bvtup))) in 
           let val1 = L.build_gep arr [|index|] id (fst bvtup) in
           let testPrint = L.build_load val1 "tmp" (fst bvtup) in
           testPrint
@@ -339,12 +339,12 @@ let translate prog =
           ) [e] bvtup
 
       | A.Assign (s, e) -> let e' = add_expr bvtup e in
-          ignore (L.build_store e' (fst (lookup s (snd bvtup))) (fst bvtup)); e'
+          ignore (L.build_store e' (fst (fst (lookup s (snd bvtup)))) (fst bvtup)); e'
 
       | A.ArrayAssign (id, index, exprhs) ->
           let exprValue = add_expr bvtup exprhs in
           let index = add_expr bvtup index in 
-          let arr = fst (lookup id (snd bvtup)) in 
+          let arr = fst (fst (lookup id (snd bvtup))) in 
           let val1 = L.build_gep arr [|index|] id (fst bvtup) in
           let testPrint = L.build_store exprValue val1 (fst bvtup) in 
           exprValue
@@ -418,13 +418,13 @@ let translate prog =
       match isArray with
 
       true -> let local_var = L.build_array_alloca (ltype_of_typ v_typ) arrSize v_name (fst bvtup) in
-      ((fst bvtup),StringMap.add v_name (local_var, arrSize) (snd bvtup));
+      ((fst bvtup),StringMap.add v_name ((local_var, v_typ), arrSize) (snd bvtup));
 
       | false -> 
       (* check for strings *)
 
       let local_var = L.build_alloca (ltype_of_typ v_typ) v_name (fst bvtup) in
-      ((fst bvtup),StringMap.add v_name (local_var, arrSize) (snd bvtup))
+      ((fst bvtup),StringMap.add v_name ((local_var, v_typ), arrSize) (snd bvtup))
     
     in
    (*add_terminal*)
