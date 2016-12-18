@@ -54,7 +54,9 @@ let translate prog =
     {name="printf"        ;ret=i32_t;       arg=[| L.pointer_type i8_t |] };
     {name="complement"    ;ret=str_t;       arg=[|str_t|]                 };
     {name="transcribe"    ;ret=str_t;       arg=[|str_t|]                 };
-    {name="concat"        ;ret=str_t;      arg=[|str_t; str_t|]         }
+    {name="concat"        ;ret=str_t;      arg=[|str_t; str_t|]         };
+    {name="strlength"        ;ret=i32_t;      arg=[|str_t|]         }
+
   ]
   in
 
@@ -186,9 +188,12 @@ let translate prog =
             | A.Expon       -> L.build_not e' "left_uop" (fst bvtup) (*todo# make it work later*)
             | A.Comp        -> ext_call "complement" [e] bvtup
            )
-      | A.SizeOf(id) ->  (* Gets size of array *)
+      | A.SizeOf(id) ->  (* Gets size of array *) (*NOTE: change to get size of strings too *)
+
           let var = lookup id (snd bvtup) in 
-          let size = snd var in 
+          let varValue = add_expr bvtup (A.Id(id)) in 
+          let typeOf = L.type_of (varValue) in
+          let size = if typeOf = str_t then ext_call_alternate "strlength" [varValue] bvtup else snd var in 
           size
       (* | A.Typecast(t, e) ->
           let exprValue = add_expr bvtup e in  *)
@@ -269,7 +274,12 @@ let translate prog =
       let arg=List.map (add_expr bvtup) (List.rev arg) in
         let arg=Array.of_list arg in
           L.build_call (StringMap.find f_name ext_funcs) arg f_name (fst bvtup)
+    and ext_call_alternate f_name arg bvtup= (* NOTE: Do you need List.rev? *)
+      let arg= (List.rev arg) in
+        let arg=Array.of_list arg in
+        L.build_call (StringMap.find f_name ext_funcs) arg f_name (fst bvtup)
     in
+
 
     let add_local bvtup (v_typ, v_name, isArray, arrSize) =
       match isArray with

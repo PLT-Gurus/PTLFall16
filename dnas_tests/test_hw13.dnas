@@ -1,8 +1,5 @@
 string hi = "abc"; 
 string hello = "def";
-DNA sample = "atgc";
+string sample = "atgc";
 DNA another= sample->;
-print(another);
-string third = hello + hi;
-print(third);
-
+print(sample.length);
