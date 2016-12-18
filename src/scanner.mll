@@ -41,6 +41,8 @@ rule token = parse
 | "then"    {THEN}
 | "return"  {RETURN}
 (*| "import"	{IMPORT} *)
+(* Concat operator, specifically for data of string types (strings, DNA, RNA, etc. ) *)
+| "+=" 		{STRCAT}
 (* Arithmetic Binary Operators*)
 | '+'		{PLUS}
 | '-'		{MINUS}

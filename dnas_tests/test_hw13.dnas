@@ -1,0 +1,5 @@
+string hi = "abc"; 
+string hello = "def";
+string third = hello + hi;
+print(third);
+

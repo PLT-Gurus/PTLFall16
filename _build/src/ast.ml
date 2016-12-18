@@ -22,6 +22,7 @@ type expr =
 		| Stringlit of string
 		| Litdouble of float
 		| ArrayAcc of string * expr
+		| Strcat of expr * expr
 		| Binop of expr * op * expr (*added into Codegen*)
 		| Lunop of uop * expr 		(*added into Codegen*)
 		| Runop of expr * uop 		(*added into Codegen*)
@@ -29,6 +30,7 @@ type expr =
 		| ArrayAssign of string * expr * expr
 		| Call of string * expr list(*added into Codegen*)
 		| SizeOf of string
+		| Typecast of typ * expr
 		| Noexpr 					(*added into Codegen*)
 
 

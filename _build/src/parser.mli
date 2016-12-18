@@ -16,6 +16,7 @@ type token =
   | DIVIDE
   | MODULO
   | EXPONENTIAL
+  | STRCAT
   | COMPLEMENT
   | TRANSCRIBE
   | TRANSLATE

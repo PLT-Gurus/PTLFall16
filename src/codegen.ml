@@ -53,7 +53,8 @@ let translate prog =
     {name="test"          ;ret=i32_t;       arg=[|i32_t;i32_t|]           };
     {name="printf"        ;ret=i32_t;       arg=[| L.pointer_type i8_t |] };
     {name="complement"    ;ret=str_t;       arg=[|str_t|]                 };
-    {name="transcribe"    ;ret=str_t;       arg=[|str_t|]                 }
+    {name="transcribe"    ;ret=str_t;       arg=[|str_t|]                 };
+    {name="concat"        ;ret=str_t;      arg=[|str_t; str_t|]         }
   ]
   in
 
@@ -146,27 +147,36 @@ let translate prog =
           let testPrint = L.build_load val1 "tmp" (fst bvtup) in
           testPrint
 
-
+      | A.Strcat(first, second) ->
+            ext_call "concat" [first;second] bvtup
 
       | A.Binop (e1, op, e2) ->
           let e1' = add_expr bvtup e1
           and e2' = add_expr bvtup e2 in
           (match op with
-              A.Add     -> L.build_add
-            | A.Sub     -> L.build_sub
-            | A.Mult    -> L.build_mul
-            | A.Div     -> L.build_sdiv
-            | A.Mod     -> L.build_add (*todo# make it work later*)
-            | A.Exp     -> L.build_add (*todo# make it work later*)
-            | A.And     -> L.build_and
-            | A.Or      -> L.build_or
-            | A.Equal   -> L.build_icmp L.Icmp.Eq
-            | A.Neq     -> L.build_icmp L.Icmp.Ne
-            | A.Less    -> L.build_icmp L.Icmp.Slt
-            | A.Leq     -> L.build_icmp L.Icmp.Sle
-            | A.Greater -> L.build_icmp L.Icmp.Sgt
-            | A.Geq     -> L.build_icmp L.Icmp.Sge
-          ) e1' e2' "bop" (fst bvtup)
+              A.Add     -> 
+              let astType = L.type_of (add_expr bvtup e1) in
+              let throwAway = match astType with 
+                a when a = str_t -> ext_call "concat" [e1;e2] bvtup
+             | _ ->  L.build_add e1' e2' "bop" (fst bvtup) in 
+             throwAway
+
+
+             
+            | A.Sub     -> L.build_sub e1' e2' "bop" (fst bvtup)
+            | A.Mult    -> L.build_mul e1' e2' "bop" (fst bvtup)
+            | A.Div     -> L.build_sdiv e1' e2' "bop" (fst bvtup)
+            | A.Mod     -> L.build_add (*todo# make it work later*) e1' e2' "bop" (fst bvtup)
+            | A.Exp     -> L.build_add (*todo# make it work later*) e1' e2' "bop" (fst bvtup)
+            | A.And     -> L.build_and e1' e2' "bop" (fst bvtup)
+            | A.Or      -> L.build_or e1' e2' "bop" (fst bvtup)
+            | A.Equal   -> L.build_icmp L.Icmp.Eq e1' e2' "bop" (fst bvtup)
+            | A.Neq     -> L.build_icmp L.Icmp.Ne e1' e2' "bop" (fst bvtup)
+            | A.Less    -> L.build_icmp L.Icmp.Slt e1' e2' "bop" (fst bvtup)
+            | A.Leq     -> L.build_icmp L.Icmp.Sle e1' e2' "bop" (fst bvtup)
+            | A.Greater -> L.build_icmp L.Icmp.Sgt e1' e2' "bop" (fst bvtup)
+            | A.Geq     -> L.build_icmp L.Icmp.Sge e1' e2' "bop" (fst bvtup)
+          ) 
 
       | A.Lunop(op, e) ->
           let e' = add_expr bvtup e in
@@ -180,6 +190,9 @@ let translate prog =
           let var = lookup id (snd bvtup) in 
           let size = snd var in 
           size
+      (* | A.Typecast(t, e) ->
+          let exprValue = add_expr bvtup e in  *)
+
       | A.Runop(e, op) ->
           (match op with
 

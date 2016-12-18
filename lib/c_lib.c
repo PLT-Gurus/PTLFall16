@@ -55,3 +55,23 @@ char* transcribe(char* str){
     retstr[length] = '\0';
     return retstr;
 }
+char* concat(char * input1, char * input2)
+{
+    int i= 0;
+    while(input1[i] != 0) i++;
+    int j = 0;
+    while(input2[j] != 0)j++;
+    int length = i + j;
+    char* retstr = malloc(length);
+    for (int k = 0; k < i; k++)
+    {
+        retstr[k] = input1[k];
+    }
+    for (int l =0; l <i; l++)
+    {
+        retstr[i + l] = input2[l];
+    }
+    retstr[length] = '\0';
+    return retstr;
+
+}

@@ -5,7 +5,7 @@ open Ast
 %token ASSIGN
 %token OR AND NOT NEG
 %token LT LEQ EQ NEQ GEQ GT
-%token PLUS MINUS TIMES DIVIDE MODULO EXPONENTIAL
+%token PLUS MINUS TIMES DIVIDE MODULO EXPONENTIAL STRCAT
 %token COMPLEMENT TRANSCRIBE  TRANSLATE  TRANSLATETWO
 %token BEGIN END IF ELSEIF ELSE THEN FOR WHILE CONTINUE BREAK SIZEOF
 %token NUC INT DOUBLE AA BOOL CHAR VOID STRING DNA RNA
@@ -133,11 +133,13 @@ expr:
     |   expr TRANSCRIBE {Runop($1, Transcb)}
     |   expr TRANSLATE  {Runop($1, Translt)}
     |   expr TRANSLATETWO   {Runop($1, Translttwo)}
+    |   expr STRCAT expr {Strcat($1, $3)}
     |   ID ASSIGN expr  {Assign($1, $3)}
     |   ID LBRACK expr RBRACK ASSIGN expr {ArrayAssign($1,$3,$6)}
     |   LPAREN expr RPAREN  {$2}
     |   ID LPAREN actuals_opt RPAREN    {Call($1, $3)}
     |   ID PERIOD SIZEOF {SizeOf($1)}
+    |   LT typ GT expr {Typecast($2, $4)}
 
 expr_opt:
         /* nothing */   {Noexpr}
