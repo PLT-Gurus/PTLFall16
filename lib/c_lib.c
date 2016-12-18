@@ -14,7 +14,7 @@ char* complement(char* str){
     int i = 0;
     while(str[i] != 0) i++;
     int length = i;
-    char* retstr = malloc(length);
+    char* retstr [length];
     char curr;
     for(int i = 0; i<length; i++){
         curr = str[i];
@@ -37,7 +37,7 @@ char* transcribe(char* str){
     int i = 0;
     while(str[i] != 0) i++;
     int length = i;
-    char* retstr = malloc(length);
+    char retstr [length];
     char curr;
     for(int i = 0; i<length; i++){
         curr = str[i];
@@ -62,7 +62,7 @@ char* concat(char * input1, char * input2)
     int j = 0;
     while(input2[j] != 0)j++;
     int length = i + j;
-    char* retstr = malloc(length);
+    char retstr [length];
     for (int k = 0; k < i; k++)
     {
         retstr[k] = input1[k];
