@@ -14,7 +14,7 @@ module StringMap = Map.Make(String)
 let globals_list = ref StringMap.empty;;
 let locals_list = ref StringMap.empty;;
 let count = ref true;;
-let v_types_list = ["int"; "bool"; "char"; "double"; "aa"; "nuc"; "codon"; "seq"; "string"; "DNA"; "RNA"];;
+let v_types_list = ["int"; "bool"; "char"; "double"; "aa"; "nuc"; "codon"; "seq"; "string"; "DNA"; "RNA"; "str"];;
 let types_map = List.fold_left (fun m (t) -> StringMap.add t true m) StringMap.empty v_types_list;;
 
 
