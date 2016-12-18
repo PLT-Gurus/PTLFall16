@@ -14,7 +14,7 @@ module StringMap = Map.Make(String)
 let globals_list = ref StringMap.empty;;
 let locals_list = ref StringMap.empty;;
 let count = ref true;;
-let v_types_list = ["int"; "bool"; "char"; "double"; "aa"; "nuc"; "codon"; "seq"; "string"; "DNA"; "RNA"; "str"];;
+let v_types_list = ["int"; "bool"; "char"; "double"; "aa"; "nuc"; "codon"; "seq"; "DNA"; "RNA"; "Peptide"; "str"];;
 let types_map = List.fold_left (fun m (t) -> StringMap.add t true m) StringMap.empty v_types_list;;
 
 
@@ -42,14 +42,11 @@ let report_duplicate exceptf list =
 the given lvalue type *)
 
 let check_assign lvaluet rvaluet err =
-	if lvaluet == rvaluet then lvaluet else raise err
-
-
-
-
-
-
-
+	match lvaluet with
+	  DNA -> if rvaluet == DNA || rvaluet == Seq then lvaluet else raise err
+	| RNA -> if rvaluet == DNA || rvaluet == Seq then lvaluet else raise err
+	| Pep -> lvaluet
+	| _ -> if lvaluet == rvaluet then lvaluet else raise err
 
 (* function checking starts from here *)
 (*  check user defined functions conflict with built-in functions
@@ -67,18 +64,7 @@ let function_decl s function_decls = try StringMap.find s function_decls
 	with Not_found -> raise (Failure ("unrecognized function " ^ s))
 ;;
 
-(*  Min's version
-let type_of_identifier s syms =
-	try StringMap.find s syms
-	with Not_found -> raise (Failure ("undeclared identifier " ^ s))
-;;
-*)
-
-
-
 let check_stmt func function_decls =
-
-
 
 	let type_of_identifier s =
 
@@ -91,11 +77,11 @@ let check_stmt func function_decls =
 		| Litbool _ -> Bool
 		| Litchar _ -> Char
 		| Id s -> type_of_identifier s (* there is an issue for order of initialization *)
-		| Litdna _ -> Str
-		| Litrna _ -> Str
-		| Litpep _ -> Str
+		| Litdna _ -> DNA
+		| Litrna _ -> RNA
+		| Litpep _ -> Pep
 		| LitCodon _ -> Str
-		| Sequence _ -> Str (* is this correct? *)
+		| Sequence _ -> Seq (* is this correct? *)
 		| Stringlit _ -> Str (* is this correct?  *)
 		| Litdouble _ -> Double (*is this correct? *)
 		| Binop(e1, op, e2) as e -> let t1 = expr e1 and t2 = expr e2 in
@@ -113,15 +99,15 @@ let check_stmt func function_decls =
 		| Lunop(op, e) as ex -> let t = expr e in
 		(match op with
 			Neg when t = Int -> Int
-			| Comp when t = Str -> Str
+			| Comp when t = Seq || t = DNA -> DNA
 			| Not when t = Bool -> Bool
 			| _ -> raise (Failure ("illegal left unary operator " ^ string_of_uop op ^
 				string_of_typ t ^ " in " ^ string_of_expr ex)))
 		| Runop(e, op) as ex -> let t = expr e in
 		(match op with
 			Expon when t = Int -> Int   (* Exponential should be a binary operator *)
-			| Transcb when t = Seq -> Seq
-			| Translt when t = Seq -> Seq
+			| Transcb when t = Seq || t = DNA -> RNA
+			| Translt when t = Seq || t = RNA -> Pep
 			| Translttwo when t = Seq -> Aa
 			| _ -> raise (Failure ("illegal right unary operator " ^ string_of_uop op ^
 				string_of_typ t ^ " in " ^ string_of_expr ex)))
@@ -131,7 +117,13 @@ let check_stmt func function_decls =
 		check_assign lt rt (Failure ("illegal assignment " ^ string_of_typ lt ^
 			" = " ^ string_of_typ rt ^ " in " ^
 		string_of_expr ex))
-		| Call(fname, actuals) as call -> if fname = "print" then Void
+		| Call(fname, actuals) as call -> if fname = "print" then (
+				if List.length actuals != 1 then
+					raise (Failure ("expecting " ^ string_of_int 1 ^ " argument in print function call."))
+				else
+					List.iter (fun e -> ignore (expr e)) actuals;
+					Void
+			)
 			else( let fd = function_decl fname function_decls in
 				if List.length actuals != List.length fd.formals then
 					raise (Failure ("expecting " ^ string_of_int

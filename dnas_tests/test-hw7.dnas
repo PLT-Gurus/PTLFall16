@@ -1,7 +1,8 @@
 /*  %%;  parsing need to catch an error spit out the wrong input. */
 DNA r1 = #tatgcct;
-DNA r1 = #a-k;
+DNA r1 = #agg;
 Pep p1 = #a-k-w;
-// print_str(d1);
-print_str(r1);
-print_str(p1);
+int i = 1;
+//print(d1);
+print(r1);
+print(p1);
