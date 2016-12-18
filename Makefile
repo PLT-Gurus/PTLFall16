@@ -14,7 +14,7 @@ all: clib native
 
 clib:
 	@ echo "## Building Extern C Lib"
-	@ clang -c -emit-llvm $(DNAS_LIB)/c_lib.c
+	@ clang -c -emit-llvm $(DNAS_LIB)/c_lib.c -lm
 	@ mv c_lib.bc $(DNAS_LIB)/c_lib.bc
 
 native:
