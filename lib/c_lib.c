@@ -1,5 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
+#include <stdbool.h>
+
+#define EPS 0.000001
 
 int test(int a,int b)
 {
@@ -127,4 +131,50 @@ char* readFile(char * string) //currently only supports single sequence FASTA of
     // don't forget to terminate with the null character
     code[n] = '\0';    
     return code; 
+}
+
+int mod(int a,int b)
+{
+    return a%b;
+}
+
+int exp_ii(int a,int b)
+{
+    return pow(a,b);
+}
+
+double exp_di(double a,int b)
+{
+    return pow(a,b);
+}
+
+double exp_id(int a,double b)
+{
+    return pow(a,b);
+}
+
+double exp_dd(double a,double b)
+{
+    return pow(a,b);
+}
+
+
+int double2int(double d)
+{
+    return (int)d;
+}
+
+double int2double(int i)
+{
+    return (double)i;
+}
+
+int print_tf(bool b)
+{
+    if(b){
+        return printf("true\n");
+    }
+    else{
+        return printf("false\n");
+    }
 }
