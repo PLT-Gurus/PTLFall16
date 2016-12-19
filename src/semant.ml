@@ -257,8 +257,8 @@ let check_func func function_decls =
 	List.iter (check_not_void (fun n -> "illegal void formal " ^ n ^ " in " ^ func.fname)) func.formals;
 
 	report_duplicate (fun n -> "duplicate formal " ^ n ^ " in " ^ func.fname) (List.map snd func.formals);
-	if !(count) then ()
-	else (locals_list) := List.fold_left (fun m (t, n) -> StringMap.add n t m) !(locals_list) func.formals;
+
+	(locals_list) := List.fold_left (fun m (t, n) -> StringMap.add n t m) !(locals_list) func.formals;
 (*
 	let symbols = List.fold_left (fun m (t, n) -> StringMap.add n t m) StringMap.empty func.formals
 	in

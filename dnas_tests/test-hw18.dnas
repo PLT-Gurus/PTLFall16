@@ -1,11 +1,7 @@
 DNA [5] myarray;
 myarray[0] = #AGTC;
-<<<<<<< HEAD
-DNA test = myarray[0];
-print(myarray);
-=======
-DNA test = #AA; 
+
+DNA test = #AA;
 test = myarray[0];
 print(myarray);
 print(test);
->>>>>>> a6cb8e7285e2f6f6e8836e276f8499fd4af1436e
