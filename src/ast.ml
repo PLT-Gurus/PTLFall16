@@ -139,8 +139,6 @@ let rec string_of_expr = function
 		string_of_expr exp ^ string_of_uop uop
 	| Assign(str,exp)->
 		str ^ "=" ^ string_of_expr exp
-	| Strcat(exp1,exp2) ->
-		string_of_expr exp1 ^ "+" ^ string_of_expr exp2
 	| ArrayAssign(str,exp1,exp2)->
 		str ^ "[" ^ string_of_expr exp1 ^ "]" ^ "=" ^ string_of_expr exp2
 	| Call(str,l_expr)->
