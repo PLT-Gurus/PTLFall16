@@ -270,57 +270,62 @@ let translate prog =
                         | type_double when type_double = double_t -> ext_call_alternate "exp_dd" [e1';e2'] bvtup(*d-d*))
                 in (ret, e1Type)
 
-            | A.And     -> ((L.build_and e1' e2' "bop" (fst bvtup)), e1Type)
+            | A.And     -> ((L.build_and e1' e2' "bop" (fst bvtup)), A.Bool)
 
-            | A.Or      -> ((L.build_or e1' e2' "bop" (fst bvtup)), e1Type)
+            | A.Or      -> ((L.build_or e1' e2' "bop" (fst bvtup)), A.Bool)
 
             | A.Equal   ->
                 (let astType = L.type_of e1' in
                 match astType with
                    type_int when type_int = i32_t ->
-                      ((L.build_icmp L.Icmp.Eq e1' e2' "bop" (fst bvtup)), A.Int)
+                      ((L.build_icmp L.Icmp.Eq e1' e2' "bop" (fst bvtup)), A.Bool)
                   |type_double when type_double = double_t ->
-                      ((L.build_fcmp L.Fcmp.Ueq e1' e2' "bop" (fst bvtup) ), A.Double))
+                      ((L.build_fcmp L.Fcmp.Ueq e1' e2' "bop" (fst bvtup) ), A.Bool)
+                  | type_char when type_char = i8_t ->
+                      ((L.build_icmp L.Icmp.Eq e1' e2' "bop" (fst bvtup)), A.Bool)
+                  | type_bool when type_bool = i1_t ->
+                      ((L.build_icmp L.Icmp.Eq e1' e2' "bop" (fst bvtup)), A.Bool))
 
             | A.Neq     ->
                 (let astType = L.type_of e1' in
                 match astType with
                    type_int when type_int = i32_t ->
-                      ((L.build_icmp L.Icmp.Ne e1' e2' "bop" (fst bvtup)), A.Int)
+                      ((L.build_icmp L.Icmp.Ne e1' e2' "bop" (fst bvtup)), A.Bool)
                   |type_double when type_double = double_t ->
-                      ((L.build_fcmp L.Fcmp.Une e1' e2' "bop" (fst bvtup) ), A.Double))
+                      ((L.build_fcmp L.Fcmp.Une e1' e2' "bop" (fst bvtup) ), A.Bool))
 
             | A.Less    ->
                 (let astType = L.type_of e1' in
                 match astType with
                    type_int when type_int = i32_t ->
-                      ((L.build_icmp L.Icmp.Slt e1' e2' "bop" (fst bvtup)), A.Int)
+                      ((L.build_icmp L.Icmp.Slt e1' e2' "bop" (fst bvtup)), A.Bool)
                   |type_double when type_double = double_t ->
-                      ((L.build_fcmp L.Fcmp.Ult e1' e2' "bop" (fst bvtup) ), A.Double))
+                      ((L.build_fcmp L.Fcmp.Ult e1' e2' "bop" (fst bvtup) ), A.Bool))
+
 
             | A.Leq     ->
                 (let astType = L.type_of e1' in
                 match astType with
                    type_int when type_int = i32_t ->
-                      ((L.build_icmp L.Icmp.Sle e1' e2' "bop" (fst bvtup)), A.Int)
+                      ((L.build_icmp L.Icmp.Sle e1' e2' "bop" (fst bvtup)), A.Bool)
                   |type_double when type_double = double_t ->
-                      ((L.build_fcmp L.Fcmp.Ule e1' e2' "bop" (fst bvtup)), A.Double))
+                      ((L.build_fcmp L.Fcmp.Ule e1' e2' "bop" (fst bvtup)), A.Bool))
 
             | A.Greater ->
                 (let astType = L.type_of e1' in
                 match astType with
                    type_int when type_int = i32_t ->
-                      ((L.build_icmp L.Icmp.Sgt e1' e2' "bop" (fst bvtup)), A.Int)
+                      ((L.build_icmp L.Icmp.Sgt e1' e2' "bop" (fst bvtup)), A.Bool)
                   |type_double when type_double = double_t ->
-                      ((L.build_fcmp L.Fcmp.Ugt e1' e2' "bop" (fst bvtup) ), A.Double))
+                      ((L.build_fcmp L.Fcmp.Ugt e1' e2' "bop" (fst bvtup) ), A.Bool))
 
             | A.Geq     ->
                 (let astType = L.type_of e1' in
                 match astType with
                    type_int when type_int = i32_t ->
-                      ((L.build_icmp L.Icmp.Sge e1' e2' "bop" (fst bvtup)), A.Int)
+                      ((L.build_icmp L.Icmp.Sge e1' e2' "bop" (fst bvtup)), A.Bool)
                   |type_double when type_double = double_t ->
-                      ((L.build_fcmp L.Fcmp.Uge e1' e2' "bop" (fst bvtup)), A.Double) )
+                      ((L.build_fcmp L.Fcmp.Uge e1' e2' "bop" (fst bvtup)), A.Bool) )
           )
 
       | A.Lunop(op, e) ->
