@@ -5,7 +5,7 @@ Pep p1 = #a-k-w-y;
 
 print(@d1);
 
-print(r1);
+//print(r1);
 print(p1);
 print("----");
 print(@d1);
