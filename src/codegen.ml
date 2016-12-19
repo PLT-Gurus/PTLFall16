@@ -174,11 +174,11 @@ let translate prog =
             | _ ->   let val1 = L.build_gep arr [|index|] id (fst bvtup) in
                     L.build_load val1 "tmp" (fst bvtup)
                 ) in 
-         (*  if (testPrint = (L.const_int i8_t -1)) then raise (Failure "Array index out of access") else ignore(); *)
+          if (testPrint = (L.const_int i8_t (-1))) then raise (Failure "Array index out of access") else ignore();
           (testPrint, arrType)
 
       | A.Strcat(first, second) ->
-            ((ext_call "concat" [first;second] bvtup), A.Str)
+            ((ext_call "concat" [second;first] bvtup), A.Str)
 
       | A.Binop (e1, op, e2) ->
           let e1' = fst (add_expr bvtup e1)
@@ -190,7 +190,7 @@ let translate prog =
                 let astType1 = L.type_of e1' in
                 let astType2 = L.type_of e2' in
                 let throwAway = match astType1 with 
-                      type_str when type_str = str_t -> ext_call_alternate "concat" [e1';e2'] bvtup
+                      type_str when type_str = str_t -> ext_call_alternate "concat" [e2';e1'] bvtup
                     | type_int when type_int = i32_t -> 
                         (match astType2 with
                           type_int when type_int = i32_t -> (*i-i*)L.build_add e1' e2' "bop" (fst bvtup)
