@@ -357,9 +357,11 @@ let translate prog =
             | A.Translttwo  -> ext_call "translate2"
           ) [e] bvtup), (snd (add_expr bvtup e)))
 
-      | A.Assign (s, e) -> let e' = fst (add_expr bvtup e )in
-          let eType = snd (add_expr bvtup e ) in
-          ignore (L.build_store e' (fst (fst (lookup s (snd bvtup)))) (fst bvtup)); (e', eType)
+      | A.Assign (s, e) -> 
+          let e' = add_expr bvtup e in 
+          let eVal = fst e' in
+          let eType = snd e' in
+          ignore (L.build_store eVal (fst (fst (lookup s (snd bvtup)))) (fst bvtup)); (eVal, eType)
 
       | A.ArrayAssign (id, index, exprhs) ->
           let exprValue = fst (add_expr bvtup exprhs) in
