@@ -39,6 +39,9 @@ let map_array_type t =
 	| Nuc -> ArrayNuc
 	| Codon -> ArrayCodon
 	| Seq -> ArraySeq
+	| DNA -> ArrayDNA
+	| RNA -> ArrayRNA
+	| Pep -> ArrayPep
 	| _ -> ArrayInt
 ;;
 
@@ -53,7 +56,10 @@ let array_type_unfold t =
 	| ArrayNuc -> Nuc
 	| ArrayCodon -> Codon
 	| ArraySeq -> Seq
-	| _ -> Double
+	| ArrayDNA -> DNA
+	| ArrayRNA -> RNA
+	| ArrayPep -> Pep
+	| _ -> Int
 ;;
 
 (* check for duplicates *)
