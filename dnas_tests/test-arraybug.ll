@@ -5,16 +5,18 @@ target triple = "x86_64-pc-linux-gnu"
 %struct._IO_FILE = type { i32, i8*, i8*, i8*, i8*, i8*, i8*, i8*, i8*, i8*, i8*, i8*, %struct._IO_marker*, %struct._IO_FILE*, i32, i32, i64, i16, i8, [1 x i8], i8*, i64, i8*, i8*, i8*, i8*, i64, i32, [20 x i8] }
 %struct._IO_marker = type { %struct._IO_marker*, %struct._IO_FILE*, i32 }
 
-@fmt_int = private unnamed_addr constant [4 x i8] c"%d\0A\00"
-@fmt_str = private unnamed_addr constant [4 x i8] c"%s\0A\00"
-@fmt_str.1 = private unnamed_addr constant [6 x i8] c"%.3f\0A\00"
-@fmt_str.2 = private unnamed_addr constant [4 x i8] c"%c\0A\00"
-@context = private unnamed_addr constant [8 x i8] c"A-T-G-C\00"
-@context.3 = private unnamed_addr constant [8 x i8] c"A-T-G-C\00"
+@fmt_int = private unnamed_addr constant [3 x i8] c"%d\00"
+@fmt_str = private unnamed_addr constant [3 x i8] c"%s\00"
+@fmt_str.1 = private unnamed_addr constant [5 x i8] c"%.3f\00"
+@fmt_str.2 = private unnamed_addr constant [3 x i8] c"%c\00"
+@context = private unnamed_addr constant [5 x i8] c"atgc\00"
+@context.3 = private unnamed_addr constant [5 x i8] c"atgc\00"
 @.str = private unnamed_addr constant [16 x i8] c"Hello I'm in C\0A\00", align 1
 @.str.1 = private unnamed_addr constant [2 x i8] c"r\00", align 1
 @.str.2 = private unnamed_addr constant [6 x i8] c"true\0A\00", align 1
 @.str.3 = private unnamed_addr constant [7 x i8] c"false\0A\00", align 1
+@.str.4 = private unnamed_addr constant [3 x i8] c"%c\00", align 1
+@.str.5 = private unnamed_addr constant [2 x i8] c"-\00", align 1
 
 declare i32 @printf(i8*, ...)
 
@@ -22,13 +24,15 @@ declare double @db_exp(double, double, ...)
 
 define i32 @main() {
 entry:
-  %sample = alloca i8*
-  %formatPep = call i8* (i8*, ...) bitcast (i8* (i8*)* @formatPep to i8* (i8*, ...)*)(i8* getelementptr inbounds ([8 x i8], [8 x i8]* @context, i32 0, i32 0))
-  %formatPep1 = call i8* (i8*, ...) bitcast (i8* (i8*)* @formatPep to i8* (i8*, ...)*)(i8* getelementptr inbounds ([8 x i8], [8 x i8]* @context.3, i32 0, i32 0))
-  store i8* %formatPep, i8** %sample
-  %sample2 = load i8*, i8** %sample
-  %sample3 = load i8*, i8** %sample
-  %printf = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @fmt_str, i32 0, i32 0), i8* %sample3)
+  %hello = alloca i8*
+  store i8* getelementptr inbounds ([5 x i8], [5 x i8]* @context, i32 0, i32 0), i8** %hello
+  %temp = alloca i8
+  %getChar = call i8 (i8**, i32, ...) bitcast (i8 (i8**, i32)* @getChar to i8 (i8**, i32, ...)*)(i8** %hello, i32 2)
+  %getChar1 = call i8 (i8**, i32, ...) bitcast (i8 (i8**, i32)* @getChar to i8 (i8**, i32, ...)*)(i8** %hello, i32 2)
+  store i8 %getChar, i8* %temp
+  %temp2 = load i8, i8* %temp
+  %temp3 = load i8, i8* %temp
+  %printf = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @fmt_str.2, i32 0, i32 0), i8 %temp3)
   ret i32 0
 }
 
@@ -1074,6 +1078,74 @@ define i8* @formatPep(i8* %input) #0 {
   %58 = load i8*, i8** %2, align 8
   call void @llvm.stackrestore(i8* %58)
   ret i8* %18
+}
+
+; Function Attrs: nounwind uwtable
+define i32 @printPep(i8* %input) #0 {
+  %1 = alloca i8*, align 8
+  %i = alloca i32, align 4
+  %j = alloca i32, align 4
+  %temp = alloca i8, align 1
+  store i8* %input, i8** %1, align 8
+  store i32 0, i32* %i, align 4
+  br label %2
+
+; <label>:2                                       ; preds = %10, %0
+  %3 = load i32, i32* %i, align 4
+  %4 = sext i32 %3 to i64
+  %5 = load i8*, i8** %1, align 8
+  %6 = getelementptr inbounds i8, i8* %5, i64 %4
+  %7 = load i8, i8* %6, align 1
+  %8 = sext i8 %7 to i32
+  %9 = icmp ne i32 %8, 0
+  br i1 %9, label %10, label %13
+
+; <label>:10                                      ; preds = %2
+  %11 = load i32, i32* %i, align 4
+  %12 = add nsw i32 %11, 1
+  store i32 %12, i32* %i, align 4
+  br label %2
+
+; <label>:13                                      ; preds = %2
+  store i32 0, i32* %j, align 4
+  br label %14
+
+; <label>:14                                      ; preds = %29, %13
+  %15 = load i32, i32* %j, align 4
+  %16 = load i32, i32* %i, align 4
+  %17 = sub nsw i32 %16, 1
+  %18 = icmp slt i32 %15, %17
+  br i1 %18, label %19, label %32
+
+; <label>:19                                      ; preds = %14
+  %20 = load i32, i32* %j, align 4
+  %21 = sext i32 %20 to i64
+  %22 = load i8*, i8** %1, align 8
+  %23 = getelementptr inbounds i8, i8* %22, i64 %21
+  %24 = load i8, i8* %23, align 1
+  store i8 %24, i8* %temp, align 1
+  %25 = load i8, i8* %temp, align 1
+  %26 = sext i8 %25 to i32
+  %27 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.4, i32 0, i32 0), i32 %26)
+  %28 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.5, i32 0, i32 0))
+  br label %29
+
+; <label>:29                                      ; preds = %19
+  %30 = load i32, i32* %j, align 4
+  %31 = add nsw i32 %30, 1
+  store i32 %31, i32* %j, align 4
+  br label %14
+
+; <label>:32                                      ; preds = %14
+  %33 = load i32, i32* %i, align 4
+  %34 = sub nsw i32 %33, 1
+  %35 = sext i32 %34 to i64
+  %36 = load i8*, i8** %1, align 8
+  %37 = getelementptr inbounds i8, i8* %36, i64 %35
+  %38 = load i8, i8* %37, align 1
+  %39 = sext i8 %38 to i32
+  %40 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.4, i32 0, i32 0), i32 %39)
+  ret i32 1
 }
 
 attributes #0 = { nounwind uwtable "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+fxsr,+mmx,+sse,+sse2" "unsafe-fp-math"="false" "use-soft-float"="false" }

@@ -1,2 +1,2 @@
-pep sample = #A-T-G-C;
+Pep sample = #A-T-G-C;
 print(sample);

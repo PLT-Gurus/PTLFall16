@@ -215,3 +215,17 @@ char* formatPep(char * input)
     return result;
 
 }
+int printPep(char * input)
+{
+    int i= 0;
+    while(input[i] != 0) i++;
+    for (int j=0; j<(i-1); j++)
+    {
+        char temp = (char) input[j];
+        printf("%c", temp);
+        printf("-");
+    }
+    printf("%c", input[i-1]);
+    return 1;
+
+}
