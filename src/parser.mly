@@ -118,7 +118,7 @@ expr:
     |   expr TIMES expr {Binop($1,Mult,$3)}
     |   expr DIVIDE expr{Binop($1,Div,$3)}
     |   expr MODULO expr{Binop($1,Mod,$3)}
-    |   expr EXPONENTIAL expr {Binop($1,Exp,$3)}
+    |   expr EXPONENTIAL expr {Binop($3,Expon,$1)}
     |   expr AND expr {Binop($1,And,$3)}
     |   expr OR expr{Binop($1,Or,$3)}
     |   expr EQ expr  {Binop($1,Equal,$3)}

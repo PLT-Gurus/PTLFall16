@@ -43,8 +43,8 @@ rule token = parse
 | "readFASTA" {FREAD}
 | "read" 	{READ}
 (*| "import"	{IMPORT} *)
-(* Concat operator, specifically for data of string types (strings, DNA, RNA, etc. ) *)
-| "+=" 		{STRCAT}
+(* Concat operator, specifically for data of string types (strings, DNA, RNA, etc. )
+| "+=" 		{STRCAT}   *)
 (* Arithmetic Binary Operators*)
 | '+'		{PLUS}
 | '-'		{MINUS}

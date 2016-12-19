@@ -8,6 +8,10 @@ target triple = "x86_64-pc-linux-gnu"
 @fmt_int = private unnamed_addr constant [4 x i8] c"%d\0A\00"
 @fmt_str = private unnamed_addr constant [4 x i8] c"%s\0A\00"
 @fmt_str.1 = private unnamed_addr constant [6 x i8] c"%.3f\0A\00"
+@context = private unnamed_addr constant [7 x i8] c"hello \00"
+@context.2 = private unnamed_addr constant [7 x i8] c"world!\00"
+@context.3 = private unnamed_addr constant [7 x i8] c"hello \00"
+@context.4 = private unnamed_addr constant [7 x i8] c"world!\00"
 @.str = private unnamed_addr constant [16 x i8] c"Hello I'm in C\0A\00", align 1
 @.str.1 = private unnamed_addr constant [2 x i8] c"r\00", align 1
 @.str.2 = private unnamed_addr constant [6 x i8] c"true\0A\00", align 1
@@ -19,14 +23,28 @@ declare double @db_exp(double, double, ...)
 
 define i32 @main() {
 entry:
-  %i = alloca i32
-  store i32 1, i32* %i
-  %i1 = load i32, i32* %i
-  %bop = add i32 %i1, 1
-  store i32 %bop, i32* %i
-  %i2 = load i32, i32* %i
-  %i3 = load i32, i32* %i
-  %printf = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @fmt_int, i32 0, i32 0), i32 %i3)
+  %array = alloca i32, i32 4
+  %array1 = getelementptr i32, i32* %array, i32 3
+  store i32 3, i32* %array1
+  %array2 = getelementptr i32, i32* %array, i32 3
+  %tmp = load i32, i32* %array2
+  %array3 = getelementptr i32, i32* %array, i32 3
+  %tmp4 = load i32, i32* %array3
+  %printf = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @fmt_int, i32 0, i32 0), i32 %tmp4)
+  %array5 = load i32, i32* %array
+  %array6 = load i32, i32* %array
+  %printf7 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @fmt_int, i32 0, i32 0), i32 4)
+  %concat = call i8* (i8*, i8*, ...) bitcast (i8* (i8*, i8*)* @concat to i8* (i8*, i8*, ...)*)(i8* getelementptr inbounds ([7 x i8], [7 x i8]* @context.2, i32 0, i32 0), i8* getelementptr inbounds ([7 x i8], [7 x i8]* @context, i32 0, i32 0))
+  %concat8 = call i8* (i8*, i8*, ...) bitcast (i8* (i8*, i8*)* @concat to i8* (i8*, i8*, ...)*)(i8* getelementptr inbounds ([7 x i8], [7 x i8]* @context.4, i32 0, i32 0), i8* getelementptr inbounds ([7 x i8], [7 x i8]* @context.3, i32 0, i32 0))
+  %printf9 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @fmt_str, i32 0, i32 0), i8* %concat8)
+  %printf10 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @fmt_int, i32 0, i32 0), i32 3)
+  %printf11 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([6 x i8], [6 x i8]* @fmt_str.1, i32 0, i32 0), double 5.000000e+00)
+  %exp_ii = call i32 (i32, i32, ...) bitcast (i32 (i32, i32)* @exp_ii to i32 (i32, i32, ...)*)(i32 2, i32 4)
+  %exp_ii12 = call i32 (i32, i32, ...) bitcast (i32 (i32, i32)* @exp_ii to i32 (i32, i32, ...)*)(i32 2, i32 4)
+  %printf13 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @fmt_int, i32 0, i32 0), i32 %exp_ii12)
+  %exp_dd = call double (double, double, ...) bitcast (double (double, double)* @exp_dd to double (double, double, ...)*)(double 2.500000e+00, double 2.000000e+00)
+  %exp_dd14 = call double (double, double, ...) bitcast (double (double, double)* @exp_dd to double (double, double, ...)*)(double 2.500000e+00, double 2.000000e+00)
+  %printf15 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([6 x i8], [6 x i8]* @fmt_str.1, i32 0, i32 0), double %exp_dd14)
   ret i32 0
 }
 
