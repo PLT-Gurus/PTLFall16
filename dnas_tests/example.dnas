@@ -1,9 +1,17 @@
+<<<<<<< HEAD
 DNA sample = #aaaatccggg;
 DNA sample2 = #aaaagagttgc;
 int tempResult = lcs_length(sample,sample2, 10,11);
 print(tempResult);
 int lcs_length(DNA A, DNA B, int sizeA, int sizeB)
 	int [(sizeA+1) * (sizeB+1)] C;
+=======
+DNA sample = #gtgcccc;
+DNA sample2 = #atgccac;
+int tempResult = lcs_length(sample,sample2,7, 7);
+int lcs_length(DNA A, DNA B, int sizeA, int sizeB)
+	int [(sizeA +1) * (sizeB + 1)] C; 
+>>>>>>> 7b31e284c6385a1a85dfeece23a1085bb7a3ac3b
 	int i2 = 0;
 	for i2; i2< ((sizeA+1) * (sizeB+1)); i2 = i2+1 then
 		C[i2] = 0;
@@ -37,6 +45,7 @@ int lcs_length(DNA A, DNA B, int sizeA, int sizeB)
 		end
 
 	end
+<<<<<<< HEAD
 	//print("here");
 	for i = 0; i<sizeA*sizeB; i=i+1 then
 		//print(C[i]);
@@ -44,6 +53,29 @@ int lcs_length(DNA A, DNA B, int sizeA, int sizeB)
 	int result = C[0];
 	//print(result);
 	return result;
+=======
+	
+	for i = 0; i<sizeA*sizeB; i=i+1 then
+		//print(C[i]);
+		end
+	
+	i= 0;
+	j= 0;
+
+	while (i < sizeA  & j<sizeB) then
+		if (A[i] == B[j] ) then
+			char temp = A[i];
+			print(temp);
+			i = i + 1;
+			j = j+ 1 ;
+		elseif C[getIndex(i+1, j, sizeA, sizeB)] >= C[getIndex(i, j+1, sizeA, sizeB)] then
+			i = i +1 ;
+		else 
+			j = j + 1;
+		end
+	end
+
+>>>>>>> 7b31e284c6385a1a85dfeece23a1085bb7a3ac3b
 end
 int getIndex(int x, int y, int sizeA, int sizeB)
 
@@ -51,7 +83,7 @@ int getIndex(int x, int y, int sizeA, int sizeB)
 end
 
 int getMax(int x, int y)
-
+	
 	int result = -1;
 	if x > y then result = x; else result = y; end
 	return result;

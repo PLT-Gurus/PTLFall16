@@ -38,8 +38,7 @@ entry:
   %r1 = alloca i8*
   store i8* getelementptr inbounds ([8 x i8], [8 x i8]* @context.3, i32 0, i32 0), i8** %r1
   %p1 = alloca i8*
-  %formatPep = call i8* (i8*, ...) bitcast (i8* (i8*)* @formatPep to i8* (i8*, ...)*)(i8* getelementptr inbounds ([8 x i8], [8 x i8]* @context.4, i32 0, i32 0))
-  store i8* %formatPep, i8** %p1
+  store i8* getelementptr inbounds ([8 x i8], [8 x i8]* @context.4, i32 0, i32 0), i8** %p1
   %d11 = load i8*, i8** %d1
   %d12 = load i8*, i8** %d1
   %d13 = load i8*, i8** %d1
@@ -54,8 +53,7 @@ entry:
   %printf10 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @fmt_str, i32 0, i32 0), i8* %r19)
   %p111 = load i8*, i8** %p1
   %p112 = load i8*, i8** %p1
-  %p113 = load i8*, i8** %p1
-  %printPep = call i32 (i8*, ...) bitcast (i32 (i8*)* @printPep to i32 (i8*, ...)*)(i8* %p113)
+  %printf13 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @fmt_str, i32 0, i32 0), i8* %p112)
   %printf14 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @fmt_str, i32 0, i32 0), i8* getelementptr inbounds ([5 x i8], [5 x i8]* @context.6, i32 0, i32 0))
   %d115 = load i8*, i8** %d1
   %d116 = load i8*, i8** %d1

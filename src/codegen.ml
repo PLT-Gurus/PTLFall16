@@ -401,7 +401,6 @@ let translate prog =
             L.build_call (StringMap.find "printf" ext_funcs) [| char_format_str ; (eval) |]
             "printf" (fst bvtup)
           | A.Void -> raise (Failure "Cannot print void type "); (L.const_int i32_t 0)
-          | A.Pep -> ext_call "printPep" [e] bvtup
           | _ -> L.build_call (StringMap.find "printf" ext_funcs) [| str_format_str ; (eval) |]
                   "printf" (fst bvtup) in
                   (result, A.Int)
@@ -427,8 +426,7 @@ let translate prog =
 
       | A.Litpep(str) ->
                 let pepTemp = ((L.build_global_stringptr str "context" (fst bvtup)), A.Pep) in
-                let pepResult = ext_call_alternate "formatPep" [fst pepTemp] bvtup in
-                (pepResult, A.Pep)
+                pepTemp
 
       | A.Noexpr -> ((L.const_int i32_t 0), A.Int)
 
