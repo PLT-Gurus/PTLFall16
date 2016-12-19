@@ -38,6 +38,7 @@ let map_array_type t =
 	| Aa -> ArrayAa
 	| Nuc -> ArrayNuc
 	| Codon -> ArrayCodon
+	| Seq -> ArraySeq
 	| _ -> ArrayInt
 ;;
 
@@ -50,6 +51,8 @@ let array_type_unfold t =
 	| ArrayChar -> Char
 	| ArrayAa -> Aa
 	| ArrayNuc -> Nuc
+	| ArrayCodon -> Codon
+	| ArraySeq -> Seq
 	| _ -> Double
 ;;
 

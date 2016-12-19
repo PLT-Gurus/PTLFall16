@@ -3,7 +3,7 @@ type uop = Neg | Not | Comp | Transcb | Translt | Translttwo
 type op = Add | Sub | Mult | Div | Mod | And | Or | Equal |
 		 Neq | Less | Leq | Greater | Geq | Expon
 
-type typ = Int | Bool | Void | Char | Double | Aa | Nuc | Codon | Seq | Str | DNA | RNA | Pep | ArrayInt | ArrayDouble | ArrayStr | ArrayBool | ArrayChar | ArrayAa | ArrayNuc
+type typ = Int | Bool | Void | Char | Double | Aa | Nuc | Codon | Seq | Str | DNA | RNA | Pep | ArrayInt | ArrayDouble | ArrayStr | ArrayBool | ArrayChar | ArrayAa | ArrayNuc | ArrayCodon | ArraySeq
 
 type ending = End
 
