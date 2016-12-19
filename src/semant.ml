@@ -31,13 +31,39 @@ let check_v_type t = try ignore(StringMap.find (string_of_typ t) types_map)
 let map_array_type t =
 	match t with
 	| Int -> ArrayInt
+	| Double -> ArrayDouble
+	| Str -> ArrayStr
+	| Bool -> ArrayBool
+	| Char -> ArrayChar
+	| Aa -> ArrayAa
+	| Nuc -> ArrayNuc
+	| Codon -> ArrayCodon
+	| Seq -> ArraySeq
+	| DNA -> ArrayDNA
+	| RNA -> ArrayRNA
+	| Pep -> ArrayPep
 	| _ -> ArrayInt
 ;;
 
 let array_type_unfold t =
 	match t with
 	| ArrayInt -> Int
-	| _ -> Double
+	| ArrayDouble -> Double
+	| ArrayStr -> Str
+	| ArrayBool -> Bool
+	| ArrayChar -> Char
+	| ArrayAa -> Aa
+	| ArrayNuc -> Nuc
+	| ArrayCodon -> Codon
+	| ArraySeq -> Seq
+	| ArrayDNA -> DNA
+	| ArrayRNA -> RNA
+	| ArrayPep -> Pep
+	| Str -> Char
+	| DNA -> Nuc
+	| RNA -> Nuc
+	| Pep -> Aa
+	| _ -> Int
 ;;
 
 (* check for duplicates *)
@@ -115,6 +141,10 @@ let check_stmt func function_decls =
 			| Add when t1 =  DNA && t2 = DNA -> DNA
 			| Add when t1 =  RNA && t2 = RNA -> RNA
 			| Add when t1 =  Seq && t2 = Seq -> Seq
+			| Add when t1 =  DNA && t2 = Seq -> DNA
+			| Add when t1 =  Seq && t2 = DNA -> DNA
+			| Add when t1 =  RNA && t2 = Seq -> RNA
+			| Add when t1 =  Seq && t2 = RNA -> RNA
 			| Mod when t1 = Int && t2 = Int -> Int
 			| Equal | Neq when t1 = t2 -> Bool
 			| Less | Leq | Greater | Geq when t1 = Int && t2 = Int -> Bool

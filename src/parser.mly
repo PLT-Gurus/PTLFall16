@@ -41,6 +41,7 @@ open Ast
 %right NOT         COMPLEMENT   NEG
 %left  LPAREN      RPAREN
 
+
 %start program
 %type <Ast.program> program
 
@@ -133,7 +134,6 @@ expr:
     |   expr TRANSCRIBE {Runop($1, Transcb)}
     |   expr TRANSLATE  {Runop($1, Translt)}
     |   expr TRANSLATETWO   {Runop($1, Translttwo)}
-    |   expr STRCAT expr {Strcat($1, $3)}
     |   ID ASSIGN expr  {Assign($1, $3)}
     |   ID LBRACK expr RBRACK ASSIGN expr {ArrayAssign($1,$3,$6)}
     |   LPAREN expr RPAREN  {$2}
