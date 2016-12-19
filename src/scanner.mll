@@ -96,6 +96,8 @@ rule token = parse
 
 | '"'([^'"']* as lxm)'"'  {STRING_LIT(lxm)}
 
+| '''([^'''] as lxm) '''    {CHAR_LIT(lxm)}
+
 | '#'(seq as lxm)       {SEQUENCE_LIT(lxm)}
 | '#'(dna as lxm)       {DNA_LIT(lxm)}
 | '#'(rna as lxm)       {RNA_LIT(lxm)}

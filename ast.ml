@@ -1,4 +1,4 @@
-type uop = Neg | Not | Expon | Comp | Transcb | Translt | Translttwo  
+type uop = Neg | Not | Expon | Comp | Transcb | Translt | Translttwo
 
 type op = Add | Sub | Mult | Div | Mod | Exp | And | Or | Equal |
 		 Neq | Less | Leq | Greater | Geq
@@ -7,7 +7,7 @@ type typ = Int | Bool | Void | Char | Double | Aa | Nuc | Codon | Seq | Str | DN
 
 type ending = End
 
-type expr = 
+type expr =
 		  Litint of int 		(*added into Codegen*)
 		| Litbool of bool 		(*added into Codegen*)
 		| Litchar of char 		(*added into Codegen*)
@@ -15,6 +15,7 @@ type expr =
 		| Sequence of string
 		| Stringlit of string
 		| Litdouble of float
+		| Litchar of char
 		| Binop of expr * op * expr (*added into Codegen*)
 		| Lunop of uop * expr 		(*added into Codegen*)
 		| Runop of expr * uop 		(*added into Codegen*)
@@ -24,13 +25,13 @@ type expr =
 		| Noexpr 					(*added into Codegen*)
 
 
-type stmt = 
+type stmt =
 		  Block of stmt list
 		| Return of expr
 		| Expr of expr
 		| If of expr * stmt * stmt
 		| For of expr * expr * expr * stmt
-		| While of expr * stmt 
+		| While of expr * stmt
 		| Elseif of expr * stmt * stmt
 		| Else of stmt
 		| ArrayDecl of typ * expr * string
@@ -44,7 +45,7 @@ type func_decl = {
 	fname	: string;
 	formals	: bind list;
 	stmts: stmt list;
-	
+
 }
 
 type program =  {
@@ -93,7 +94,7 @@ let string_of_uop = function
 	| Comp 		-> "@"
 	| Transcb 	-> "->"
 	| Translt 	-> "+>"
-	| Translttwo-> "%>" 
+	| Translttwo-> "%>"
 	| Not		-> "!"
 
 let rec string_of_expr = function
@@ -123,7 +124,7 @@ let rec string_of_expr = function
 	| Assign(str,exp)->
 		str ^ "=" ^ string_of_expr exp
 	| Call(str,l_expr)->
-		str ^ "(" ^ 
+		str ^ "(" ^
 		String.concat "," (List.map string_of_expr l_expr) ^
 		")"
 	| Noexpr->
@@ -136,43 +137,43 @@ let rec string_of_stmt n stmt=
 	 match stmt with
 	|Block(l_stmt)->
 	 	blk ^ "{\n" ^ string_of_stmt_list n l_stmt ^ blk ^ "}\n"
-	
+
 	|If(cond,l_stmt,next_stmt)->
-		blk ^ "if->\n" ^ 
+		blk ^ "if->\n" ^
 		blk ^ "  cond= (" ^ string_of_expr cond ^ ")\n" ^
 		blk ^ "  body=\n" ^ string_of_stmt (n+2) l_stmt  ^
 		string_of_stmt n next_stmt
-	
+
 	|For(strt,cond,step,l_stmt)->
-		blk ^ "for->\n" ^ 
-		blk ^ "  init= " ^ string_of_expr strt ^ "\n" ^ 
-		blk ^ "  cond= " ^ string_of_expr cond ^ "\n" ^ 
-		blk ^ "  step= " ^ string_of_expr step ^ "\n" ^ 
-		blk ^ "  body=\n" ^ string_of_stmt (n+2) l_stmt 
-	
+		blk ^ "for->\n" ^
+		blk ^ "  init= " ^ string_of_expr strt ^ "\n" ^
+		blk ^ "  cond= " ^ string_of_expr cond ^ "\n" ^
+		blk ^ "  step= " ^ string_of_expr step ^ "\n" ^
+		blk ^ "  body=\n" ^ string_of_stmt (n+2) l_stmt
+
 	|While(cond,l_stmt)->
-		blk ^ "while->\n" ^ 
+		blk ^ "while->\n" ^
 		blk ^ "  cond= (" ^ string_of_expr cond ^ ")\n" ^
-		blk ^ "  body=\n" ^ string_of_stmt (n+2) l_stmt 
-	
+		blk ^ "  body=\n" ^ string_of_stmt (n+2) l_stmt
+
 	|Return(exp)->
-		blk ^ "return->\n" ^ 
+		blk ^ "return->\n" ^
 		blk ^ "  value= " ^ string_of_expr exp ^ "\n"
-	
+
 	|Expr(exp)->
-		blk ^ "expr->\n" ^ 
+		blk ^ "expr->\n" ^
 		blk ^ "  value= " ^ string_of_expr exp ^ "\n"
-	
+
 	|Elseif(cond,l_stmt,b_stmt)->
-		blk ^ "elseif->\n" ^ 
+		blk ^ "elseif->\n" ^
 		blk ^ "  cond= (" ^ string_of_expr cond ^ ")\n" ^
 		blk ^ "  body=\n" ^ string_of_stmt (n+2) l_stmt ^
 		string_of_stmt n b_stmt
-	
+
 	|Else(l_stmt)->
-		blk ^ "else->\n" ^ 
-		blk ^ "  body=\n" ^ string_of_stmt (n+2) l_stmt 
-	
+		blk ^ "else->\n" ^
+		blk ^ "  body=\n" ^ string_of_stmt (n+2) l_stmt
+
 	|VDecl(typ,str,exp)->
 		blk ^ "vari->\n" ^
 		blk ^ "  " ^ string_of_typ typ ^ " " ^ str ^ " = " ^ string_of_expr exp ^ "\n"

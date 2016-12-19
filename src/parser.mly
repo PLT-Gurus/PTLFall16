@@ -21,6 +21,7 @@ open Ast
 %token <int> INT_LIT
 %token <string> ID
 %token <string> SEQUENCE_LIT
+%token <char> CHAR_LIT
 %token <string> DNA_LIT
 %token <string> RNA_LIT
 %token <string> PEP_LIT
@@ -113,6 +114,7 @@ expr:
     |   DNA_LIT  { Litdna($1) }
     |   RNA_LIT  { Litrna($1) }
     |   PEP_LIT  { Litpep($1) }
+    |   CHAR_LIT    { Litchar($1) }
     |   STRING_LIT    { Stringlit($1)}
     |   expr PLUS expr  {Binop($1,Add,$3)}
     |   expr MINUS expr {Binop($1,Sub,$3)}
