@@ -48,29 +48,26 @@ entry:
   %d16 = load i8*, i8** %d1
   %complement7 = call i8* (i8*, ...) bitcast (i8* (i8*)* @complement to i8* (i8*, ...)*)(i8* %d16)
   %printf = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @fmt_str, i32 0, i32 0), i8* %complement7)
-  %r18 = load i8*, i8** %r1
-  %r19 = load i8*, i8** %r1
-  %printf10 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @fmt_str, i32 0, i32 0), i8* %r19)
-  %p111 = load i8*, i8** %p1
-  %p112 = load i8*, i8** %p1
-  %printf13 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @fmt_str, i32 0, i32 0), i8* %p112)
-  %printf14 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @fmt_str, i32 0, i32 0), i8* getelementptr inbounds ([5 x i8], [5 x i8]* @context.6, i32 0, i32 0))
-  %d115 = load i8*, i8** %d1
+  %p18 = load i8*, i8** %p1
+  %p19 = load i8*, i8** %p1
+  %printf10 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @fmt_str, i32 0, i32 0), i8* %p19)
+  %printf11 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @fmt_str, i32 0, i32 0), i8* getelementptr inbounds ([5 x i8], [5 x i8]* @context.6, i32 0, i32 0))
+  %d112 = load i8*, i8** %d1
+  %d113 = load i8*, i8** %d1
+  %d114 = load i8*, i8** %d1
+  %complement15 = call i8* (i8*, ...) bitcast (i8* (i8*)* @complement to i8* (i8*, ...)*)(i8* %d114)
   %d116 = load i8*, i8** %d1
   %d117 = load i8*, i8** %d1
-  %complement18 = call i8* (i8*, ...) bitcast (i8* (i8*)* @complement to i8* (i8*, ...)*)(i8* %d117)
-  %d119 = load i8*, i8** %d1
-  %d120 = load i8*, i8** %d1
+  %d118 = load i8*, i8** %d1
+  %complement19 = call i8* (i8*, ...) bitcast (i8* (i8*)* @complement to i8* (i8*, ...)*)(i8* %d118)
+  %printf20 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @fmt_str, i32 0, i32 0), i8* %complement19)
   %d121 = load i8*, i8** %d1
-  %complement22 = call i8* (i8*, ...) bitcast (i8* (i8*)* @complement to i8* (i8*, ...)*)(i8* %d121)
-  %printf23 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @fmt_str, i32 0, i32 0), i8* %complement22)
+  %d122 = load i8*, i8** %d1
+  %transcribe = call i8* (i8*, ...) bitcast (i8* (i8*)* @transcribe to i8* (i8*, ...)*)(i8* %d122)
+  %d123 = load i8*, i8** %d1
   %d124 = load i8*, i8** %d1
-  %d125 = load i8*, i8** %d1
-  %transcribe = call i8* (i8*, ...) bitcast (i8* (i8*)* @transcribe to i8* (i8*, ...)*)(i8* %d125)
-  %d126 = load i8*, i8** %d1
-  %d127 = load i8*, i8** %d1
-  %transcribe28 = call i8* (i8*, ...) bitcast (i8* (i8*)* @transcribe to i8* (i8*, ...)*)(i8* %d127)
-  %printf29 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @fmt_str, i32 0, i32 0), i8* %transcribe28)
+  %transcribe25 = call i8* (i8*, ...) bitcast (i8* (i8*)* @transcribe to i8* (i8*, ...)*)(i8* %d124)
+  %printf26 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @fmt_str, i32 0, i32 0), i8* %transcribe25)
   ret i32 0
 }
 

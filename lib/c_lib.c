@@ -59,7 +59,7 @@ char* transcribe(char* str){
             retstr[i] = 85;
     }
     retstr[length] = '\0';
-	printf("%d\n", length);
+	//printf("%d\n", length);
     return retstr;
 }
 
@@ -85,9 +85,16 @@ char* translate(char* str){
     int i = 0;
     while(str[i] != 0) i++;
     int length = i;
-    int start[3] = {-1, -1, -1};
-    int ending[3] = {-1, -1, -1};
-    int temp;
+    //printf("%s\n", "length");
+    //printf("%d\n", length);
+    // good here
+    int start[3];
+    int ending[3];
+    for(i=0; i<3; i++){
+        start[i] = -1;
+        ending[i] = -1;
+    }
+    int temp=0;
     for(i = 0; i<length-2; i++){
         temp = codon_number(str[i], str[i+1], str[i+2]);
         if(temp == 14 || temp == 46){
@@ -104,36 +111,57 @@ char* translate(char* str){
     temp = -1;
     for(i = 0; i<3; i++){
         if(start[i] != -1 && ending[i] != -1){
-            temp = i;
-            break;
+			if(temp != -1 && start[i]<start[temp])
+				temp = i;
+			if(temp == -1)
+				temp = i;
+			// temp = i;
+
         }
     }
+    //printf("%s\n", "temp");
+    //printf("%d\n", ending[0]);
+
     char* retdef = "No possible translation available.";
     if(temp == -1)
         return retdef;
-    int b = ending[i];
-    int a = start[i];
+    int b = ending[temp];
+    int a = start[temp];
 	//printf("%d\n", b);
 	//printf("%d\n", a);
     int ret_size = (b-a)/3 + 1;
 	//printf("%d\n", ret_size);
-    char retstr[ret_size];
+    char retstr [ret_size];
     //char* retstr = malloc(ret_size);
     int index;
     for(int i = a; i<b; i=i+3){
         temp = codon_number(str[i], str[i+1], str[i+2]);
         index = (i-a)/3;
-		printf("%d\n", index);
+		//printf("%d\n", index);
         retstr[index] = codon[temp];
-		printf("%c\n", codon[temp]);
-		printf("%c\n", retstr[index]);
+		//printf("%c\n", codon[temp]);
+		//printf("%c\n", retstr[index]);
     }
-    retstr[index+1] = '\0';
-    return retstr;
+	//printf("%d\n", ret_size);
+	retstr[ret_size-1] = '\0';
+	/*for(int i = 0; i<ret_size-1; i++)
+		printf("%c\n", retstr[i]); */
+	int length2 = ret_size - 1;
+	char retstr2 [length2];
+    int curr;
+    for(int i = 0; i<length2; i++){
+        curr = retstr[i];
+        retstr2[i] = curr;
+    }
+    retstr2[length2] = '\0';
+    return retstr2;
+    //return retstr;
 }
 
 char* translate2(char* str){
-	return translate(transcribe(str));
+	char* str1 = transcribe(str);
+	char* str2 = translate(str1);
+	return str2;
 }
 
 char* concat(char * input1, char * input2)
