@@ -164,7 +164,7 @@ let check_stmt func function_decls =
 		(match op with
 			  Transcb when t = Seq || t = DNA -> RNA
 			| Translt when t = Seq || t = RNA -> Pep
-			| Translttwo when t = Seq -> Aa
+			| Translttwo when t = Seq || t = DNA -> Pep
 			| _ -> raise (Failure ("illegal right unary operator " ^ string_of_uop op ^
 				string_of_typ t ^ " in " ^ string_of_expr ex)))
 		| Noexpr -> Void
@@ -258,7 +258,7 @@ let check_func func function_decls =
 
 	report_duplicate (fun n -> "duplicate formal " ^ n ^ " in " ^ func.fname) (List.map snd func.formals);
 
-	(locals_list) := List.fold_left (fun m (t, n) -> StringMap.add n t m) !(locals_list) func.formals;
+	(locals_list) := List.fold_left (fun m (t, n) -> StringMap.add n t m) StringMap.empty func.formals;
 (*
 	let symbols = List.fold_left (fun m (t, n) -> StringMap.add n t m) StringMap.empty func.formals
 	in

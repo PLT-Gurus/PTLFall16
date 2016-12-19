@@ -40,14 +40,13 @@ entry:
   %A5 = load i32, i32* %A1
   %B6 = load i32, i32* %B2
   %bop = add i32 %A3, %B4
-  %A7 = load i32, i32* %A1
-  %B8 = load i32, i32* %B2
-  %A9 = load i32, i32* %A1
-  %B10 = load i32, i32* %B2
-  %bop11 = add i32 %A7, %B8
   store i32 %bop, i32* %c
-  %c12 = load i32, i32* %c
-  ret i32 %c12
+  %A7 = load i32, i32* %A1
+  %A8 = load i32, i32* %A1
+  %bop9 = add i32 %A7, 1
+  store i32 %bop9, i32* %c
+  %c10 = load i32, i32* %c
+  ret i32 %c10
 }
 
 define i32 @main() {
@@ -57,13 +56,32 @@ entry:
   %i1 = load i32, i32* %i
   %i2 = load i32, i32* %i
   %bop = add i32 %i1, 1
+  store i32 %bop, i32* %i
   %i3 = load i32, i32* %i
   %i4 = load i32, i32* %i
-  %bop5 = add i32 %i3, 1
-  store i32 %bop, i32* %i
-  %i6 = load i32, i32* %i
-  %i7 = load i32, i32* %i
-  %printf = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @fmt_int.3, i32 0, i32 0), i32 %i7)
+  %printf = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @fmt_int.3, i32 0, i32 0), i32 %i4)
+  %a = alloca i8
+  store i8 13, i8* %a
+  %a5 = load i8, i8* %a
+  %a6 = load i8, i8* %a
+  %printf7 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @fmt_str.6, i32 0, i32 0), i8 %a6)
+  store i32 1, i32* %i
+  br label %while
+
+while:                                            ; preds = %while_body, %entry
+  %i11 = load i32, i32* %i
+  %i12 = load i32, i32* %i
+  %bop13 = icmp slt i32 %i11, 10
+  br i1 %bop13, label %while_body, label %merge
+
+while_body:                                       ; preds = %while
+  %i8 = load i32, i32* %i
+  %i9 = load i32, i32* %i
+  %bop10 = add i32 %i8, 1
+  store i32 %bop10, i32* %i
+  br label %while
+
+merge:                                            ; preds = %while
   ret i32 0
 }
 

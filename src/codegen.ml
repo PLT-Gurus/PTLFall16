@@ -53,29 +53,28 @@ let translate prog =
 
   let ext_func_lst=[
     (*NOTICE : the sequence of arg list has to be reverse order of origin C-func !!!*)
-    {name="test"          ;ret=i32_t;       arg=[|i32_t;i32_t|]           };
-    {name="printf"        ;ret=i32_t;       arg=[|L.pointer_type i8_t |]  };
-    {name="complement"    ;ret=str_t;       arg=[|str_t|]                 };
-    {name="transcribe"    ;ret=str_t;       arg=[|str_t|]                 };
-    {name="translate"     ;ret=str_t;       arg=[|str_t|]                 };
-    {name="translate2"    ;ret=str_t;       arg=[|str_t|]                 };
-    {name="concat"        ;ret=str_t;       arg=[|str_t; str_t|]          };
-    {name="strlength"     ;ret=i32_t;       arg=[|str_t|]                 };
-    {name="readFASTAFile" ;ret=str_t;       arg=[|str_t|]                 };
-    {name="readFile"      ;ret=str_t;       arg=[|str_t|]                 };
-    {name="double2int"    ;ret=i32_t;       arg=[|double_t|]              };
-    {name="int2double"    ;ret=double_t;    arg=[|i32_t|]                 };
-    {name="db_exp"        ;ret=double_t;    arg=[|double_t;double_t|]     };
-    {name="mod"           ;ret=i32_t;       arg=[|i32_t;i32_t|]           };
-    {name="mod"           ;ret=i32_t;       arg=[|i32_t;i32_t|]           };
-    {name="exp_ii"        ;ret=i32_t;       arg=[|i32_t;i32_t|]           };
-    {name="exp_di"        ;ret=double_t;    arg=[|i32_t;double_t|]        };
-    {name="exp_id"        ;ret=double_t;    arg=[|double_t;i32_t|]        };
-    {name="exp_dd"        ;ret=double_t;    arg=[|double_t;double_t|]     };
-    {name="print_tf"      ;ret=i32_t;       arg=[|i1_t|]                  };
-    {name="getChar"       ;ret=i8_t;         arg=[|str_dt; i32_t|]         };
-    {name="formatPep"       ;ret=str_t;         arg=[|str_t|]         };
-    {name="printPep"       ;ret=i32_t;         arg=[|str_t|]         }
+    {name="test"          ;ret=i32_t      ;arg=[|i32_t;i32_t|]           };
+    {name="printf"        ;ret=i32_t      ;arg=[|L.pointer_type i8_t |]  };
+    {name="complement"    ;ret=str_t      ;arg=[|str_t|]                 };
+    {name="transcribe"    ;ret=str_t      ;arg=[|str_t|]                 };
+    {name="translate"     ;ret=str_t      ;arg=[|str_t|]                 };
+    {name="translate2"    ;ret=str_t      ;arg=[|str_t|]                 };
+    {name="concat"        ;ret=str_t      ;arg=[|str_t; str_t|]          };
+    {name="strlength"     ;ret=i32_t      ;arg=[|str_t|]                 };
+    {name="readFASTAFile" ;ret=str_t      ;arg=[|str_t|]                 };
+    {name="readFile"      ;ret=str_t      ;arg=[|str_t|]                 };
+    {name="double2int"    ;ret=i32_t      ;arg=[|double_t|]              };
+    {name="int2double"    ;ret=double_t   ;arg=[|i32_t|]                 };
+    {name="db_exp"        ;ret=double_t   ;arg=[|double_t;double_t|]     };
+    {name="mod"           ;ret=i32_t      ;arg=[|i32_t;i32_t|]           };
+    {name="exp_ii"        ;ret=i32_t      ;arg=[|i32_t;i32_t|]           };
+    {name="exp_di"        ;ret=double_t   ;arg=[|i32_t;double_t|]        };
+    {name="exp_id"        ;ret=double_t   ;arg=[|double_t;i32_t|]        };
+    {name="exp_dd"        ;ret=double_t   ;arg=[|double_t;double_t|]     };
+    {name="print_tf"      ;ret=i32_t      ;arg=[|i1_t|]                  };
+    {name="getChar"       ;ret=i8_t       ;arg=[|str_dt; i32_t|]         };
+    {name="formatPep"     ;ret=str_t      ;arg=[|str_t|]                 };
+    {name="printPep"      ;ret=i32_t      ;arg=[|str_t|]                 }
   ]
   in
 
@@ -362,9 +361,11 @@ let translate prog =
             | A.Translttwo  -> ext_call "translate2"
           ) [e] bvtup), (snd (add_expr bvtup e)))
 
-      | A.Assign (s, e) -> let e' = fst (add_expr bvtup e )in
-          let eType = snd (add_expr bvtup e ) in
-          ignore (L.build_store e' (fst (fst (lookup s (snd bvtup)))) (fst bvtup)); (e', eType)
+      | A.Assign (s, e) -> 
+          let e' = add_expr bvtup e in 
+          let eVal = fst e' in
+          let eType = snd e' in
+          ignore (L.build_store eVal (fst (fst (lookup s (snd bvtup)))) (fst bvtup)); (eVal, eType)
 
       | A.ArrayAssign (id, index, exprhs) ->
           let exprValue = fst (add_expr bvtup exprhs) in
