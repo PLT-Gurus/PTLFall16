@@ -10,6 +10,11 @@ let dnuc = ['A''G''T''C''a''g''t''c']
 let rnuc = ['A''G''U''C''a''g''u''c']
 let aa = ['A''C'-'I''K'-'N''P'-'T''U'-'W''Y''a''c'-'i''k'-'n''p'-'t''u'-'w''y']
 let pep = (aa '-')+ aa
+let escape = '\\' ['\\' ''' '"' 'n' 'r' 't']
+let escape_char = ''' (escape) '''
+let ascii = ([' '-'!' '#'-'[' ']'-'~'])
+let digit = ['0'-'9']
+let char = ''' ( ascii | digit ) '''
 
 rule token = parse
   [' ' '\t' '\r' '\n'] { token lexbuf } (* Whitespace *)
@@ -96,7 +101,8 @@ rule token = parse
 
 | '"'([^'"']* as lxm)'"'  {STRING_LIT(lxm)}
 
-| '''([^'''] as lxm) '''    {CHAR_LIT(lxm)}
+| char as lxm  		{ CHAR_LIT( String.get lxm 1 ) }
+| escape_char as lxm{ CHAR_LIT( String.get (unescape lxm) 1) }
 
 | '#'(seq as lxm)       {SEQUENCE_LIT(lxm)}
 | '#'(dna as lxm)       {DNA_LIT(lxm)}
