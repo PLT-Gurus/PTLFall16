@@ -59,6 +59,10 @@ let array_type_unfold t =
 	| ArrayDNA -> DNA
 	| ArrayRNA -> RNA
 	| ArrayPep -> Pep
+	| String -> Char
+	| DNA -> Nuc
+	| RNA -> Nuc
+	| Pep -> Aa
 	| _ -> Int
 ;;
 
@@ -137,6 +141,10 @@ let check_stmt func function_decls =
 			| Add when t1 =  DNA && t2 = DNA -> DNA
 			| Add when t1 =  RNA && t2 = RNA -> RNA
 			| Add when t1 =  Seq && t2 = Seq -> Seq
+			| Add when t1 =  DNA && t2 = Seq -> DNA
+			| Add when t1 =  Seq && t2 = DNA -> DNA
+			| Add when t1 =  RNA && t2 = Seq -> RNA
+			| Add when t1 =  Seq && t2 = RNA -> RNA
 			| Mod when t1 = Int && t2 = Int -> Int
 			| Equal | Neq when t1 = t2 -> Bool
 			| Less | Leq | Greater | Geq when t1 = Int && t2 = Int -> Bool
