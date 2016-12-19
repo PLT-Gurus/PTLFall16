@@ -59,7 +59,7 @@ let array_type_unfold t =
 	| ArrayDNA -> DNA
 	| ArrayRNA -> RNA
 	| ArrayPep -> Pep
-	| String -> Char
+	| Str -> Char
 	| DNA -> Nuc
 	| RNA -> Nuc
 	| Pep -> Aa
