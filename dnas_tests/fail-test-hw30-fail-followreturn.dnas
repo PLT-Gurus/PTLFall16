@@ -1,0 +1,8 @@
+double sample(int a, double b, double c)
+  b = 5.0;
+  c = 2.5;
+  double z = b + c;
+  return z;
+  a= 5;
+  end
+  /*Fatal error: exception Failure("nothing may follow a return")*/

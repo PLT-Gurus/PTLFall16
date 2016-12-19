@@ -1,0 +1,8 @@
+int b = 4;
+int c = 6;
+if b +1 then
+  b = b +1;
+else
+  c = b +c;
+end
+/*Fatal error: exception Failure("expected Boolean expression in b+1")*/

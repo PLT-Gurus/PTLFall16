@@ -1,0 +1,217 @@
+/usr/bin/lli
+
+###### Testing test-hw
+./DNAs.native < dnas_tests/test-hw.dnas > test-hw.ll
+lli test-hw.ll > test-hw.out
+diff -b test-hw.out dnas_tests/test-hw.out > test-hw.diff
+###### SUCCESS
+
+###### Testing test-hw10
+./DNAs.native < dnas_tests/test-hw10.dnas > test-hw10.ll
+Fatal error: exception Failure("illegal assignment DNA = str in hi = atgc")
+./test_DNAs.sh: 34: ./test_DNAs.sh: error: not found
+###### SUCCESS
+
+###### Testing test-hw11
+./DNAs.native < dnas_tests/test-hw11.dnas > test-hw11.ll
+Fatal error: exception Failure("illegal assignment DNA = str in David[0]=atgc")
+./test_DNAs.sh: 34: ./test_DNAs.sh: error: not found
+###### SUCCESS
+
+###### Testing test-hw12
+./DNAs.native < dnas_tests/test-hw12.dnas > test-hw12.ll
+lli test-hw12.ll > test-hw12.out
+diff -b test-hw12.out dnas_tests/test-hw12.out > test-hw12.diff
+###### SUCCESS
+
+###### Testing test-hw13Print
+./DNAs.native < dnas_tests/test-hw13Print.dnas > test-hw13Print.ll
+lli test-hw13Print.ll > test-hw13Print.out
+diff -b test-hw13Print.out dnas_tests/test-hw13Print.out > test-hw13Print.diff
+###### SUCCESS
+
+###### Testing test-hw14
+./DNAs.native < dnas_tests/test-hw14.dnas > test-hw14.ll
+lli test-hw14.ll > test-hw14.out
+diff -b test-hw14.out dnas_tests/test-hw14.out > test-hw14.diff
+###### SUCCESS
+
+###### Testing test-hw15
+./DNAs.native < dnas_tests/test-hw15.dnas > test-hw15.ll
+lli test-hw15.ll > test-hw15.out
+diff -b test-hw15.out dnas_tests/test-hw15.out > test-hw15.diff
+###### SUCCESS
+
+###### Testing test-hw16
+./DNAs.native < dnas_tests/test-hw16.dnas > test-hw16.ll
+lli test-hw16.ll > test-hw16.out
+diff -b test-hw16.out dnas_tests/test-hw16.out > test-hw16.diff
+###### SUCCESS
+
+###### Testing test-hw17
+./DNAs.native < dnas_tests/test-hw17.dnas > test-hw17.ll
+lli test-hw17.ll > test-hw17.out
+diff -b test-hw17.out dnas_tests/test-hw17.out > test-hw17.diff
+###### SUCCESS
+
+###### Testing test-hw18
+./DNAs.native < dnas_tests/test-hw18.dnas > test-hw18.ll
+Fatal error: exception Failure("undeclared identifier myarray")
+./test_DNAs.sh: 34: ./test_DNAs.sh: error: not found
+###### SUCCESS
+
+###### Testing test-hw19
+./DNAs.native < dnas_tests/test-hw19.dnas > test-hw19.ll
+lli test-hw19.ll > test-hw19.out
+diff -b test-hw19.out dnas_tests/test-hw19.out > test-hw19.diff
+###### SUCCESS
+
+###### Testing test-hw2
+./DNAs.native < dnas_tests/test-hw2.dnas > test-hw2.ll
+Fatal error: exception Failure("unrecognized function print_str")
+./test_DNAs.sh: 34: ./test_DNAs.sh: error: not found
+###### SUCCESS
+
+###### Testing test-hw20-UDFprint
+./DNAs.native < dnas_tests/test-hw20-UDFprint.dnas > test-hw20-UDFprint.ll
+Fatal error: exception Failure("function print may not be defined")
+./test_DNAs.sh: 34: ./test_DNAs.sh: error: not found
+###### SUCCESS
+
+###### Testing test-hw21-UDFdupeformal
+./DNAs.native < dnas_tests/test-hw21-UDFdupeformal.dnas > test-hw21-UDFdupeformal.ll
+Fatal error: exception Failure("duplicate formal a in sample")
+./test_DNAs.sh: 34: ./test_DNAs.sh: error: not found
+###### SUCCESS
+
+###### Testing test-hw22-scopetest
+./DNAs.native < dnas_tests/test-hw22-scopetest.dnas > test-hw22-scopetest.ll
+lli test-hw22-scopetest.ll > test-hw22-scopetest.out
+diff -b test-hw22-scopetest.out dnas_tests/test-hw22-scopetest.out > test-hw22-scopetest.diff
+###### SUCCESS
+
+###### Testing test-hw23
+./DNAs.native < dnas_tests/test-hw23.dnas > test-hw23.ll
+lli test-hw23.ll > test-hw23.out
+diff -b test-hw23.out dnas_tests/test-hw23.out > test-hw23.diff
+###### SUCCESS
+
+###### Testing test-hw24
+./DNAs.native < dnas_tests/test-hw24.dnas > test-hw24.ll
+Fatal error: exception Failure("illegal right unary operator ->str in sample->")
+./test_DNAs.sh: 34: ./test_DNAs.sh: error: not found
+###### SUCCESS
+
+###### Testing test-hw25dna
+./DNAs.native < dnas_tests/test-hw25dna.dnas > test-hw25dna.ll
+lli test-hw25dna.ll > test-hw25dna.out
+diff -b test-hw25dna.out dnas_tests/test-hw25dna.out > test-hw25dna.diff
+###### SUCCESS
+
+###### Testing test-hw26-failassign
+./DNAs.native < dnas_tests/test-hw26-failassign.dnas > test-hw26-failassign.ll
+Fatal error: exception Failure("illegal assignment int = bool in b = true")
+./test_DNAs.sh: 34: ./test_DNAs.sh: error: not found
+###### SUCCESS
+
+###### Testing test-hw27-arraybug
+./DNAs.native < dnas_tests/test-hw27-arraybug.dnas > test-hw27-arraybug.ll
+lli test-hw27-arraybug.ll > test-hw27-arraybug.out
+diff -b test-hw27-arraybug.out dnas_tests/test-hw27-arraybug.out > test-hw27-arraybug.diff
+###### SUCCESS
+
+###### Testing test-hw29-fail-badreturn
+./DNAs.native < dnas_tests/test-hw29-fail-badreturn.dnas > test-hw29-fail-badreturn.ll
+Fatal error: exception Failure("return gives double expected int in z")
+./test_DNAs.sh: 34: ./test_DNAs.sh: error: not found
+###### SUCCESS
+
+###### Testing test-hw3
+./DNAs.native < dnas_tests/test-hw3.dnas > test-hw3.ll
+lli test-hw3.ll > test-hw3.out
+diff -b test-hw3.out dnas_tests/test-hw3.out > test-hw3.diff
+###### SUCCESS
+
+###### Testing test-hw30-fail-followreturn
+./DNAs.native < dnas_tests/test-hw30-fail-followreturn.dnas > test-hw30-fail-followreturn.ll
+Fatal error: exception Failure("nothing may follow a return")
+./test_DNAs.sh: 34: ./test_DNAs.sh: error: not found
+###### SUCCESS
+
+###### Testing test-hw31-fail-intforArray
+./DNAs.native < dnas_tests/test-hw31-fail-intforArray.dnas > test-hw31-fail-intforArray.ll
+Fatal error: exception Failure("expected Integer expression in 5.5")
+./test_DNAs.sh: 34: ./test_DNAs.sh: error: not found
+###### SUCCESS
+
+###### Testing test-hw32-fail-intforArray2
+./DNAs.native < dnas_tests/test-hw32-fail-intforArray2.dnas > test-hw32-fail-intforArray2.ll
+Fatal error: exception Failure("expected Integer expression in 5.6")
+./test_DNAs.sh: 34: ./test_DNAs.sh: error: not found
+###### SUCCESS
+
+###### Testing test-hw33-fail-ifbool
+./DNAs.native < dnas_tests/test-hw33-fail-ifbool.dnas > test-hw33-fail-ifbool.ll
+Fatal error: exception Failure("expected Boolean expression in b+1")
+./test_DNAs.sh: 34: ./test_DNAs.sh: error: not found
+###### SUCCESS
+
+###### Testing test-hw34-pass-forbool
+./DNAs.native < dnas_tests/test-hw34-pass-forbool.dnas > test-hw34-pass-forbool.ll
+lli test-hw34-pass-forbool.ll > test-hw34-pass-forbool.out
+diff -b test-hw34-pass-forbool.out dnas_tests/test-hw34-pass-forbool.out > test-hw34-pass-forbool.diff
+###### SUCCESS
+
+###### Testing test-hw36-fail-whilebool
+./DNAs.native < dnas_tests/test-hw36-fail-whilebool.dnas > test-hw36-fail-whilebool.ll
+Fatal error: exception Failure("expected Boolean expression in i+1")
+./test_DNAs.sh: 34: ./test_DNAs.sh: error: not found
+###### SUCCESS
+
+###### Testing test-hw4
+./DNAs.native < dnas_tests/test-hw4.dnas > test-hw4.ll
+Fatal error: exception Failure("unrecognized function print_str")
+./test_DNAs.sh: 34: ./test_DNAs.sh: error: not found
+###### SUCCESS
+
+###### Testing test-hw5
+./DNAs.native < dnas_tests/test-hw5.dnas > test-hw5.ll
+Fatal error: exception Failure("unrecognized function print_str")
+./test_DNAs.sh: 34: ./test_DNAs.sh: error: not found
+###### SUCCESS
+
+###### Testing test-hw6
+./DNAs.native < dnas_tests/test-hw6.dnas > test-hw6.ll
+lli test-hw6.ll > test-hw6.out
+diff -b test-hw6.out dnas_tests/test-hw6.out > test-hw6.diff
+###### SUCCESS
+
+###### Testing test-hw7
+./DNAs.native < dnas_tests/test-hw7.dnas > test-hw7.ll
+lli test-hw7.ll > test-hw7.out
+diff -b test-hw7.out dnas_tests/test-hw7.out > test-hw7.diff
+###### SUCCESS
+
+###### Testing test-hw8
+./DNAs.native < dnas_tests/test-hw8.dnas > test-hw8.ll
+Fatal error: exception Failure("unrecognized function print_str")
+./test_DNAs.sh: 34: ./test_DNAs.sh: error: not found
+###### SUCCESS
+
+###### Testing test-hw9
+./DNAs.native < dnas_tests/test-hw9.dnas > test-hw9.ll
+Fatal error: exception Failure("duplicate function f1")
+./test_DNAs.sh: 34: ./test_DNAs.sh: error: not found
+###### SUCCESS
+
+###### Testing fail-test-hw35-fail-forbool
+./DNAs.native < dnas_tests/fail-test-hw35-fail-forbool.dnas > fail-test-hw35-fail-forbool.ll
+Fatal error: exception Failure("expected Boolean expression in i+1")
+./test_DNAs.sh: 34: ./test_DNAs.sh: error: not found
+###### SUCCESS
+
+###### Testing fail-test-hw37-fail-illegalassign
+./DNAs.native < dnas_tests/fail-test-hw37-fail-illegalassign.dnas > fail-test-hw37-fail-illegalassign.ll
+Fatal error: exception Failure("illegal assignment int = bool in i=true")
+./test_DNAs.sh: 34: ./test_DNAs.sh: error: not found
+###### SUCCESS

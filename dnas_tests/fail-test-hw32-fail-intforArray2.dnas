@@ -1,0 +1,4 @@
+int [5] myarray;
+myarray [5.6] = 5;
+
+/*Fatal error: exception Failure("expected Integer expression in 5.6")*/

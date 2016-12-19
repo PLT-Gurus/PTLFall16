@@ -1,0 +1,8 @@
+int sample(int a, double b, double c)
+  b = 5.0;
+  c = 2.5;
+  double z = b + c;
+  return z;
+  end
+  /*Fatal error: exception Failure("return gives double expected int in z")
+*/

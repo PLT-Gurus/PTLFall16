@@ -1,0 +1,3 @@
+int i =0 ;
+i = true;
+/*Fatal error: exception Failure("illegal assignment int = bool in i=true")*/

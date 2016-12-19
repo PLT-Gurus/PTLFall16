@@ -30,6 +30,7 @@ Usage() {
 SignalError() {
     if [ $error -eq 0 ] ; then
         echo "Failed"
+          failed=$((failed+1))
         error = 1
     fi
     echo "  $1"
@@ -128,11 +129,11 @@ CheckFail() {
 	echo "OK"
 	echo "###### SUCCESS" 1>&2
 	failed=$((failed+1))
-	
+
     else
 	echo "###### FAILED" 1>&2
 	globalerror=$error
-	
+
     fi
 }
 

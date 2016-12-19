@@ -1,0 +1,3 @@
+int [5.5] myarray;
+/*Fatal error: exception Failure("expected Integer expression in 5.5")
+*/
