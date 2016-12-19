@@ -98,10 +98,14 @@ ocamlfind ocamlc -c -w +a-4 -package llvm.target -package llvm.linker -package l
 # Target: src/semant.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:src/semant.cmo, file:src/semant.ml, implem, ocaml, package(llvm), package(llvm.analysis), package(llvm.bitreader), package(llvm.bitwriter), package(llvm.linker), package(llvm.target), quiet }
 ocamlfind ocamlc -c -w +a-4 -package llvm.target -package llvm.linker -package llvm.bitreader -package llvm.bitwriter -package llvm.analysis -package llvm -I src -o src/semant.cmo src/semant.ml
 + ocamlfind ocamlc -c -w +a-4 -package llvm.target -package llvm.linker -package llvm.bitreader -package llvm.bitwriter -package llvm.analysis -package llvm -I src -o src/semant.cmo src/semant.ml
-File "src/semant.ml", line 112, characters 16-3949:
+File "src/semant.ml", line 116, characters 16-3959:
 Warning 8: this pattern-matching is not exhaustive.
 Here is an example of a value that is not matched:
-(Typecast (_, _)|Fread _|Read _)
+Typecast (_, _)
+File "src/semant.ml", line 191, characters 9-12:
+Warning 27: unused variable s.
+File "src/semant.ml", line 192, characters 8-11:
+Warning 27: unused variable s.
 # Target: src/DNAs.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:src/DNAs.cmo, file:src/DNAs.ml, implem, ocaml, package(llvm), package(llvm.analysis), package(llvm.bitreader), package(llvm.bitwriter), package(llvm.linker), package(llvm.target), quiet }
 ocamlfind ocamlc -c -w +a-4 -package llvm.target -package llvm.linker -package llvm.bitreader -package llvm.bitwriter -package llvm.analysis -package llvm -I src -o src/DNAs.cmo src/DNAs.ml
 + ocamlfind ocamlc -c -w +a-4 -package llvm.target -package llvm.linker -package llvm.bitreader -package llvm.bitwriter -package llvm.analysis -package llvm -I src -o src/DNAs.cmo src/DNAs.ml
@@ -195,10 +199,14 @@ ocamlfind ocamlopt -c -w +a-4 -package llvm.target -package llvm.linker -package
 # Target: src/semant.cmx, tags: { compile, extension:cmx, extension:ml, file:src/semant.cmx, file:src/semant.ml, implem, native, ocaml, package(llvm), package(llvm.analysis), package(llvm.bitreader), package(llvm.bitwriter), package(llvm.linker), package(llvm.target), quiet }
 ocamlfind ocamlopt -c -w +a-4 -package llvm.target -package llvm.linker -package llvm.bitreader -package llvm.bitwriter -package llvm.analysis -package llvm -I src -o src/semant.cmx src/semant.ml
 + ocamlfind ocamlopt -c -w +a-4 -package llvm.target -package llvm.linker -package llvm.bitreader -package llvm.bitwriter -package llvm.analysis -package llvm -I src -o src/semant.cmx src/semant.ml
-File "src/semant.ml", line 112, characters 16-3949:
+File "src/semant.ml", line 116, characters 16-3959:
 Warning 8: this pattern-matching is not exhaustive.
 Here is an example of a value that is not matched:
-(Typecast (_, _)|Fread _|Read _)
+Typecast (_, _)
+File "src/semant.ml", line 191, characters 9-12:
+Warning 27: unused variable s.
+File "src/semant.ml", line 192, characters 8-11:
+Warning 27: unused variable s.
 # Target: src/DNAs.cmx, tags: { compile, extension:cmx, extension:ml, file:src/DNAs.cmx, file:src/DNAs.ml, implem, native, ocaml, package(llvm), package(llvm.analysis), package(llvm.bitreader), package(llvm.bitwriter), package(llvm.linker), package(llvm.target), quiet }
 ocamlfind ocamlopt -c -w +a-4 -package llvm.target -package llvm.linker -package llvm.bitreader -package llvm.bitwriter -package llvm.analysis -package llvm -I src -o src/DNAs.cmx src/DNAs.ml
 + ocamlfind ocamlopt -c -w +a-4 -package llvm.target -package llvm.linker -package llvm.bitreader -package llvm.bitwriter -package llvm.analysis -package llvm -I src -o src/DNAs.cmx src/DNAs.ml

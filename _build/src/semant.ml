@@ -94,7 +94,11 @@ let check_UDF_conflict funcs =
 	report_duplicate (fun n -> "duplicate function " ^ n) (List.map (fun fd -> fd.fname) funcs)
 ;;
 
-let built_in_decls = StringMap.empty
+let built_in_decls = StringMap.add "readFASTA"
+     { typ = DNA; fname = "readFASTA"; formals = [(Str, "x")];
+       stmts = [] } (StringMap.singleton "read"
+     { typ = Str; fname = "read"; formals = [(Str, "x")];
+       stmts = [] })
 ;;
 
 let function_decl s function_decls = try StringMap.find s function_decls
@@ -183,9 +187,9 @@ let check_stmt func function_decls =
 				" = " ^ string_of_typ rt ^ " in " ^
 			string_of_expr ex))
 		| SizeOf(s) -> ignore(type_of_identifier s); Int
-	(*	| Typecast =()
-		| Fread = ()
-		| Read = () *)
+	(*	| Typecast =()	*)
+		| Fread(s) -> DNA
+		| Read(s) -> Str
 		| Call(fname, actuals) as call -> if fname = "print" then (
 				if List.length actuals != 1 then
 					raise (Failure ("expecting " ^ string_of_int 1 ^ " argument in print function call."))

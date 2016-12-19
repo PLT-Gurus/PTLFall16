@@ -21,8 +21,8 @@ target triple = "x86_64-pc-linux-gnu"
 @fmt_str.12 = private unnamed_addr constant [3 x i8] c"%s\00"
 @fmt_str.13 = private unnamed_addr constant [5 x i8] c"%.3f\00"
 @fmt_str.14 = private unnamed_addr constant [3 x i8] c"%c\00"
-@context = private unnamed_addr constant [5 x i8] c"aaaa\00"
-@context.15 = private unnamed_addr constant [5 x i8] c"aaaa\00"
+@context = private unnamed_addr constant [11 x i8] c"aaaatccggg\00"
+@context.15 = private unnamed_addr constant [12 x i8] c"aaaagagttgc\00"
 @codon = global [64 x i8] c"KDKDTTTTRSRSIIMIQHQHPPPPRRRRLLLLEDEDAAAAGGGGVVVVBYBYSSSSBCWCLFLF", align 16
 @.str = private unnamed_addr constant [16 x i8] c"Hello I'm in C\0A\00", align 1
 @translate.start = private unnamed_addr constant [3 x i32] [i32 -1, i32 -1, i32 -1], align 4
@@ -49,259 +49,280 @@ entry:
   %sizeB4 = alloca i32
   store i32 %sizeB, i32* %sizeB4
   %sizeA5 = load i32, i32* %sizeA3
-  %sizeB6 = load i32, i32* %sizeB4
-  %sizeA7 = load i32, i32* %sizeA3
+  %sizeA6 = load i32, i32* %sizeA3
+  %bop = add i32 %sizeA5, 1
+  %sizeB7 = load i32, i32* %sizeB4
   %sizeB8 = load i32, i32* %sizeB4
-  %bop = mul i32 %sizeA5, %sizeB6
-  %C = alloca i32, i32 %bop
+  %bop9 = add i32 %sizeB7, 1
+  %sizeA10 = load i32, i32* %sizeA3
+  %sizeA11 = load i32, i32* %sizeA3
+  %bop12 = add i32 %sizeA10, 1
+  %sizeB13 = load i32, i32* %sizeB4
+  %sizeB14 = load i32, i32* %sizeB4
+  %bop15 = add i32 %sizeB13, 1
+  %bop16 = mul i32 %bop, %bop9
+  %C = alloca i32, i32 %bop16
   %i2 = alloca i32
   store i32 0, i32* %i2
-  %i29 = load i32, i32* %i2
+  %i217 = load i32, i32* %i2
   br label %while
 
 while:                                            ; preds = %while_body, %entry
-  %i215 = load i32, i32* %i2
-  %sizeA16 = load i32, i32* %sizeA3
-  %sizeB17 = load i32, i32* %sizeB4
-  %sizeA18 = load i32, i32* %sizeA3
-  %sizeB19 = load i32, i32* %sizeB4
-  %bop20 = mul i32 %sizeA16, %sizeB17
-  %i221 = load i32, i32* %i2
-  %sizeA22 = load i32, i32* %sizeA3
-  %sizeB23 = load i32, i32* %sizeB4
+  %i223 = load i32, i32* %i2
   %sizeA24 = load i32, i32* %sizeA3
-  %sizeB25 = load i32, i32* %sizeB4
-  %bop26 = mul i32 %sizeA22, %sizeB23
-  %bop27 = icmp slt i32 %i215, %bop20
-  br i1 %bop27, label %while_body, label %merge
+  %sizeA25 = load i32, i32* %sizeA3
+  %bop26 = add i32 %sizeA24, 1
+  %sizeB27 = load i32, i32* %sizeB4
+  %sizeB28 = load i32, i32* %sizeB4
+  %bop29 = add i32 %sizeB27, 1
+  %sizeA30 = load i32, i32* %sizeA3
+  %sizeA31 = load i32, i32* %sizeA3
+  %bop32 = add i32 %sizeA30, 1
+  %sizeB33 = load i32, i32* %sizeB4
+  %sizeB34 = load i32, i32* %sizeB4
+  %bop35 = add i32 %sizeB33, 1
+  %bop36 = mul i32 %bop26, %bop29
+  %i237 = load i32, i32* %i2
+  %sizeA38 = load i32, i32* %sizeA3
+  %sizeA39 = load i32, i32* %sizeA3
+  %bop40 = add i32 %sizeA38, 1
+  %sizeB41 = load i32, i32* %sizeB4
+  %sizeB42 = load i32, i32* %sizeB4
+  %bop43 = add i32 %sizeB41, 1
+  %sizeA44 = load i32, i32* %sizeA3
+  %sizeA45 = load i32, i32* %sizeA3
+  %bop46 = add i32 %sizeA44, 1
+  %sizeB47 = load i32, i32* %sizeB4
+  %sizeB48 = load i32, i32* %sizeB4
+  %bop49 = add i32 %sizeB47, 1
+  %bop50 = mul i32 %bop40, %bop43
+  %bop51 = icmp slt i32 %i223, %bop36
+  br i1 %bop51, label %while_body, label %merge
 
 while_body:                                       ; preds = %while
-  %i210 = load i32, i32* %i2
-  %C11 = getelementptr i32, i32* %C, i32 %i210
-  store i32 0, i32* %C11
-  %i212 = load i32, i32* %i2
-  %i213 = load i32, i32* %i2
-  %bop14 = add i32 %i212, 1
-  store i32 %bop14, i32* %i2
+  %i218 = load i32, i32* %i2
+  %C19 = getelementptr i32, i32* %C, i32 %i218
+  store i32 0, i32* %C19
+  %i220 = load i32, i32* %i2
+  %i221 = load i32, i32* %i2
+  %bop22 = add i32 %i220, 1
+  store i32 %bop22, i32* %i2
   br label %while
 
 merge:                                            ; preds = %while
   %i = alloca i32
-  %sizeA28 = load i32, i32* %sizeA3
-  store i32 %sizeA28, i32* %i
+  %sizeA52 = load i32, i32* %sizeA3
+  store i32 %sizeA52, i32* %i
   %j = alloca i32
-  %sizeB29 = load i32, i32* %sizeB4
-  store i32 %sizeB29, i32* %j
-  %sizeA30 = load i32, i32* %sizeA3
-  store i32 %sizeA30, i32* %i
-  br label %while31
+  %sizeB53 = load i32, i32* %sizeB4
+  store i32 %sizeB53, i32* %j
+  %sizeA54 = load i32, i32* %sizeA3
+  store i32 %sizeA54, i32* %i
+  br label %while55
 
-while31:                                          ; preds = %merge141, %merge
-  %i145 = load i32, i32* %i
-  %i146 = load i32, i32* %i
-  %bop147 = icmp sge i32 %i145, 0
-  br i1 %bop147, label %while_body32, label %merge148
+while55:                                          ; preds = %merge165, %merge
+  %i169 = load i32, i32* %i
+  %i170 = load i32, i32* %i
+  %bop171 = icmp sge i32 %i169, 0
+  br i1 %bop171, label %while_body56, label %merge172
 
-while_body32:                                     ; preds = %while31
-  %sizeB33 = load i32, i32* %sizeB4
-  store i32 %sizeB33, i32* %j
-  br label %while34
+while_body56:                                     ; preds = %while55
+  %sizeB57 = load i32, i32* %sizeB4
+  store i32 %sizeB57, i32* %j
+  br label %while58
 
-while34:                                          ; preds = %merge57, %while_body32
-  %j138 = load i32, i32* %j
-  %j139 = load i32, i32* %j
-  %bop140 = icmp sge i32 %j138, 0
-  br i1 %bop140, label %while_body35, label %merge141
+while58:                                          ; preds = %merge81, %while_body56
+  %j162 = load i32, i32* %j
+  %j163 = load i32, i32* %j
+  %bop164 = icmp sge i32 %j162, 0
+  br i1 %bop164, label %while_body59, label %merge165
 
-while_body35:                                     ; preds = %while34
-  %i36 = load i32, i32* %i
-  %sizeA37 = load i32, i32* %sizeA3
-  %i38 = load i32, i32* %i
-  %sizeA39 = load i32, i32* %sizeA3
-  %bop40 = icmp eq i32 %i36, %sizeA37
-  %j41 = load i32, i32* %j
-  %sizeB42 = load i32, i32* %sizeB4
-  %j43 = load i32, i32* %j
-  %sizeB44 = load i32, i32* %sizeB4
-  %bop45 = icmp eq i32 %j41, %sizeB42
-  %i46 = load i32, i32* %i
-  %sizeA47 = load i32, i32* %sizeA3
-  %i48 = load i32, i32* %i
-  %sizeA49 = load i32, i32* %sizeA3
-  %bop50 = icmp eq i32 %i46, %sizeA47
-  %j51 = load i32, i32* %j
-  %sizeB52 = load i32, i32* %sizeB4
-  %j53 = load i32, i32* %j
-  %sizeB54 = load i32, i32* %sizeB4
-  %bop55 = icmp eq i32 %j51, %sizeB52
-  %bop56 = or i1 %bop40, %bop45
-  br i1 %bop56, label %then, label %else
-
-merge57:                                          ; preds = %merge72, %then
-  %j135 = load i32, i32* %j
-  %j136 = load i32, i32* %j
-  %bop137 = sub i32 %j135, 1
-  store i32 %bop137, i32* %j
-  br label %while34
-
-then:                                             ; preds = %while_body35
-  %index = alloca i32
-  %sizeB58 = load i32, i32* %sizeB4
-  %sizeA59 = load i32, i32* %sizeA3
-  %j60 = load i32, i32* %j
-  %i61 = load i32, i32* %i
-  %getIndex_result = call i32 @getIndex(i32 %i61, i32 %j60, i32 %sizeA59, i32 %sizeB58)
-  store i32 %getIndex_result, i32* %index
-  %index62 = load i32, i32* %index
-  %C63 = getelementptr i32, i32* %C, i32 %index62
-  store i32 0, i32* %C63
-  br label %merge57
-
-else:                                             ; preds = %while_body35
-  %i64 = load i32, i32* %i
-  %getChar = call i8 (i8**, i32, ...) bitcast (i8 (i8**, i32)* @getChar to i8 (i8**, i32, ...)*)(i8** %A1, i32 %i64)
+while_body59:                                     ; preds = %while58
+  %i60 = load i32, i32* %i
+  %sizeA61 = load i32, i32* %sizeA3
+  %i62 = load i32, i32* %i
+  %sizeA63 = load i32, i32* %sizeA3
+  %bop64 = icmp eq i32 %i60, %sizeA61
   %j65 = load i32, i32* %j
-  %getChar66 = call i8 (i8**, i32, ...) bitcast (i8 (i8**, i32)* @getChar to i8 (i8**, i32, ...)*)(i8** %B2, i32 %j65)
-  %i67 = load i32, i32* %i
-  %getChar68 = call i8 (i8**, i32, ...) bitcast (i8 (i8**, i32)* @getChar to i8 (i8**, i32, ...)*)(i8** %A1, i32 %i67)
-  %j69 = load i32, i32* %j
-  %getChar70 = call i8 (i8**, i32, ...) bitcast (i8 (i8**, i32)* @getChar to i8 (i8**, i32, ...)*)(i8** %B2, i32 %j69)
-  %bop71 = icmp eq i8 %getChar, %getChar66
-  br i1 %bop71, label %then73, label %else103
+  %sizeB66 = load i32, i32* %sizeB4
+  %j67 = load i32, i32* %j
+  %sizeB68 = load i32, i32* %sizeB4
+  %bop69 = icmp eq i32 %j65, %sizeB66
+  %i70 = load i32, i32* %i
+  %sizeA71 = load i32, i32* %sizeA3
+  %i72 = load i32, i32* %i
+  %sizeA73 = load i32, i32* %sizeA3
+  %bop74 = icmp eq i32 %i70, %sizeA71
+  %j75 = load i32, i32* %j
+  %sizeB76 = load i32, i32* %sizeB4
+  %j77 = load i32, i32* %j
+  %sizeB78 = load i32, i32* %sizeB4
+  %bop79 = icmp eq i32 %j75, %sizeB76
+  %bop80 = or i1 %bop64, %bop69
+  br i1 %bop80, label %then, label %else
 
-merge72:                                          ; preds = %else103, %then73
-  br label %merge57
+merge81:                                          ; preds = %merge96, %then
+  %j159 = load i32, i32* %j
+  %j160 = load i32, i32* %j
+  %bop161 = sub i32 %j159, 1
+  store i32 %bop161, i32* %j
+  br label %while58
 
-then73:                                           ; preds = %else
-  %index1 = alloca i32
-  %sizeB74 = load i32, i32* %sizeB4
-  %sizeA75 = load i32, i32* %sizeA3
-  %j76 = load i32, i32* %j
-  %i77 = load i32, i32* %i
-  %getIndex_result78 = call i32 @getIndex(i32 %i77, i32 %j76, i32 %sizeA75, i32 %sizeB74)
-  store i32 %getIndex_result78, i32* %index1
-  %index2 = alloca i32
-  %sizeB79 = load i32, i32* %sizeB4
-  %sizeA80 = load i32, i32* %sizeA3
-  %j81 = load i32, i32* %j
-  %j82 = load i32, i32* %j
-  %bop83 = add i32 %j81, 1
-  %i84 = load i32, i32* %i
+then:                                             ; preds = %while_body59
+  %index = alloca i32
+  %sizeB82 = load i32, i32* %sizeB4
+  %sizeA83 = load i32, i32* %sizeA3
+  %j84 = load i32, i32* %j
   %i85 = load i32, i32* %i
-  %bop86 = add i32 %i84, 1
-  %getIndex_result87 = call i32 @getIndex(i32 %bop86, i32 %bop83, i32 %sizeA80, i32 %sizeB79)
-  store i32 %getIndex_result87, i32* %index2
-  %index288 = load i32, i32* %index2
-  %C89 = getelementptr i32, i32* %C, i32 %index288
-  %tmp = load i32, i32* %C89
-  %index290 = load i32, i32* %index2
-  %C91 = getelementptr i32, i32* %C, i32 %index290
-  %tmp92 = load i32, i32* %C91
-  %bop93 = add i32 1, %tmp
-  %index294 = load i32, i32* %index2
-  %C95 = getelementptr i32, i32* %C, i32 %index294
-  %tmp96 = load i32, i32* %C95
-  %index297 = load i32, i32* %index2
-  %C98 = getelementptr i32, i32* %C, i32 %index297
-  %tmp99 = load i32, i32* %C98
-  %bop100 = add i32 1, %tmp96
-  %index1101 = load i32, i32* %index1
-  %C102 = getelementptr i32, i32* %C, i32 %index1101
-  store i32 %bop93, i32* %C102
-  br label %merge72
+  %getIndex_result = call i32 @getIndex(i32 %i85, i32 %j84, i32 %sizeA83, i32 %sizeB82)
+  store i32 %getIndex_result, i32* %index
+  %index86 = load i32, i32* %index
+  %C87 = getelementptr i32, i32* %C, i32 %index86
+  store i32 0, i32* %C87
+  br label %merge81
 
-else103:                                          ; preds = %else
-  %index3 = alloca i32
-  %sizeB104 = load i32, i32* %sizeB4
-  %sizeA105 = load i32, i32* %sizeA3
+else:                                             ; preds = %while_body59
+  %i88 = load i32, i32* %i
+  %getChar = call i8 (i8**, i32, ...) bitcast (i8 (i8**, i32)* @getChar to i8 (i8**, i32, ...)*)(i8** %A1, i32 %i88)
+  %j89 = load i32, i32* %j
+  %getChar90 = call i8 (i8**, i32, ...) bitcast (i8 (i8**, i32)* @getChar to i8 (i8**, i32, ...)*)(i8** %B2, i32 %j89)
+  %i91 = load i32, i32* %i
+  %getChar92 = call i8 (i8**, i32, ...) bitcast (i8 (i8**, i32)* @getChar to i8 (i8**, i32, ...)*)(i8** %A1, i32 %i91)
+  %j93 = load i32, i32* %j
+  %getChar94 = call i8 (i8**, i32, ...) bitcast (i8 (i8**, i32)* @getChar to i8 (i8**, i32, ...)*)(i8** %B2, i32 %j93)
+  %bop95 = icmp eq i8 %getChar, %getChar90
+  br i1 %bop95, label %then97, label %else127
+
+merge96:                                          ; preds = %else127, %then97
+  br label %merge81
+
+then97:                                           ; preds = %else
+  %index1 = alloca i32
+  %sizeB98 = load i32, i32* %sizeB4
+  %sizeA99 = load i32, i32* %sizeA3
+  %j100 = load i32, i32* %j
+  %i101 = load i32, i32* %i
+  %getIndex_result102 = call i32 @getIndex(i32 %i101, i32 %j100, i32 %sizeA99, i32 %sizeB98)
+  store i32 %getIndex_result102, i32* %index1
+  %index2 = alloca i32
+  %sizeB103 = load i32, i32* %sizeB4
+  %sizeA104 = load i32, i32* %sizeA3
+  %j105 = load i32, i32* %j
   %j106 = load i32, i32* %j
-  %i107 = load i32, i32* %i
+  %bop107 = add i32 %j105, 1
   %i108 = load i32, i32* %i
-  %bop109 = add i32 %i107, 1
-  %getIndex_result110 = call i32 @getIndex(i32 %bop109, i32 %j106, i32 %sizeA105, i32 %sizeB104)
-  store i32 %getIndex_result110, i32* %index3
+  %i109 = load i32, i32* %i
+  %bop110 = add i32 %i108, 1
+  %getIndex_result111 = call i32 @getIndex(i32 %bop110, i32 %bop107, i32 %sizeA104, i32 %sizeB103)
+  store i32 %getIndex_result111, i32* %index2
+  %index2112 = load i32, i32* %index2
+  %C113 = getelementptr i32, i32* %C, i32 %index2112
+  %tmp = load i32, i32* %C113
+  %index2114 = load i32, i32* %index2
+  %C115 = getelementptr i32, i32* %C, i32 %index2114
+  %tmp116 = load i32, i32* %C115
+  %bop117 = add i32 1, %tmp
+  %index2118 = load i32, i32* %index2
+  %C119 = getelementptr i32, i32* %C, i32 %index2118
+  %tmp120 = load i32, i32* %C119
+  %index2121 = load i32, i32* %index2
+  %C122 = getelementptr i32, i32* %C, i32 %index2121
+  %tmp123 = load i32, i32* %C122
+  %bop124 = add i32 1, %tmp120
+  %index1125 = load i32, i32* %index1
+  %C126 = getelementptr i32, i32* %C, i32 %index1125
+  store i32 %bop117, i32* %C126
+  br label %merge96
+
+else127:                                          ; preds = %else
+  %index3 = alloca i32
+  %sizeB128 = load i32, i32* %sizeB4
+  %sizeA129 = load i32, i32* %sizeA3
+  %j130 = load i32, i32* %j
+  %i131 = load i32, i32* %i
+  %i132 = load i32, i32* %i
+  %bop133 = add i32 %i131, 1
+  %getIndex_result134 = call i32 @getIndex(i32 %bop133, i32 %j130, i32 %sizeA129, i32 %sizeB128)
+  store i32 %getIndex_result134, i32* %index3
   %index4 = alloca i32
-  %sizeB111 = load i32, i32* %sizeB4
-  %sizeA112 = load i32, i32* %sizeA3
-  %j113 = load i32, i32* %j
-  %j114 = load i32, i32* %j
-  %bop115 = add i32 %j113, 1
-  %i116 = load i32, i32* %i
-  %getIndex_result117 = call i32 @getIndex(i32 %i116, i32 %bop115, i32 %sizeA112, i32 %sizeB111)
-  store i32 %getIndex_result117, i32* %index4
+  %sizeB135 = load i32, i32* %sizeB4
+  %sizeA136 = load i32, i32* %sizeA3
+  %j137 = load i32, i32* %j
+  %j138 = load i32, i32* %j
+  %bop139 = add i32 %j137, 1
+  %i140 = load i32, i32* %i
+  %getIndex_result141 = call i32 @getIndex(i32 %i140, i32 %bop139, i32 %sizeA136, i32 %sizeB135)
+  store i32 %getIndex_result141, i32* %index4
   %index5 = alloca i32
-  %sizeB118 = load i32, i32* %sizeB4
-  %sizeA119 = load i32, i32* %sizeA3
-  %j120 = load i32, i32* %j
-  %i121 = load i32, i32* %i
-  %getIndex_result122 = call i32 @getIndex(i32 %i121, i32 %j120, i32 %sizeA119, i32 %sizeB118)
-  store i32 %getIndex_result122, i32* %index5
+  %sizeB142 = load i32, i32* %sizeB4
+  %sizeA143 = load i32, i32* %sizeA3
+  %j144 = load i32, i32* %j
+  %i145 = load i32, i32* %i
+  %getIndex_result146 = call i32 @getIndex(i32 %i145, i32 %j144, i32 %sizeA143, i32 %sizeB142)
+  store i32 %getIndex_result146, i32* %index5
   %firstVal = alloca i32
-  %index3123 = load i32, i32* %index3
-  %C124 = getelementptr i32, i32* %C, i32 %index3123
-  %tmp125 = load i32, i32* %C124
-  store i32 %tmp125, i32* %firstVal
+  %index3147 = load i32, i32* %index3
+  %C148 = getelementptr i32, i32* %C, i32 %index3147
+  %tmp149 = load i32, i32* %C148
+  store i32 %tmp149, i32* %firstVal
   %secondVal = alloca i32
-  %index4126 = load i32, i32* %index4
-  %C127 = getelementptr i32, i32* %C, i32 %index4126
-  %tmp128 = load i32, i32* %C127
-  store i32 %tmp128, i32* %secondVal
+  %index4150 = load i32, i32* %index4
+  %C151 = getelementptr i32, i32* %C, i32 %index4150
+  %tmp152 = load i32, i32* %C151
+  store i32 %tmp152, i32* %secondVal
   %max = alloca i32
-  %secondVal129 = load i32, i32* %secondVal
-  %firstVal130 = load i32, i32* %firstVal
-  %getMax_result = call i32 @getMax(i32 %firstVal130, i32 %secondVal129)
+  %secondVal153 = load i32, i32* %secondVal
+  %firstVal154 = load i32, i32* %firstVal
+  %getMax_result = call i32 @getMax(i32 %firstVal154, i32 %secondVal153)
   store i32 %getMax_result, i32* %max
-  %max131 = load i32, i32* %max
-  %max132 = load i32, i32* %max
-  %index5133 = load i32, i32* %index5
-  %C134 = getelementptr i32, i32* %C, i32 %index5133
-  store i32 %max131, i32* %C134
-  br label %merge72
+  %max155 = load i32, i32* %max
+  %max156 = load i32, i32* %max
+  %index5157 = load i32, i32* %index5
+  %C158 = getelementptr i32, i32* %C, i32 %index5157
+  store i32 %max155, i32* %C158
+  br label %merge96
 
-merge141:                                         ; preds = %while34
-  %i142 = load i32, i32* %i
-  %i143 = load i32, i32* %i
-  %bop144 = sub i32 %i142, 1
-  store i32 %bop144, i32* %i
-  br label %while31
+merge165:                                         ; preds = %while58
+  %i166 = load i32, i32* %i
+  %i167 = load i32, i32* %i
+  %bop168 = sub i32 %i166, 1
+  store i32 %bop168, i32* %i
+  br label %while55
 
-merge148:                                         ; preds = %while31
+merge172:                                         ; preds = %while55
   store i32 0, i32* %i
-  br label %while149
+  br label %while173
 
-while149:                                         ; preds = %while_body150, %merge148
-  %i154 = load i32, i32* %i
-  %sizeA155 = load i32, i32* %sizeA3
-  %sizeB156 = load i32, i32* %sizeB4
-  %sizeA157 = load i32, i32* %sizeA3
-  %sizeB158 = load i32, i32* %sizeB4
-  %bop159 = mul i32 %sizeA155, %sizeB156
-  %i160 = load i32, i32* %i
-  %sizeA161 = load i32, i32* %sizeA3
-  %sizeB162 = load i32, i32* %sizeB4
-  %sizeA163 = load i32, i32* %sizeA3
-  %sizeB164 = load i32, i32* %sizeB4
-  %bop165 = mul i32 %sizeA161, %sizeB162
-  %bop166 = icmp slt i32 %i154, %bop159
-  br i1 %bop166, label %while_body150, label %merge167
+while173:                                         ; preds = %while_body174, %merge172
+  %i178 = load i32, i32* %i
+  %sizeA179 = load i32, i32* %sizeA3
+  %sizeB180 = load i32, i32* %sizeB4
+  %sizeA181 = load i32, i32* %sizeA3
+  %sizeB182 = load i32, i32* %sizeB4
+  %bop183 = mul i32 %sizeA179, %sizeB180
+  %i184 = load i32, i32* %i
+  %sizeA185 = load i32, i32* %sizeA3
+  %sizeB186 = load i32, i32* %sizeB4
+  %sizeA187 = load i32, i32* %sizeA3
+  %sizeB188 = load i32, i32* %sizeB4
+  %bop189 = mul i32 %sizeA185, %sizeB186
+  %bop190 = icmp slt i32 %i178, %bop183
+  br i1 %bop190, label %while_body174, label %merge191
 
-while_body150:                                    ; preds = %while149
-  %i151 = load i32, i32* %i
-  %i152 = load i32, i32* %i
-  %bop153 = add i32 %i151, 1
-  store i32 %bop153, i32* %i
-  br label %while149
+while_body174:                                    ; preds = %while173
+  %i175 = load i32, i32* %i
+  %i176 = load i32, i32* %i
+  %bop177 = add i32 %i175, 1
+  store i32 %bop177, i32* %i
+  br label %while173
 
-merge167:                                         ; preds = %while149
+merge191:                                         ; preds = %while173
   %result = alloca i32
-  %C168 = getelementptr i32, i32* %C, i32 0
-  %tmp169 = load i32, i32* %C168
-  store i32 %tmp169, i32* %result
-  %result170 = load i32, i32* %result
-  %result171 = load i32, i32* %result
-  %printf = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @fmt_int, i32 0, i32 0), i32 %result171)
-  %result172 = load i32, i32* %result
-  ret i32 %result172
+  %C192 = getelementptr i32, i32* %C, i32 0
+  %tmp193 = load i32, i32* %C192
+  store i32 %tmp193, i32* %result
+  %result194 = load i32, i32* %result
+  ret i32 %result194
 }
 
 define i32 @getIndex(i32 %x, i32 %y, i32 %sizeA, i32 %sizeB) {
@@ -314,17 +335,17 @@ entry:
   store i32 %sizeA, i32* %sizeA3
   %sizeB4 = alloca i32
   store i32 %sizeB, i32* %sizeB4
-  %sizeA5 = load i32, i32* %sizeA3
+  %sizeB5 = load i32, i32* %sizeB4
   %x6 = load i32, i32* %x1
-  %sizeA7 = load i32, i32* %sizeA3
+  %sizeB7 = load i32, i32* %sizeB4
   %x8 = load i32, i32* %x1
-  %bop = mul i32 %sizeA5, %x6
+  %bop = mul i32 %sizeB5, %x6
   %y9 = load i32, i32* %y2
-  %sizeA10 = load i32, i32* %sizeA3
+  %sizeB10 = load i32, i32* %sizeB4
   %x11 = load i32, i32* %x1
-  %sizeA12 = load i32, i32* %sizeA3
+  %sizeB12 = load i32, i32* %sizeB4
   %x13 = load i32, i32* %x1
-  %bop14 = mul i32 %sizeA10, %x11
+  %bop14 = mul i32 %sizeB10, %x11
   %y15 = load i32, i32* %y2
   %bop16 = add i32 %bop, %y9
   ret i32 %bop16
@@ -363,13 +384,13 @@ else:                                             ; preds = %entry
 define i32 @main() {
 entry:
   %sample = alloca i8*
-  store i8* getelementptr inbounds ([5 x i8], [5 x i8]* @context, i32 0, i32 0), i8** %sample
+  store i8* getelementptr inbounds ([11 x i8], [11 x i8]* @context, i32 0, i32 0), i8** %sample
   %sample2 = alloca i8*
-  store i8* getelementptr inbounds ([5 x i8], [5 x i8]* @context.15, i32 0, i32 0), i8** %sample2
+  store i8* getelementptr inbounds ([12 x i8], [12 x i8]* @context.15, i32 0, i32 0), i8** %sample2
   %tempResult = alloca i32
   %sample21 = load i8*, i8** %sample2
   %sample3 = load i8*, i8** %sample
-  %lcs_length_result = call i32 @lcs_length(i8* %sample3, i8* %sample21, i32 4, i32 4)
+  %lcs_length_result = call i32 @lcs_length(i8* %sample3, i8* %sample21, i32 10, i32 11)
   store i32 %lcs_length_result, i32* %tempResult
   %tempResult4 = load i32, i32* %tempResult
   %tempResult5 = load i32, i32* %tempResult

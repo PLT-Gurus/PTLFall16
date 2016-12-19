@@ -59,6 +59,7 @@ char* transcribe(char* str){
             retstr[i] = 85;
     }
     retstr[length] = '\0';
+	printf("%d\n", length);
     return retstr;
 }
 
@@ -112,14 +113,20 @@ char* translate(char* str){
         return retdef;
     int b = ending[i];
     int a = start[i];
-    int ret_size = (b-a)/2 + 1;
+	//printf("%d\n", b);
+	//printf("%d\n", a);
+    int ret_size = (b-a)/3 + 1;
+	//printf("%d\n", ret_size);
     char retstr[ret_size];
     //char* retstr = malloc(ret_size);
     int index;
     for(int i = a; i<b; i=i+3){
         temp = codon_number(str[i], str[i+1], str[i+2]);
         index = (i-a)/3;
+		printf("%d\n", index);
         retstr[index] = codon[temp];
+		printf("%c\n", codon[temp]);
+		printf("%c\n", retstr[index]);
     }
     retstr[index+1] = '\0';
     return retstr;

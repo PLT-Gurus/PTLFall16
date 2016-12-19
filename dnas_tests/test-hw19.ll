@@ -10,19 +10,22 @@ target triple = "x86_64-pc-linux-gnu"
 @fmt_str.1 = private unnamed_addr constant [5 x i8] c"%.3f\00"
 @fmt_str.2 = private unnamed_addr constant [3 x i8] c"%c\00"
 @context = private unnamed_addr constant [1247 x i8] c"AAAAAAAAAAAAAAAGGCAGAUUCCCCCUAGACCCGCCCGCACCAUGGUCAGGCAUGCCCCUCCUCAUCGCUGGGCACAGCCCAGAGGGUAUAAACAGUGCUGGAGGCUGGCGGGGCAGGCCAGCUGAGUCCUGAGCAGCAGCCCAGCGCAGCCACCGAGACACCAUGAGAGCCCUCACACUCCUCGCCCUAUUGGCCCUGGCCGCACUUUGCAUCGCUGGCCAGGCAGGUGAGUGCCCCCACCUCCCCUCAGGCCGCAUUGCAGUGGGGGCUGAGAGGAGGAAGCACCAUGGCCCACCUCUUCUCACCCCUUUGGCUGGCAGUCCCUUUGCAGUCUAACCACCUUGUUGCAGGCUCAAUCCAUUUGCCCCAGCUCUGCCCUUGCAGAGGGAGAGGAGGGAAGAGCAAGCUGCCCGAGACGCAGGGGAAGGAGGAUGAGGGCCCUGGGGAUGAGCUGGGGUGAACCAGGCUCCCUUUCCUUUGCAGGUGCGAAGCCCAGCGGUGCAGAGUCCAGCAAAGGUGCAGGUAUGAGGAUGGACCUGAUGGGUUCCUGGACCCUCCCCUCUCACCCUGGUCCCUCAGUCUCAUUCCCCCACUCCUGCCACCUCCUGUCUGGCCAUCAGGAAGGCCAGCCUGCUCCCCACCUGAUCCUCCCAAACCCAGAGCCACCUGAUGCCUGCCCCUCUGCUCCACAGCCUUUGUGUCCAAGCAGGAGGGCAGCGAGGUAGUGAAGAGACCCAGGCGCUACCUGUAUCAAUGGCUGGGGUGAGAGAAAAGGCAGAGCUGGGCCAAGGCCCUGCCUCUCCGGGAUGGUCUGUGGGGGAGCUGCAGCAGGGAGUGGCCUCUCUGGGUUGUGGUGGGGGUACAGGCAGCCUGCCCUGGUGGGCACCCUGGAGCCCCAUGUGUAGGGAGAGGAGGGAUGGGCAUUUUGCACGGGGGCUGAUGCCACCACGUCGGGUGUCUCAGAGCCCCAGUCCCCUACCCGGAUCCCCUGGAGCCCAGGAGGGAGGUGUGUGAGCUCAAUCCGGACUGUGACGAGUUGGCUGACCACAUCGGCUUUCAGGAGGCCUAUCGGCGCUUCUACGGCCCGGUCUAGGGUGUCGCUCUGCUGGCCUGGCCGGCAACCCCAGUUCUGCUCCUCUCCAGGCACCCUUCUUUCCUCUUCCCCUUGCCCUUGCCCUGACCUCCCAGCCCUAUGGAUGUGGGGUCCCCAUCAUCCCAGCUGCUCCCAAAUAAACUCCAGAAG\00"
-@context.3 = private unnamed_addr constant [1247 x i8] c"AAAAAAAAAAAAAAAGGCAGAUUCCCCCUAGACCCGCCCGCACCAUGGUCAGGCAUGCCCCUCCUCAUCGCUGGGCACAGCCCAGAGGGUAUAAACAGUGCUGGAGGCUGGCGGGGCAGGCCAGCUGAGUCCUGAGCAGCAGCCCAGCGCAGCCACCGAGACACCAUGAGAGCCCUCACACUCCUCGCCCUAUUGGCCCUGGCCGCACUUUGCAUCGCUGGCCAGGCAGGUGAGUGCCCCCACCUCCCCUCAGGCCGCAUUGCAGUGGGGGCUGAGAGGAGGAAGCACCAUGGCCCACCUCUUCUCACCCCUUUGGCUGGCAGUCCCUUUGCAGUCUAACCACCUUGUUGCAGGCUCAAUCCAUUUGCCCCAGCUCUGCCCUUGCAGAGGGAGAGGAGGGAAGAGCAAGCUGCCCGAGACGCAGGGGAAGGAGGAUGAGGGCCCUGGGGAUGAGCUGGGGUGAACCAGGCUCCCUUUCCUUUGCAGGUGCGAAGCCCAGCGGUGCAGAGUCCAGCAAAGGUGCAGGUAUGAGGAUGGACCUGAUGGGUUCCUGGACCCUCCCCUCUCACCCUGGUCCCUCAGUCUCAUUCCCCCACUCCUGCCACCUCCUGUCUGGCCAUCAGGAAGGCCAGCCUGCUCCCCACCUGAUCCUCCCAAACCCAGAGCCACCUGAUGCCUGCCCCUCUGCUCCACAGCCUUUGUGUCCAAGCAGGAGGGCAGCGAGGUAGUGAAGAGACCCAGGCGCUACCUGUAUCAAUGGCUGGGGUGAGAGAAAAGGCAGAGCUGGGCCAAGGCCCUGCCUCUCCGGGAUGGUCUGUGGGGGAGCUGCAGCAGGGAGUGGCCUCUCUGGGUUGUGGUGGGGGUACAGGCAGCCUGCCCUGGUGGGCACCCUGGAGCCCCAUGUGUAGGGAGAGGAGGGAUGGGCAUUUUGCACGGGGGCUGAUGCCACCACGUCGGGUGUCUCAGAGCCCCAGUCCCCUACCCGGAUCCCCUGGAGCCCAGGAGGGAGGUGUGUGAGCUCAAUCCGGACUGUGACGAGUUGGCUGACCACAUCGGCUUUCAGGAGGCCUAUCGGCGCUUCUACGGCCCGGUCUAGGGUGUCGCUCUGCUGGCCUGGCCGGCAACCCCAGUUCUGCUCCUCUCCAGGCACCCUUCUUUCCUCUUCCCCUUGCCCUUGCCCUGACCUCCCAGCCCUAUGGAUGUGGGGUCCCCAUCAUCCCAGCUGCUCCCAAAUAAACUCCAGAAG\00"
-@context.4 = private unnamed_addr constant [13 x i8] c"GTGTTTGTATAA\00"
-@context.5 = private unnamed_addr constant [13 x i8] c"GTGTTTGTATAA\00"
+@context.3 = private unnamed_addr constant [19 x i8] c"CACGTGTTTGTATAAATT\00"
+@context.4 = private unnamed_addr constant [13 x i8] c"GUGUUUGUAUAA\00"
+@context.5 = private unnamed_addr constant [5 x i8] c"here\00"
+@context.6 = private unnamed_addr constant [5 x i8] c"here\00"
 @codon = global [64 x i8] c"KDKDTTTTRSRSIIMIQHQHPPPPRRRRLLLLEDEDAAAAGGGGVVVVBYBYSSSSBCWCLFLF", align 16
 @.str = private unnamed_addr constant [16 x i8] c"Hello I'm in C\0A\00", align 1
+@.str.1 = private unnamed_addr constant [4 x i8] c"%d\0A\00", align 1
 @translate.start = private unnamed_addr constant [3 x i32] [i32 -1, i32 -1, i32 -1], align 4
 @translate.ending = private unnamed_addr constant [3 x i32] [i32 -1, i32 -1, i32 -1], align 4
-@.str.1 = private unnamed_addr constant [35 x i8] c"No possible translation available.\00", align 1
-@.str.2 = private unnamed_addr constant [2 x i8] c"r\00", align 1
-@.str.3 = private unnamed_addr constant [6 x i8] c"true\0A\00", align 1
-@.str.4 = private unnamed_addr constant [7 x i8] c"false\0A\00", align 1
-@.str.5 = private unnamed_addr constant [3 x i8] c"%c\00", align 1
-@.str.6 = private unnamed_addr constant [2 x i8] c"-\00", align 1
+@.str.2 = private unnamed_addr constant [35 x i8] c"No possible translation available.\00", align 1
+@.str.3 = private unnamed_addr constant [4 x i8] c"%c\0A\00", align 1
+@.str.4 = private unnamed_addr constant [2 x i8] c"r\00", align 1
+@.str.5 = private unnamed_addr constant [6 x i8] c"true\0A\00", align 1
+@.str.6 = private unnamed_addr constant [7 x i8] c"false\0A\00", align 1
+@.str.7 = private unnamed_addr constant [3 x i8] c"%c\00", align 1
+@.str.8 = private unnamed_addr constant [2 x i8] c"-\00", align 1
 
 declare i32 @printf(i8*, ...)
 
@@ -33,7 +36,7 @@ entry:
   %r1 = alloca i8*
   store i8* getelementptr inbounds ([1247 x i8], [1247 x i8]* @context, i32 0, i32 0), i8** %r1
   %d1 = alloca i8*
-  store i8* getelementptr inbounds ([13 x i8], [13 x i8]* @context.4, i32 0, i32 0), i8** %d1
+  store i8* getelementptr inbounds ([19 x i8], [19 x i8]* @context.3, i32 0, i32 0), i8** %d1
   %d11 = load i8*, i8** %d1
   %d12 = load i8*, i8** %d1
   %d13 = load i8*, i8** %d1
@@ -43,6 +46,42 @@ entry:
   %d16 = load i8*, i8** %d1
   %complement7 = call i8* (i8*, ...) bitcast (i8* (i8*)* @complement to i8* (i8*, ...)*)(i8* %d16)
   %printf = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @fmt_str, i32 0, i32 0), i8* %complement7)
+  %printf8 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @fmt_str.2, i32 0, i32 0), i8 10)
+  %d19 = load i8*, i8** %d1
+  %d110 = load i8*, i8** %d1
+  %transcribe = call i8* (i8*, ...) bitcast (i8* (i8*)* @transcribe to i8* (i8*, ...)*)(i8* %d110)
+  store i8* %transcribe, i8** %r1
+  %printf11 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @fmt_str.2, i32 0, i32 0), i8 10)
+  %printf12 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @fmt_str.2, i32 0, i32 0), i8 10)
+  %r113 = load i8*, i8** %r1
+  %r114 = load i8*, i8** %r1
+  %printf15 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @fmt_str, i32 0, i32 0), i8* %r114)
+  %printf16 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @fmt_str.2, i32 0, i32 0), i8 10)
+  %d117 = load i8*, i8** %d1
+  %d118 = load i8*, i8** %d1
+  %translate2 = call i8* (i8*, ...) bitcast (i8* (i8*)* @translate2 to i8* (i8*, ...)*)(i8* %d118)
+  %d119 = load i8*, i8** %d1
+  %d120 = load i8*, i8** %d1
+  %translate221 = call i8* (i8*, ...) bitcast (i8* (i8*)* @translate2 to i8* (i8*, ...)*)(i8* %d120)
+  %printf22 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @fmt_str, i32 0, i32 0), i8* %translate221)
+  %printf23 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @fmt_str.2, i32 0, i32 0), i8 10)
+  %r124 = load i8*, i8** %r1
+  %r125 = load i8*, i8** %r1
+  %translate = call i8* (i8*, ...) bitcast (i8* (i8*)* @translate to i8* (i8*, ...)*)(i8* %r125)
+  %r126 = load i8*, i8** %r1
+  %r127 = load i8*, i8** %r1
+  %translate28 = call i8* (i8*, ...) bitcast (i8* (i8*)* @translate to i8* (i8*, ...)*)(i8* %r127)
+  %printf29 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @fmt_str, i32 0, i32 0), i8* %translate28)
+  %r3 = alloca i8*
+  store i8* getelementptr inbounds ([13 x i8], [13 x i8]* @context.4, i32 0, i32 0), i8** %r3
+  %printf30 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @fmt_str, i32 0, i32 0), i8* getelementptr inbounds ([5 x i8], [5 x i8]* @context.6, i32 0, i32 0))
+  %r331 = load i8*, i8** %r3
+  %r332 = load i8*, i8** %r3
+  %translate33 = call i8* (i8*, ...) bitcast (i8* (i8*)* @translate to i8* (i8*, ...)*)(i8* %r332)
+  %r334 = load i8*, i8** %r3
+  %r335 = load i8*, i8** %r3
+  %translate36 = call i8* (i8*, ...) bitcast (i8* (i8*)* @translate to i8* (i8*, ...)*)(i8* %r335)
+  %printf37 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @fmt_str, i32 0, i32 0), i8* %translate36)
   ret i32 0
 }
 
@@ -76,7 +115,7 @@ define i8* @complement(i8* %str) #0 {
 ; <label>:6                                       ; preds = %0
   %7 = load i8*, i8** %2, align 8
   store i8* %7, i8** %1, align 8
-  br label %116
+  br label %111
 
 ; <label>:8                                       ; preds = %0
   store i32 0, i32* %i, align 4
@@ -105,15 +144,15 @@ define i8* @complement(i8* %str) #0 {
   %23 = zext i32 %22 to i64
   %24 = call i8* @llvm.stacksave()
   store i8* %24, i8** %3, align 8
-  %25 = alloca i8*, i64 %23, align 16
+  %25 = alloca i8, i64 %23, align 16
   store i32 0, i32* %i1, align 4
   br label %26
 
-; <label>:26                                      ; preds = %107, %20
+; <label>:26                                      ; preds = %103, %20
   %27 = load i32, i32* %i1, align 4
   %28 = load i32, i32* %length, align 4
   %29 = icmp slt i32 %27, %28
-  br i1 %29, label %30, label %110
+  br i1 %29, label %30, label %106
 
 ; <label>:30                                      ; preds = %26
   %31 = load i32, i32* %i1, align 4
@@ -131,124 +170,119 @@ define i8* @complement(i8* %str) #0 {
   %40 = load i8, i8* %curr, align 1
   %41 = sext i8 %40 to i32
   %42 = icmp eq i32 %41, 84
-  br i1 %42, label %43, label %52
+  br i1 %42, label %43, label %51
 
 ; <label>:43                                      ; preds = %39, %30
   %44 = load i8, i8* %curr, align 1
   %45 = sext i8 %44 to i32
   %46 = sub nsw i32 149, %45
-  %47 = sext i32 %46 to i64
-  %48 = inttoptr i64 %47 to i8*
-  %49 = load i32, i32* %i1, align 4
-  %50 = sext i32 %49 to i64
-  %51 = getelementptr inbounds i8*, i8** %25, i64 %50
-  store i8* %48, i8** %51, align 8
-  br label %106
+  %47 = trunc i32 %46 to i8
+  %48 = load i32, i32* %i1, align 4
+  %49 = sext i32 %48 to i64
+  %50 = getelementptr inbounds i8, i8* %25, i64 %49
+  store i8 %47, i8* %50, align 1
+  br label %102
 
-; <label>:52                                      ; preds = %39
-  %53 = load i8, i8* %curr, align 1
-  %54 = sext i8 %53 to i32
-  %55 = icmp eq i32 %54, 67
-  br i1 %55, label %60, label %56
+; <label>:51                                      ; preds = %39
+  %52 = load i8, i8* %curr, align 1
+  %53 = sext i8 %52 to i32
+  %54 = icmp eq i32 %53, 67
+  br i1 %54, label %59, label %55
 
-; <label>:56                                      ; preds = %52
-  %57 = load i8, i8* %curr, align 1
-  %58 = sext i8 %57 to i32
-  %59 = icmp eq i32 %58, 71
-  br i1 %59, label %60, label %69
+; <label>:55                                      ; preds = %51
+  %56 = load i8, i8* %curr, align 1
+  %57 = sext i8 %56 to i32
+  %58 = icmp eq i32 %57, 71
+  br i1 %58, label %59, label %67
 
-; <label>:60                                      ; preds = %56, %52
-  %61 = load i8, i8* %curr, align 1
-  %62 = sext i8 %61 to i32
-  %63 = sub nsw i32 138, %62
-  %64 = sext i32 %63 to i64
-  %65 = inttoptr i64 %64 to i8*
-  %66 = load i32, i32* %i1, align 4
-  %67 = sext i32 %66 to i64
-  %68 = getelementptr inbounds i8*, i8** %25, i64 %67
-  store i8* %65, i8** %68, align 8
-  br label %105
+; <label>:59                                      ; preds = %55, %51
+  %60 = load i8, i8* %curr, align 1
+  %61 = sext i8 %60 to i32
+  %62 = sub nsw i32 138, %61
+  %63 = trunc i32 %62 to i8
+  %64 = load i32, i32* %i1, align 4
+  %65 = sext i32 %64 to i64
+  %66 = getelementptr inbounds i8, i8* %25, i64 %65
+  store i8 %63, i8* %66, align 1
+  br label %101
 
-; <label>:69                                      ; preds = %56
-  %70 = load i8, i8* %curr, align 1
-  %71 = sext i8 %70 to i32
-  %72 = icmp eq i32 %71, 97
-  br i1 %72, label %77, label %73
+; <label>:67                                      ; preds = %55
+  %68 = load i8, i8* %curr, align 1
+  %69 = sext i8 %68 to i32
+  %70 = icmp eq i32 %69, 97
+  br i1 %70, label %75, label %71
 
-; <label>:73                                      ; preds = %69
-  %74 = load i8, i8* %curr, align 1
-  %75 = sext i8 %74 to i32
-  %76 = icmp eq i32 %75, 116
-  br i1 %76, label %77, label %86
+; <label>:71                                      ; preds = %67
+  %72 = load i8, i8* %curr, align 1
+  %73 = sext i8 %72 to i32
+  %74 = icmp eq i32 %73, 116
+  br i1 %74, label %75, label %83
 
-; <label>:77                                      ; preds = %73, %69
-  %78 = load i8, i8* %curr, align 1
-  %79 = sext i8 %78 to i32
-  %80 = sub nsw i32 181, %79
+; <label>:75                                      ; preds = %71, %67
+  %76 = load i8, i8* %curr, align 1
+  %77 = sext i8 %76 to i32
+  %78 = sub nsw i32 181, %77
+  %79 = trunc i32 %78 to i8
+  %80 = load i32, i32* %i1, align 4
   %81 = sext i32 %80 to i64
-  %82 = inttoptr i64 %81 to i8*
-  %83 = load i32, i32* %i1, align 4
-  %84 = sext i32 %83 to i64
-  %85 = getelementptr inbounds i8*, i8** %25, i64 %84
-  store i8* %82, i8** %85, align 8
-  br label %104
+  %82 = getelementptr inbounds i8, i8* %25, i64 %81
+  store i8 %79, i8* %82, align 1
+  br label %100
 
-; <label>:86                                      ; preds = %73
-  %87 = load i8, i8* %curr, align 1
-  %88 = sext i8 %87 to i32
-  %89 = icmp eq i32 %88, 99
-  br i1 %89, label %94, label %90
+; <label>:83                                      ; preds = %71
+  %84 = load i8, i8* %curr, align 1
+  %85 = sext i8 %84 to i32
+  %86 = icmp eq i32 %85, 99
+  br i1 %86, label %91, label %87
 
-; <label>:90                                      ; preds = %86
-  %91 = load i8, i8* %curr, align 1
-  %92 = sext i8 %91 to i32
-  %93 = icmp eq i32 %92, 103
-  br i1 %93, label %94, label %103
+; <label>:87                                      ; preds = %83
+  %88 = load i8, i8* %curr, align 1
+  %89 = sext i8 %88 to i32
+  %90 = icmp eq i32 %89, 103
+  br i1 %90, label %91, label %99
 
-; <label>:94                                      ; preds = %90, %86
-  %95 = load i8, i8* %curr, align 1
-  %96 = sext i8 %95 to i32
-  %97 = sub nsw i32 170, %96
-  %98 = sext i32 %97 to i64
-  %99 = inttoptr i64 %98 to i8*
-  %100 = load i32, i32* %i1, align 4
-  %101 = sext i32 %100 to i64
-  %102 = getelementptr inbounds i8*, i8** %25, i64 %101
-  store i8* %99, i8** %102, align 8
+; <label>:91                                      ; preds = %87, %83
+  %92 = load i8, i8* %curr, align 1
+  %93 = sext i8 %92 to i32
+  %94 = sub nsw i32 170, %93
+  %95 = trunc i32 %94 to i8
+  %96 = load i32, i32* %i1, align 4
+  %97 = sext i32 %96 to i64
+  %98 = getelementptr inbounds i8, i8* %25, i64 %97
+  store i8 %95, i8* %98, align 1
+  br label %99
+
+; <label>:99                                      ; preds = %91, %87
+  br label %100
+
+; <label>:100                                     ; preds = %99, %75
+  br label %101
+
+; <label>:101                                     ; preds = %100, %59
+  br label %102
+
+; <label>:102                                     ; preds = %101, %43
   br label %103
 
-; <label>:103                                     ; preds = %94, %90
-  br label %104
-
-; <label>:104                                     ; preds = %103, %77
-  br label %105
-
-; <label>:105                                     ; preds = %104, %60
-  br label %106
-
-; <label>:106                                     ; preds = %105, %43
-  br label %107
-
-; <label>:107                                     ; preds = %106
-  %108 = load i32, i32* %i1, align 4
-  %109 = add nsw i32 %108, 1
-  store i32 %109, i32* %i1, align 4
+; <label>:103                                     ; preds = %102
+  %104 = load i32, i32* %i1, align 4
+  %105 = add nsw i32 %104, 1
+  store i32 %105, i32* %i1, align 4
   br label %26
 
-; <label>:110                                     ; preds = %26
-  %111 = load i32, i32* %length, align 4
-  %112 = sext i32 %111 to i64
-  %113 = getelementptr inbounds i8*, i8** %25, i64 %112
-  store i8* null, i8** %113, align 8
-  %114 = bitcast i8** %25 to i8*
-  store i8* %114, i8** %1, align 8
-  %115 = load i8*, i8** %3, align 8
-  call void @llvm.stackrestore(i8* %115)
-  br label %116
+; <label>:106                                     ; preds = %26
+  %107 = load i32, i32* %length, align 4
+  %108 = sext i32 %107 to i64
+  %109 = getelementptr inbounds i8, i8* %25, i64 %108
+  store i8 0, i8* %109, align 1
+  store i8* %25, i8** %1, align 8
+  %110 = load i8*, i8** %3, align 8
+  call void @llvm.stackrestore(i8* %110)
+  br label %111
 
-; <label>:116                                     ; preds = %110, %6
-  %117 = load i8*, i8** %1, align 8
-  ret i8* %117
+; <label>:111                                     ; preds = %106, %6
+  %112 = load i8*, i8** %1, align 8
+  ret i8* %112
 }
 
 ; Function Attrs: nounwind
@@ -274,7 +308,7 @@ define i8* @transcribe(i8* %str) #0 {
 ; <label>:6                                       ; preds = %0
   %7 = load i8*, i8** %2, align 8
   store i8* %7, i8** %1, align 8
-  br label %108
+  br label %110
 
 ; <label>:8                                       ; preds = %0
   store i32 0, i32* %i, align 4
@@ -436,14 +470,16 @@ define i8* @transcribe(i8* %str) #0 {
   %105 = sext i32 %104 to i64
   %106 = getelementptr inbounds i8, i8* %25, i64 %105
   store i8 0, i8* %106, align 1
+  %107 = load i32, i32* %length, align 4
+  %108 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.1, i32 0, i32 0), i32 %107)
   store i8* %25, i8** %1, align 8
-  %107 = load i8*, i8** %3, align 8
-  call void @llvm.stackrestore(i8* %107)
-  br label %108
+  %109 = load i8*, i8** %3, align 8
+  call void @llvm.stackrestore(i8* %109)
+  br label %110
 
-; <label>:108                                     ; preds = %103, %6
-  %109 = load i8*, i8** %1, align 8
-  ret i8* %109
+; <label>:110                                     ; preds = %103, %6
+  %111 = load i8*, i8** %1, align 8
+  ret i8* %111
 }
 
 ; Function Attrs: nounwind uwtable
@@ -574,7 +610,7 @@ define i8* @translate(i8* %str) #0 {
 ; <label>:6                                       ; preds = %0
   %7 = load i8*, i8** %2, align 8
   store i8* %7, i8** %1, align 8
-  br label %199
+  br label %213
 
 ; <label>:8                                       ; preds = %0
   store i32 0, i32* %i, align 4
@@ -771,7 +807,7 @@ define i8* @translate(i8* %str) #0 {
   br label %111
 
 ; <label>:132                                     ; preds = %126, %111
-  store i8* getelementptr inbounds ([35 x i8], [35 x i8]* @.str.1, i32 0, i32 0), i8** %retdef, align 8
+  store i8* getelementptr inbounds ([35 x i8], [35 x i8]* @.str.2, i32 0, i32 0), i8** %retdef, align 8
   %133 = load i32, i32* %temp, align 4
   %134 = icmp eq i32 %133, -1
   br i1 %134, label %135, label %137
@@ -779,7 +815,7 @@ define i8* @translate(i8* %str) #0 {
 ; <label>:135                                     ; preds = %132
   %136 = load i8*, i8** %retdef, align 8
   store i8* %136, i8** %1, align 8
-  br label %199
+  br label %213
 
 ; <label>:137                                     ; preds = %132
   %138 = load i32, i32* %i, align 4
@@ -795,7 +831,7 @@ define i8* @translate(i8* %str) #0 {
   %146 = load i32, i32* %b, align 4
   %147 = load i32, i32* %a, align 4
   %148 = sub nsw i32 %146, %147
-  %149 = sdiv i32 %148, 2
+  %149 = sdiv i32 %148, 3
   %150 = add nsw i32 %149, 1
   store i32 %150, i32* %ret_size, align 4
   %151 = load i32, i32* %ret_size, align 4
@@ -807,11 +843,11 @@ define i8* @translate(i8* %str) #0 {
   store i32 %155, i32* %i1, align 4
   br label %156
 
-; <label>:156                                     ; preds = %190, %137
+; <label>:156                                     ; preds = %204, %137
   %157 = load i32, i32* %i1, align 4
   %158 = load i32, i32* %b, align 4
   %159 = icmp slt i32 %157, %158
-  br i1 %159, label %160, label %193
+  br i1 %159, label %160, label %207
 
 ; <label>:160                                     ; preds = %156
   %161 = load i32, i32* %i1, align 4
@@ -838,36 +874,50 @@ define i8* @translate(i8* %str) #0 {
   %181 = sub nsw i32 %179, %180
   %182 = sdiv i32 %181, 3
   store i32 %182, i32* %index, align 4
-  %183 = load i32, i32* %temp, align 4
-  %184 = sext i32 %183 to i64
-  %185 = getelementptr inbounds [64 x i8], [64 x i8]* @codon, i64 0, i64 %184
-  %186 = load i8, i8* %185, align 1
-  %187 = load i32, i32* %index, align 4
-  %188 = sext i32 %187 to i64
-  %189 = getelementptr inbounds i8, i8* %154, i64 %188
-  store i8 %186, i8* %189, align 1
-  br label %190
+  %183 = load i32, i32* %index, align 4
+  %184 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.1, i32 0, i32 0), i32 %183)
+  %185 = load i32, i32* %temp, align 4
+  %186 = sext i32 %185 to i64
+  %187 = getelementptr inbounds [64 x i8], [64 x i8]* @codon, i64 0, i64 %186
+  %188 = load i8, i8* %187, align 1
+  %189 = load i32, i32* %index, align 4
+  %190 = sext i32 %189 to i64
+  %191 = getelementptr inbounds i8, i8* %154, i64 %190
+  store i8 %188, i8* %191, align 1
+  %192 = load i32, i32* %temp, align 4
+  %193 = sext i32 %192 to i64
+  %194 = getelementptr inbounds [64 x i8], [64 x i8]* @codon, i64 0, i64 %193
+  %195 = load i8, i8* %194, align 1
+  %196 = sext i8 %195 to i32
+  %197 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.3, i32 0, i32 0), i32 %196)
+  %198 = load i32, i32* %index, align 4
+  %199 = sext i32 %198 to i64
+  %200 = getelementptr inbounds i8, i8* %154, i64 %199
+  %201 = load i8, i8* %200, align 1
+  %202 = sext i8 %201 to i32
+  %203 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.3, i32 0, i32 0), i32 %202)
+  br label %204
 
-; <label>:190                                     ; preds = %160
-  %191 = load i32, i32* %i1, align 4
-  %192 = add nsw i32 %191, 3
-  store i32 %192, i32* %i1, align 4
+; <label>:204                                     ; preds = %160
+  %205 = load i32, i32* %i1, align 4
+  %206 = add nsw i32 %205, 3
+  store i32 %206, i32* %i1, align 4
   br label %156
 
-; <label>:193                                     ; preds = %156
-  %194 = load i32, i32* %index, align 4
-  %195 = add nsw i32 %194, 1
-  %196 = sext i32 %195 to i64
-  %197 = getelementptr inbounds i8, i8* %154, i64 %196
-  store i8 0, i8* %197, align 1
+; <label>:207                                     ; preds = %156
+  %208 = load i32, i32* %index, align 4
+  %209 = add nsw i32 %208, 1
+  %210 = sext i32 %209 to i64
+  %211 = getelementptr inbounds i8, i8* %154, i64 %210
+  store i8 0, i8* %211, align 1
   store i8* %154, i8** %1, align 8
-  %198 = load i8*, i8** %3, align 8
-  call void @llvm.stackrestore(i8* %198)
-  br label %199
+  %212 = load i8*, i8** %3, align 8
+  call void @llvm.stackrestore(i8* %212)
+  br label %213
 
-; <label>:199                                     ; preds = %193, %135, %6
-  %200 = load i8*, i8** %1, align 8
-  ret i8* %200
+; <label>:213                                     ; preds = %207, %135, %6
+  %214 = load i8*, i8** %1, align 8
+  ret i8* %214
 }
 
 ; Function Attrs: argmemonly nounwind
@@ -1051,7 +1101,7 @@ define i8* @readFASTAFile(i8* %string) #0 {
   %start = alloca i32, align 4
   store i8* %string, i8** %2, align 8
   %3 = load i8*, i8** %2, align 8
-  %4 = call %struct._IO_FILE* @fopen(i8* %3, i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.2, i32 0, i32 0))
+  %4 = call %struct._IO_FILE* @fopen(i8* %3, i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.4, i32 0, i32 0))
   store %struct._IO_FILE* %4, %struct._IO_FILE** %file, align 8
   store i64 0, i64* %n, align 8
   store i32 -1, i32* %start, align 4
@@ -1186,7 +1236,7 @@ define i8* @readFile(i8* %string) #0 {
   %start = alloca i32, align 4
   store i8* %string, i8** %2, align 8
   %3 = load i8*, i8** %2, align 8
-  %4 = call %struct._IO_FILE* @fopen(i8* %3, i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.2, i32 0, i32 0))
+  %4 = call %struct._IO_FILE* @fopen(i8* %3, i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.4, i32 0, i32 0))
   store %struct._IO_FILE* %4, %struct._IO_FILE** %file, align 8
   store i64 0, i64* %n, align 8
   store i32 -1, i32* %start, align 4
@@ -1328,12 +1378,12 @@ define i32 @print_tf(i1 zeroext %b) #0 {
   br i1 %5, label %6, label %8
 
 ; <label>:6                                       ; preds = %0
-  %7 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.3, i32 0, i32 0))
+  %7 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.5, i32 0, i32 0))
   store i32 %7, i32* %1, align 4
   br label %10
 
 ; <label>:8                                       ; preds = %0
-  %9 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.4, i32 0, i32 0))
+  %9 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.6, i32 0, i32 0))
   store i32 %9, i32* %1, align 4
   br label %10
 
@@ -1573,8 +1623,8 @@ define i32 @printPep(i8* %input) #0 {
   store i8 %24, i8* %temp, align 1
   %25 = load i8, i8* %temp, align 1
   %26 = sext i8 %25 to i32
-  %27 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.5, i32 0, i32 0), i32 %26)
-  %28 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.6, i32 0, i32 0))
+  %27 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.7, i32 0, i32 0), i32 %26)
+  %28 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.8, i32 0, i32 0))
   br label %29
 
 ; <label>:29                                      ; preds = %19
@@ -1591,7 +1641,7 @@ define i32 @printPep(i8* %input) #0 {
   %37 = getelementptr inbounds i8, i8* %36, i64 %35
   %38 = load i8, i8* %37, align 1
   %39 = sext i8 %38 to i32
-  %40 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.5, i32 0, i32 0), i32 %39)
+  %40 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.7, i32 0, i32 0), i32 %39)
   ret i32 1
 }
 
