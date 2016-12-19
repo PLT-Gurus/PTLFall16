@@ -1,0 +1,2 @@
+DNA sample = #ATGC
+print(sample);

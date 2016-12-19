@@ -31,12 +31,25 @@ let check_v_type t = try ignore(StringMap.find (string_of_typ t) types_map)
 let map_array_type t =
 	match t with
 	| Int -> ArrayInt
+	| Double -> ArrayDouble
+	| Str -> ArrayStr
+	| Bool -> ArrayBool
+	| Char -> ArrayChar
+	| Aa -> ArrayAa
+	| Nuc -> ArrayNuc
+	| Codon -> ArrayCodon
 	| _ -> ArrayInt
 ;;
 
 let array_type_unfold t =
 	match t with
 	| ArrayInt -> Int
+	| ArrayDouble -> Double
+	| ArrayStr -> Str
+	| ArrayBool -> Bool
+	| ArrayChar -> Char
+	| ArrayAa -> Aa
+	| ArrayNuc -> Nuc
 	| _ -> Double
 ;;
 
