@@ -361,8 +361,8 @@ let translate prog =
             | A.Translttwo  -> ext_call "translate2"
           ) [e] bvtup), (snd (add_expr bvtup e)))
 
-      | A.Assign (s, e) -> 
-          let e' = add_expr bvtup e in 
+      | A.Assign (s, e) ->
+          let e' = add_expr bvtup e in
           let eVal = fst e' in
           let eType = snd e' in
           ignore (L.build_store eVal (fst (fst (lookup s (snd bvtup)))) (fst bvtup)); (eVal, eType)
@@ -425,8 +425,7 @@ let translate prog =
                 ((L.build_global_stringptr str "context" (fst bvtup)), A.RNA)
 
       | A.Litpep(str) ->
-                let pepTemp = ((L.build_global_stringptr str "context" (fst bvtup)), A.Pep) in
-                pepTemp
+                ((L.build_global_stringptr str "context" (fst bvtup)), A.Pep)
 
       | A.Noexpr -> ((L.const_int i32_t 0), A.Int)
 

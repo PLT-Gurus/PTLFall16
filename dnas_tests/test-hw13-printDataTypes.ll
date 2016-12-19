@@ -9,11 +9,11 @@ target triple = "x86_64-pc-linux-gnu"
 @fmt_str = private unnamed_addr constant [3 x i8] c"%s\00"
 @fmt_str.1 = private unnamed_addr constant [5 x i8] c"%.3f\00"
 @fmt_str.2 = private unnamed_addr constant [3 x i8] c"%c\00"
-@context = private unnamed_addr constant [5 x i8] c"agct\00"
-@context.3 = private unnamed_addr constant [8 x i8] c"uaugccu\00"
-@context.4 = private unnamed_addr constant [8 x i8] c"a-k-w-y\00"
-@context.5 = private unnamed_addr constant [5 x i8] c"----\00"
-@context.6 = private unnamed_addr constant [5 x i8] c"----\00"
+@context = private unnamed_addr constant [8 x i8] c"A-T-G-C\00"
+@context.3 = private unnamed_addr constant [6 x i8] c"hello\00"
+@context.4 = private unnamed_addr constant [5 x i8] c"atgc\00"
+@context.5 = private unnamed_addr constant [5 x i8] c"gcgc\00"
+@context.6 = private unnamed_addr constant [5 x i8] c"true\00"
 @codon = global [64 x i8] c"KDKDTTTTRSRSIIMIQHQHPPPPRRRRLLLLEDEDAAAAGGGGVVVVBYBYSSSSBCWCLFLF", align 16
 @.str = private unnamed_addr constant [16 x i8] c"Hello I'm in C\0A\00", align 1
 @.str.1 = private unnamed_addr constant [4 x i8] c"%d\0A\00", align 1
@@ -33,41 +33,47 @@ declare double @db_exp(double, double, ...)
 
 define i32 @main() {
 entry:
-  %d1 = alloca i8*
-  store i8* getelementptr inbounds ([5 x i8], [5 x i8]* @context, i32 0, i32 0), i8** %d1
-  %r1 = alloca i8*
-  store i8* getelementptr inbounds ([8 x i8], [8 x i8]* @context.3, i32 0, i32 0), i8** %r1
-  %p1 = alloca i8*
-  store i8* getelementptr inbounds ([8 x i8], [8 x i8]* @context.4, i32 0, i32 0), i8** %p1
-  %d11 = load i8*, i8** %d1
-  %d12 = load i8*, i8** %d1
-  %d13 = load i8*, i8** %d1
-  %complement = call i8* (i8*, ...) bitcast (i8* (i8*)* @complement to i8* (i8*, ...)*)(i8* %d13)
-  %d14 = load i8*, i8** %d1
-  %d15 = load i8*, i8** %d1
-  %d16 = load i8*, i8** %d1
-  %complement7 = call i8* (i8*, ...) bitcast (i8* (i8*)* @complement to i8* (i8*, ...)*)(i8* %d16)
-  %printf = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @fmt_str, i32 0, i32 0), i8* %complement7)
-  %p18 = load i8*, i8** %p1
-  %p19 = load i8*, i8** %p1
-  %printf10 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @fmt_str, i32 0, i32 0), i8* %p19)
-  %printf11 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @fmt_str, i32 0, i32 0), i8* getelementptr inbounds ([5 x i8], [5 x i8]* @context.6, i32 0, i32 0))
-  %d112 = load i8*, i8** %d1
-  %d113 = load i8*, i8** %d1
-  %d114 = load i8*, i8** %d1
-  %complement15 = call i8* (i8*, ...) bitcast (i8* (i8*)* @complement to i8* (i8*, ...)*)(i8* %d114)
-  %d116 = load i8*, i8** %d1
-  %d117 = load i8*, i8** %d1
-  %d118 = load i8*, i8** %d1
-  %complement19 = call i8* (i8*, ...) bitcast (i8* (i8*)* @complement to i8* (i8*, ...)*)(i8* %d118)
-  %printf20 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @fmt_str, i32 0, i32 0), i8* %complement19)
-  %d121 = load i8*, i8** %d1
-  %d122 = load i8*, i8** %d1
-  %transcribe = call i8* (i8*, ...) bitcast (i8* (i8*)* @transcribe to i8* (i8*, ...)*)(i8* %d122)
-  %d123 = load i8*, i8** %d1
-  %d124 = load i8*, i8** %d1
-  %transcribe25 = call i8* (i8*, ...) bitcast (i8* (i8*)* @transcribe to i8* (i8*, ...)*)(i8* %d124)
-  %printf26 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @fmt_str, i32 0, i32 0), i8* %transcribe25)
+  %oriana = alloca i8*
+  store i8* getelementptr inbounds ([8 x i8], [8 x i8]* @context, i32 0, i32 0), i8** %oriana
+  %hi = alloca i32
+  store i32 42, i32* %hi
+  %hello = alloca double
+  store double 4.200000e+01, double* %hello
+  %isTrue = alloca i1
+  store i1 true, i1* %isTrue
+  %sample = alloca i8*
+  store i8* getelementptr inbounds ([6 x i8], [6 x i8]* @context.3, i32 0, i32 0), i8** %sample
+  %samp = alloca i8
+  %getChar = call i8 (i8**, i32, ...) bitcast (i8 (i8**, i32)* @getChar to i8 (i8**, i32, ...)*)(i8** %sample, i32 0)
+  store i8 %getChar, i8* %samp
+  %min = alloca i8*
+  store i8* getelementptr inbounds ([5 x i8], [5 x i8]* @context.4, i32 0, i32 0), i8** %min
+  %stan = alloca i8*
+  store i8* getelementptr inbounds ([5 x i8], [5 x i8]* @context.5, i32 0, i32 0), i8** %stan
+  %hi1 = load i32, i32* %hi
+  %hi2 = load i32, i32* %hi
+  %printf = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @fmt_int, i32 0, i32 0), i32 %hi2)
+  %isTrue3 = load i1, i1* %isTrue
+  %isTrue4 = load i1, i1* %isTrue
+  %printf5 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @fmt_str, i32 0, i32 0), i8* getelementptr inbounds ([5 x i8], [5 x i8]* @context.6, i32 0, i32 0))
+  %sample6 = load i8*, i8** %sample
+  %sample7 = load i8*, i8** %sample
+  %printf8 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @fmt_str, i32 0, i32 0), i8* %sample7)
+  %samp9 = load i8, i8* %samp
+  %samp10 = load i8, i8* %samp
+  %printf11 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @fmt_str.2, i32 0, i32 0), i8 %samp10)
+  %min12 = load i8*, i8** %min
+  %min13 = load i8*, i8** %min
+  %printf14 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @fmt_str, i32 0, i32 0), i8* %min13)
+  %hello15 = load double, double* %hello
+  %hello16 = load double, double* %hello
+  %printf17 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([5 x i8], [5 x i8]* @fmt_str.1, i32 0, i32 0), double %hello16)
+  %stan18 = load i8*, i8** %stan
+  %stan19 = load i8*, i8** %stan
+  %printf20 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @fmt_str, i32 0, i32 0), i8* %stan19)
+  %oriana21 = load i8*, i8** %oriana
+  %oriana22 = load i8*, i8** %oriana
+  %printf23 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @fmt_str, i32 0, i32 0), i8* %oriana22)
   ret i32 0
 }
 

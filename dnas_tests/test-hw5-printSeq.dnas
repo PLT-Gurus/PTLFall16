@@ -1,0 +1,4 @@
+Seq hi = #agcgcaagcca;
+print(hi);
+
+

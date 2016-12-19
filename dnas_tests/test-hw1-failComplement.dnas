@@ -1,0 +1,5 @@
+DNA min = #atgc;
+RNA stan = #gcgc;
+print(@min);
+print(@stan);
+

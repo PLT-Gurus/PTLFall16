@@ -9,11 +9,14 @@ target triple = "x86_64-pc-linux-gnu"
 @fmt_str = private unnamed_addr constant [3 x i8] c"%s\00"
 @fmt_str.1 = private unnamed_addr constant [5 x i8] c"%.3f\00"
 @fmt_str.2 = private unnamed_addr constant [3 x i8] c"%c\00"
-@context = private unnamed_addr constant [5 x i8] c"agct\00"
-@context.3 = private unnamed_addr constant [8 x i8] c"uaugccu\00"
-@context.4 = private unnamed_addr constant [8 x i8] c"a-k-w-y\00"
-@context.5 = private unnamed_addr constant [5 x i8] c"----\00"
-@context.6 = private unnamed_addr constant [5 x i8] c"----\00"
+@context = private unnamed_addr constant [7 x i8] c"hello \00"
+@context.3 = private unnamed_addr constant [7 x i8] c"world!\00"
+@context.4 = private unnamed_addr constant [7 x i8] c"hello \00"
+@context.5 = private unnamed_addr constant [7 x i8] c"world!\00"
+@context.6 = private unnamed_addr constant [7 x i8] c"hello \00"
+@context.7 = private unnamed_addr constant [7 x i8] c"world!\00"
+@context.8 = private unnamed_addr constant [7 x i8] c"hello \00"
+@context.9 = private unnamed_addr constant [7 x i8] c"world!\00"
 @codon = global [64 x i8] c"KDKDTTTTRSRSIIMIQHQHPPPPRRRRLLLLEDEDAAAAGGGGVVVVBYBYSSSSBCWCLFLF", align 16
 @.str = private unnamed_addr constant [16 x i8] c"Hello I'm in C\0A\00", align 1
 @.str.1 = private unnamed_addr constant [4 x i8] c"%d\0A\00", align 1
@@ -33,41 +36,30 @@ declare double @db_exp(double, double, ...)
 
 define i32 @main() {
 entry:
-  %d1 = alloca i8*
-  store i8* getelementptr inbounds ([5 x i8], [5 x i8]* @context, i32 0, i32 0), i8** %d1
-  %r1 = alloca i8*
-  store i8* getelementptr inbounds ([8 x i8], [8 x i8]* @context.3, i32 0, i32 0), i8** %r1
-  %p1 = alloca i8*
-  store i8* getelementptr inbounds ([8 x i8], [8 x i8]* @context.4, i32 0, i32 0), i8** %p1
-  %d11 = load i8*, i8** %d1
-  %d12 = load i8*, i8** %d1
-  %d13 = load i8*, i8** %d1
-  %complement = call i8* (i8*, ...) bitcast (i8* (i8*)* @complement to i8* (i8*, ...)*)(i8* %d13)
-  %d14 = load i8*, i8** %d1
-  %d15 = load i8*, i8** %d1
-  %d16 = load i8*, i8** %d1
-  %complement7 = call i8* (i8*, ...) bitcast (i8* (i8*)* @complement to i8* (i8*, ...)*)(i8* %d16)
-  %printf = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @fmt_str, i32 0, i32 0), i8* %complement7)
-  %p18 = load i8*, i8** %p1
-  %p19 = load i8*, i8** %p1
-  %printf10 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @fmt_str, i32 0, i32 0), i8* %p19)
-  %printf11 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @fmt_str, i32 0, i32 0), i8* getelementptr inbounds ([5 x i8], [5 x i8]* @context.6, i32 0, i32 0))
-  %d112 = load i8*, i8** %d1
-  %d113 = load i8*, i8** %d1
-  %d114 = load i8*, i8** %d1
-  %complement15 = call i8* (i8*, ...) bitcast (i8* (i8*)* @complement to i8* (i8*, ...)*)(i8* %d114)
-  %d116 = load i8*, i8** %d1
-  %d117 = load i8*, i8** %d1
-  %d118 = load i8*, i8** %d1
-  %complement19 = call i8* (i8*, ...) bitcast (i8* (i8*)* @complement to i8* (i8*, ...)*)(i8* %d118)
-  %printf20 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @fmt_str, i32 0, i32 0), i8* %complement19)
-  %d121 = load i8*, i8** %d1
-  %d122 = load i8*, i8** %d1
-  %transcribe = call i8* (i8*, ...) bitcast (i8* (i8*)* @transcribe to i8* (i8*, ...)*)(i8* %d122)
-  %d123 = load i8*, i8** %d1
-  %d124 = load i8*, i8** %d1
-  %transcribe25 = call i8* (i8*, ...) bitcast (i8* (i8*)* @transcribe to i8* (i8*, ...)*)(i8* %d124)
-  %printf26 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @fmt_str, i32 0, i32 0), i8* %transcribe25)
+  %array = alloca i32, i32 4
+  %array1 = getelementptr i32, i32* %array, i32 3
+  store i32 3, i32* %array1
+  %array2 = getelementptr i32, i32* %array, i32 3
+  %tmp = load i32, i32* %array2
+  %array3 = getelementptr i32, i32* %array, i32 3
+  %tmp4 = load i32, i32* %array3
+  %printf = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @fmt_int, i32 0, i32 0), i32 %tmp4)
+  %array5 = load i32, i32* %array
+  %array6 = load i32, i32* %array
+  %array7 = load i32, i32* %array
+  %array8 = load i32, i32* %array
+  %printf9 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @fmt_int, i32 0, i32 0), i32 4)
+  %concat = call i8* (i8*, i8*, ...) bitcast (i8* (i8*, i8*)* @concat to i8* (i8*, i8*, ...)*)(i8* getelementptr inbounds ([7 x i8], [7 x i8]* @context, i32 0, i32 0), i8* getelementptr inbounds ([7 x i8], [7 x i8]* @context.3, i32 0, i32 0))
+  %concat10 = call i8* (i8*, i8*, ...) bitcast (i8* (i8*, i8*)* @concat to i8* (i8*, i8*, ...)*)(i8* getelementptr inbounds ([7 x i8], [7 x i8]* @context.6, i32 0, i32 0), i8* getelementptr inbounds ([7 x i8], [7 x i8]* @context.7, i32 0, i32 0))
+  %printf11 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @fmt_str, i32 0, i32 0), i8* %concat10)
+  %printf12 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @fmt_int, i32 0, i32 0), i32 3)
+  %printf13 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([5 x i8], [5 x i8]* @fmt_str.1, i32 0, i32 0), double 5.000000e+00)
+  %exp_ii = call i32 (i32, i32, ...) bitcast (i32 (i32, i32)* @exp_ii to i32 (i32, i32, ...)*)(i32 2, i32 4)
+  %exp_ii14 = call i32 (i32, i32, ...) bitcast (i32 (i32, i32)* @exp_ii to i32 (i32, i32, ...)*)(i32 2, i32 4)
+  %printf15 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @fmt_int, i32 0, i32 0), i32 %exp_ii14)
+  %exp_dd = call double (double, double, ...) bitcast (double (double, double)* @exp_dd to double (double, double, ...)*)(double 2.500000e+00, double 2.000000e+00)
+  %exp_dd16 = call double (double, double, ...) bitcast (double (double, double)* @exp_dd to double (double, double, ...)*)(double 2.500000e+00, double 2.000000e+00)
+  %printf17 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([5 x i8], [5 x i8]* @fmt_str.1, i32 0, i32 0), double %exp_dd16)
   ret i32 0
 }
 
