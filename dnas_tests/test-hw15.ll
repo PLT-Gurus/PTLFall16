@@ -41,8 +41,8 @@ entry:
   %array7 = load i32, i32* %array
   %array8 = load i32, i32* %array
   %printf9 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @fmt_int, i32 0, i32 0), i32 4)
-  %concat = call i8* (i8*, i8*, ...) bitcast (i8* (i8*, i8*)* @concat to i8* (i8*, i8*, ...)*)(i8* getelementptr inbounds ([7 x i8], [7 x i8]* @context.3, i32 0, i32 0), i8* getelementptr inbounds ([7 x i8], [7 x i8]* @context, i32 0, i32 0))
-  %concat10 = call i8* (i8*, i8*, ...) bitcast (i8* (i8*, i8*)* @concat to i8* (i8*, i8*, ...)*)(i8* getelementptr inbounds ([7 x i8], [7 x i8]* @context.7, i32 0, i32 0), i8* getelementptr inbounds ([7 x i8], [7 x i8]* @context.6, i32 0, i32 0))
+  %concat = call i8* (i8*, i8*, ...) bitcast (i8* (i8*, i8*)* @concat to i8* (i8*, i8*, ...)*)(i8* getelementptr inbounds ([7 x i8], [7 x i8]* @context, i32 0, i32 0), i8* getelementptr inbounds ([7 x i8], [7 x i8]* @context.3, i32 0, i32 0))
+  %concat10 = call i8* (i8*, i8*, ...) bitcast (i8* (i8*, i8*)* @concat to i8* (i8*, i8*, ...)*)(i8* getelementptr inbounds ([7 x i8], [7 x i8]* @context.6, i32 0, i32 0), i8* getelementptr inbounds ([7 x i8], [7 x i8]* @context.7, i32 0, i32 0))
   %printf11 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @fmt_str, i32 0, i32 0), i8* %concat10)
   %printf12 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @fmt_int, i32 0, i32 0), i32 3)
   %printf13 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([6 x i8], [6 x i8]* @fmt_str.1, i32 0, i32 0), double 5.000000e+00)
