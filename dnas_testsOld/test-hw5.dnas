@@ -1,0 +1,2 @@
+Seq hi = #agcgcaagcca;
+print_str(hi);

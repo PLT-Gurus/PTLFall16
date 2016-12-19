@@ -1,0 +1,3 @@
+DNA hello = #atgc;
+char temp = hello[2];
+print(temp);

@@ -1,0 +1,5 @@
+string hi = "hello";
+print_str(hi);
+print_str("hi");
+hi = "boo";
+print_str(hi);
