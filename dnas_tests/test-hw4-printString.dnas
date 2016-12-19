@@ -1,0 +1,8 @@
+string hi = "hello";
+print(hi);
+print("hi");
+hi = "boo";
+print(hi);
+
+
+

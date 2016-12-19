@@ -1,0 +1,5 @@
+DNA test = #AA;
+test = myarray[0];
+print(myarray);
+print(test);
+

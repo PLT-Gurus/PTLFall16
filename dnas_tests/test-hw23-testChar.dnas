@@ -1,0 +1,7 @@
+
+DNA hi = #atgc;
+char temp = hi[5];
+print(temp);
+
+
+
