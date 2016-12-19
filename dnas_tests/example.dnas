@@ -1,0 +1,8 @@
+DNA sample = #atgc;
+DNA sample2 = #ccgt;
+int tempResult = lcs_length(sample,sample2, 4, 4);
+int lcs_length(DNA A, DNA B, int sizeA, int sizeB)
+	string C = A + B; 
+	return 1;
+
+end
