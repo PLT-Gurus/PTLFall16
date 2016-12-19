@@ -81,7 +81,7 @@ the given lvalue type *)
 let check_assign lvaluet rvaluet err =
 	match lvaluet with
 	  DNA -> if rvaluet == DNA || rvaluet == Seq then lvaluet else raise err
-	| RNA -> if rvaluet == DNA || rvaluet == Seq then lvaluet else raise err
+	| RNA -> if rvaluet == RNA || rvaluet == Seq then lvaluet else raise err
 	| Pep -> lvaluet
 	| _ -> if lvaluet == rvaluet then lvaluet else raise err
 

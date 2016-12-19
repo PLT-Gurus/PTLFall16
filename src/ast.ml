@@ -99,6 +99,18 @@ let string_of_typ = function
 	| RNA		->"RNA"
 	| Pep		->"Peptide"
 	| Str       ->"str"
+	| ArrayInt	->"Array of Int"
+	| ArrayDouble	->"Array of Double"
+	| ArrayStr	->"Array of Str"
+	| ArrayBool	->"Array of Bool"
+	| ArrayChar	->"Array of Char"
+	| ArrayAa	->"Array of  Aa"
+	| ArrayNuc	->"Array of  Nuc"
+	| ArrayCodon	->"Array of  Codon"
+	| ArraySeq	->"Array of  Seq"
+	| ArrayDNA	->"Array of  DNA"
+	| ArrayRNA	->"Array of  RNA"
+	| ArrayPep	->"Array of Pep"
 
 let string_of_uop = function
 	  Neg 		-> "-"
@@ -121,6 +133,8 @@ let rec string_of_expr = function
 		str
 	| Litpep(str) ->
 		str
+	| LitCodon(str)->
+		str
 	| Stringlit(str)->
 		str
 	| Litbool(true)->
@@ -140,8 +154,18 @@ let rec string_of_expr = function
 		string_of_expr exp ^ string_of_uop uop
 	| Assign(str,exp)->
 		str ^ "=" ^ string_of_expr exp
+	| ArrayAcc(str,exp)->
+		str ^ "[" ^ string_of_expr exp ^ "]"
 	| ArrayAssign(str,exp1,exp2)->
 		str ^ "[" ^ string_of_expr exp1 ^ "]" ^ "=" ^ string_of_expr exp2
+	| SizeOf(str)->
+		str ^ ".length"
+	| Typecast(typ, expr)->
+		string_of_typ typ ^ " " ^ string_of_expr expr
+	| Fread(str)->
+		"FASTA read " ^ str
+	| Read(str)->
+		"Read " ^ str
 	| Call(str,l_expr)->
 		str ^ "(" ^
 		String.concat "," (List.map string_of_expr l_expr) ^
@@ -197,6 +221,9 @@ let rec string_of_stmt n stmt=
 		blk ^ "vari->\n" ^
 		blk ^ "  " ^ string_of_typ typ ^ " " ^ str ^ " = " ^ string_of_expr exp ^ "\n"
 
+	|ArrayDecl(typ,exp,str)->
+		blk ^ "vari->\n" ^
+		blk ^ "  " ^ string_of_typ typ ^ "[" ^ string_of_expr exp ^ "]" ^ str ^ "\n"
 	|Nobranching->
 		"\n"
 

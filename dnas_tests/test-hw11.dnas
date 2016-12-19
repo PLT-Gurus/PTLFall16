@@ -1,4 +1,3 @@
 DNA [8] David;
-David[0] = "atgc ";
-print_str(David[0]);
-
+David[0] = "atgc";
+print(David[0]);

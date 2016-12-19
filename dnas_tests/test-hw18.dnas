@@ -1,0 +1,4 @@
+DNA [5] myarray;
+myarray[0] = #AGTC;
+DNA test = myarray[0];
+print(myarray);

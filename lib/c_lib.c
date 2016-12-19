@@ -62,6 +62,22 @@ char* transcribe(char* str){
     return retstr;
 }
 
+int char_num(char a){
+    int ret = 0;
+    if(a == 'A' || a == 'a')
+        ret = 0;
+    else if(a == 'C' || a == 'c')
+        ret = 1;
+    else if(a == 'G' || a == 'g')
+        ret = 2;
+    else if(a == 'U' || a == 'u')
+        ret = 3;
+    return ret;
+}
+int codon_number(char a, char b, char c){
+    return char_num(a) * 16 + char_num(b) * 4 + char_num(c);
+}
+
 char* translate(char* str){
     if(!str)
         return str;
