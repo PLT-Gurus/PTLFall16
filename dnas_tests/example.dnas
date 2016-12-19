@@ -1,7 +1,7 @@
-DNA sample = #acgc;
-DNA sample2 = #ccgt;
-string empty = "";
+DNA sample = #aaaa;
+DNA sample2 = #aaaa;
 int tempResult = lcs_length(sample,sample2, 4,4);
+print(tempResult);
 int lcs_length(DNA A, DNA B, int sizeA, int sizeB)
 	int [sizeA * sizeB] C; 
 	int i2 = 0;
@@ -10,11 +10,9 @@ int lcs_length(DNA A, DNA B, int sizeA, int sizeB)
 	end 
 	int i = sizeA;
 	int j = sizeB;
-	for i; i >= 0;then
-		print("here");
-		print(j);
-		begin
-		for j; j >= 0; j = j-1 then
+	for i=sizeA; i >= 0; i = i-1 then
+		for j=sizeB; j >= 0; j = j-1 then
+				
 			if i == sizeA  | j == sizeB then
 				
 				int index = getIndex(i, j, sizeA, sizeB);
@@ -35,14 +33,16 @@ int lcs_length(DNA A, DNA B, int sizeA, int sizeB)
 				C[index5] = max;  
 				
 			end
-			end
-			i= i -1;
+			
 		end
 		
 	end
+	print("here");
 	for i = 0; i<sizeA*sizeB; i=i+1 then
+		//print(C[i]);
 		end
 	int result = C[0];
+	print(result);
 	return result;
 end
 int getIndex(int x, int y, int sizeA, int sizeB)
