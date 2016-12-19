@@ -57,6 +57,8 @@ let translate prog =
     {name="printf"        ;ret=i32_t;       arg=[|L.pointer_type i8_t |]  };
     {name="complement"    ;ret=str_t;       arg=[|str_t|]                 };
     {name="transcribe"    ;ret=str_t;       arg=[|str_t|]                 };
+    {name="translate"     ;ret=str_t;       arg=[|str_t|]                 };
+    {name="translate2"    ;ret=str_t;       arg=[|str_t|]                 };
     {name="concat"        ;ret=str_t;       arg=[|str_t; str_t|]          };
     {name="strlength"     ;ret=i32_t;       arg=[|str_t|]                 };
     {name="readFASTAFile" ;ret=str_t;       arg=[|str_t|]                 };
@@ -351,8 +353,8 @@ let translate prog =
           (((match op with
 
             | A.Transcb     -> ext_call "transcribe"
-            | A.Translt     -> ext_call "transcribe"  (*todo# change name*)
-            | A.Translttwo  -> ext_call "transcribe"  (*todo# change name*)
+            | A.Translt     -> ext_call "translate"
+            | A.Translttwo  -> ext_call "translate2"
           ) [e] bvtup), (snd (add_expr bvtup e)))
 
       | A.Assign (s, e) -> let e' = fst (add_expr bvtup e )in
@@ -382,10 +384,10 @@ let translate prog =
             "printf" (fst bvtup)
 
           | A.Bool ->
-            if eval = (L.const_int i1_t 0) then L.build_call (StringMap.find "printf" ext_funcs) [| str_format_str ; (fst (add_expr bvtup (A.Stringlit("false")) ))|] 
-            "printf" (fst bvtup)  else L.build_call (StringMap.find "printf" ext_funcs) [| str_format_str ; (fst (add_expr bvtup (A.Stringlit("true"))))|] 
+            if eval = (L.const_int i1_t 0) then L.build_call (StringMap.find "printf" ext_funcs) [| str_format_str ; (fst (add_expr bvtup (A.Stringlit("false")) ))|]
+            "printf" (fst bvtup)  else L.build_call (StringMap.find "printf" ext_funcs) [| str_format_str ; (fst (add_expr bvtup (A.Stringlit("true"))))|]
             "printf" (fst bvtup)
-                  
+
           | A.Double ->
             L.build_call (StringMap.find "printf" ext_funcs) [| double_format_str ; (eval) |]
             "printf" (fst bvtup)
@@ -419,7 +421,7 @@ let translate prog =
 
       | A.Litpep(str) ->
                 let pepTemp = ((L.build_global_stringptr str "context" (fst bvtup)), A.Pep) in
-                let pepResult = ext_call_alternate "formatPep" [fst pepTemp] bvtup in 
+                let pepResult = ext_call_alternate "formatPep" [fst pepTemp] bvtup in
                 (pepResult, A.Pep)
 
       | A.Noexpr -> ((L.const_int i32_t 0), A.Int)

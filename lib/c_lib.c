@@ -20,7 +20,7 @@ char* complement(char* str){
     int i = 0;
     while(str[i] != 0) i++;
     int length = i;
-    char* retstr [length];
+    char retstr [length];
     char curr;
     for(int i = 0; i<length; i++){
         curr = str[i];
