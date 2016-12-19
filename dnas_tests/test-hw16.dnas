@@ -1,3 +1,2 @@
 Pep sample = #A-T-G-C;
 print(sample);
-

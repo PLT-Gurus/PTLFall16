@@ -382,8 +382,10 @@ let translate prog =
             "printf" (fst bvtup)
 
           | A.Bool ->
-            ext_call_alternate "print_f" [eval] bvtup
-
+            if eval = (L.const_int i1_t 0) then L.build_call (StringMap.find "printf" ext_funcs) [| str_format_str ; (fst (add_expr bvtup (A.Stringlit("false")) ))|] 
+            "printf" (fst bvtup)  else L.build_call (StringMap.find "printf" ext_funcs) [| str_format_str ; (fst (add_expr bvtup (A.Stringlit("true"))))|] 
+            "printf" (fst bvtup)
+                  
           | A.Double ->
             L.build_call (StringMap.find "printf" ext_funcs) [| double_format_str ; (eval) |]
             "printf" (fst bvtup)
