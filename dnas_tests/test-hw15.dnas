@@ -1,9 +1,0 @@
-int [4] array;
-array[3] = 3;
-print(array[3]);
-print(array.length);
-print("hello "+"world!");
-print(1 + 2);
-print(2.5/0.5);
-print(2^4);
-print(2.5^2.0);

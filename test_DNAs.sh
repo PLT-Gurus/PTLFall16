@@ -181,7 +181,7 @@ do
 	    ;;
     esac
 done
-echo "# of test cases passed: " $passed
+echo "# of test cases run: " $passed
 echo "# of test cases failed: " $failed
 
 exit $globalerror
