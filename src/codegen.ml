@@ -71,7 +71,8 @@ let translate prog =
     {name="exp_id"        ;ret=double_t;    arg=[|double_t;i32_t|]        };
     {name="exp_dd"        ;ret=double_t;    arg=[|double_t;double_t|]     };
     {name="print_tf"      ;ret=i32_t;       arg=[|i1_t|]                  };
-    {name="getChar"       ;ret=i8_t;         arg=[|str_dt; i32_t|]         }
+    {name="getChar"       ;ret=i8_t;         arg=[|str_dt; i32_t|]         };
+    {name="formatPep"       ;ret=str_t;         arg=[|str_t|]         }
   ]
   in
 
@@ -178,9 +179,6 @@ let translate prog =
           if (testPrint = (L.const_int i8_t (-1))) then raise (Failure "Array index out of access") else ignore();
 
           (testPrint, arrType)
-
-      | A.Strcat(first, second) ->
-            ((ext_call "concat" [second;first] bvtup), A.Str)
 
       | A.Binop (e1, op, e2) ->
           let e1' = fst (add_expr bvtup e1)
@@ -422,7 +420,9 @@ let translate prog =
                 ((L.build_global_stringptr str "context" (fst bvtup)), A.RNA)
 
       | A.Litpep(str) ->
-                ((L.build_global_stringptr str "context" (fst bvtup)), A.Pep)
+                let pepTemp = ((L.build_global_stringptr str "context" (fst bvtup)), A.Pep) in
+                let pepResult = ext_call_alternate "formatPep" [fst pepTemp] bvtup in 
+                pepTemp
 
       | A.Noexpr -> ((L.const_int i32_t 0), A.Int)
 

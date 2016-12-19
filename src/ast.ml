@@ -22,7 +22,6 @@ type expr =
 		| Stringlit of string
 		| Litdouble of float
 		| ArrayAcc of string * expr
-		| Strcat of expr * expr
 		| Binop of expr * op * expr (*added into Codegen*)
 		| Lunop of uop * expr 		(*added into Codegen*)
 		| Runop of expr * uop 		(*added into Codegen*)
@@ -140,8 +139,6 @@ let rec string_of_expr = function
 		string_of_expr exp ^ string_of_uop uop
 	| Assign(str,exp)->
 		str ^ "=" ^ string_of_expr exp
-	| Strcat(exp1,exp2) ->
-		string_of_expr exp1 ^ "+" ^ string_of_expr exp2
 	| ArrayAssign(str,exp1,exp2)->
 		str ^ "[" ^ string_of_expr exp1 ^ "]" ^ "=" ^ string_of_expr exp2
 	| Call(str,l_expr)->

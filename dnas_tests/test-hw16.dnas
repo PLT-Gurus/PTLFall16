@@ -1,2 +1,2 @@
-DNA sample = #ATGC
+pep sample = #A-T-G-C;
 print(sample);

@@ -193,3 +193,25 @@ char getChar (char ** input, int index)
     char temp =input[0][index];
     return temp;
 }
+char* formatPep(char * input)
+{
+    int i= 0;
+    while(input[i] != 0) i++;
+    char result [i];
+    int j = 0;
+    for (int k=0; k<i; k++)
+    {
+        if (input[k] != '-')
+        {
+            result[j] = input[k];
+            j++;
+        }
+    }
+    while (j <= i)
+    {
+        result[j] = 0;
+        j++;
+    }
+    return result;
+
+}
