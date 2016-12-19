@@ -1,4 +1,1 @@
-string temp = readFASTA("sample2.FASTA");
-string temp2= read("sample2.FASTA");
-print(temp);
-print(temp2);
+DNA hello = #atgc;

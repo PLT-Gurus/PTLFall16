@@ -178,3 +178,18 @@ int print_tf(bool b)
         return printf("false\n");
     }
 }
+char getChar (char ** input, int index)
+{
+    if (input == NULL)
+        return -1;
+    if (input[0][0] == NULL)
+        return -1;
+    int i = 0;//length of input
+    while (input[0][i] != 0) i++;
+    if (index >= i)
+    {
+        return -1;// check for type casting
+    }
+    char temp =input[0][index];
+    return temp;
+}

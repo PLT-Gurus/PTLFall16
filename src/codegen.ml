@@ -28,6 +28,7 @@ let translate prog =
   and void_t = L.void_type context in
   let str_t  = L.pointer_type i8_t in
   let intptr_t = L.pointer_type i32_t in
+  let str_dt = L.pointer_type str_t in 
 
   let ltype_of_typ = function
   | A.Double ->double_t
@@ -69,7 +70,8 @@ let translate prog =
     {name="exp_di"        ;ret=double_t;    arg=[|i32_t;double_t|]        };
     {name="exp_id"        ;ret=double_t;    arg=[|double_t;i32_t|]        };
     {name="exp_dd"        ;ret=double_t;    arg=[|double_t;double_t|]     };
-    {name="print_tf"      ;ret=i32_t;      arg=[|i1_t|]                  };
+    {name="print_tf"      ;ret=i32_t;       arg=[|i1_t|]                  };
+    {name="getChar"       ;ret=i8_t;         arg=[|str_dt; i32_t|]         }
   ]
   in
 
@@ -125,6 +127,7 @@ let translate prog =
     let int_format_str = L.build_global_stringptr "%d\n" "fmt_int" builder in
     let str_format_str = L.build_global_stringptr "%s\n" "fmt_str" builder in
     let double_format_str = L.build_global_stringptr "%.3f\n" "fmt_str" builder in
+    let char_format_str = L.build_global_stringptr "%c\n" "fmt_str" builder in
     
     let add_formal map (v_typ, v_name) param =
       L.set_value_name v_name param;
@@ -159,11 +162,19 @@ let translate prog =
       | A.Id s -> ((L.build_load (fst (fst (lookup s (snd bvtup)))) s (fst bvtup)), A.Void)
 
       | A.ArrayAcc(id, index) -> 
+
           let index = fst (add_expr bvtup index) in 
           let arr = fst (fst (lookup id (snd bvtup))) in 
           let arrType = snd (fst (lookup id (snd bvtup))) in
-          let val1 = L.build_gep arr [|index|] id (fst bvtup) in
-          let testPrint = L.build_load val1 "tmp" (fst bvtup) in
+          let testPrint = (match arrType with 
+              A.Str -> ext_call_alternate "getChar" [index; arr] bvtup 
+            | A.DNA -> ext_call_alternate "getChar" [index; arr] bvtup 
+            | A.RNA -> ext_call_alternate "getChar" [index; arr] bvtup 
+            | A.Pep -> ext_call_alternate "getChar" [index; arr] bvtup 
+            | _ ->   let val1 = L.build_gep arr [|index|] id (fst bvtup) in
+                    L.build_load val1 "tmp" (fst bvtup)
+                ) in 
+         (*  if (testPrint = (L.const_int i8_t -1)) then raise (Failure "Array index out of access") else ignore(); *)
           (testPrint, arrType)
 
       | A.Strcat(first, second) ->
@@ -237,7 +248,7 @@ let translate prog =
                         (match astType2 with
                           type_int when type_int = i32_t -> (*d-i*)L.build_fdiv
                             e1' (ext_call_alternate "int2double" [e2'] bvtup) "bop" (fst bvtup)
-                        | type_double when type_double = (*d-d*)double_t -> L.build_fdiv e1' e2' "bop" (fst bvtup) )
+                        | type_double when type_double = (*d-d*)double_t -> L.build_fdiv e1' e2' "bop" (fst bvtup))
                 in (ret, e1Type) 
             
             | A.Mod     -> ((ext_call "mod" [e1;e2] bvtup),  e1Type)
@@ -374,6 +385,9 @@ let translate prog =
           
           | type_double when type_double = double_t ->
             L.build_call (StringMap.find "printf" ext_funcs) [| double_format_str ; (eval) |]
+            "printf" (fst bvtup)
+          | type_char when type_char = i8_t ->
+            L.build_call (StringMap.find "printf" ext_funcs) [| char_format_str ; (eval) |]
             "printf" (fst bvtup)
           
           | _ -> L.build_call (StringMap.find "printf" ext_funcs) [| str_format_str ; (eval) |]
