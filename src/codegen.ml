@@ -28,7 +28,7 @@ let translate prog =
   and void_t = L.void_type context in
   let str_t  = L.pointer_type i8_t in
   let intptr_t = L.pointer_type i32_t in
-  let str_dt = L.pointer_type str_t in 
+  let str_dt = L.pointer_type str_t in
 
   let ltype_of_typ = function
   | A.Double ->double_t
@@ -51,7 +51,7 @@ let translate prog =
     A.stmts=p_stmts;
   } in
 
-  let ext_func_lst=[ 
+  let ext_func_lst=[
     (*NOTICE : the sequence of arg list has to be reverse order of origin C-func !!!*)
     {name="test"          ;ret=i32_t;       arg=[|i32_t;i32_t|]           };
     {name="printf"        ;ret=i32_t;       arg=[|L.pointer_type i8_t |]  };
@@ -83,9 +83,9 @@ let translate prog =
   in
 
   let ext_funcs=List.fold_left build_ext_func StringMap.empty ext_func_lst in
-              
-          
-  (* Declare printf(), which the print built-in function will call 
+
+
+  (* Declare printf(), which the print built-in function will call
   let printf_t = L.var_arg_function_type i32_t [| L.pointer_type i8_t |] in
   let printf_func = L.declare_function "printf" printf_t the_module in
 
@@ -129,7 +129,7 @@ let translate prog =
     let str_format_str = L.build_global_stringptr "%s\n" "fmt_str" builder in
     let double_format_str = L.build_global_stringptr "%.3f\n" "fmt_str" builder in
     let char_format_str = L.build_global_stringptr "%c\n" "fmt_str" builder in
-    
+
     let add_formal map (v_typ, v_name) param =
       L.set_value_name v_name param;
       let local = L.build_alloca (ltype_of_typ v_typ) v_name builder in
@@ -153,170 +153,174 @@ let translate prog =
     (*add_expr bvtup*)
     let rec add_expr bvtup = function
       | A.Litint i  -> ((L.const_int i32_t i), A.Int)
-      
+
       | A.Litdouble d -> ((L.const_float double_t d), A.Double)
-      
+
       | A.Litbool b -> ((L.const_int i1_t (if b then 1 else 0)), A.Bool)
 
       | A.Litchar c -> ((L.const_int i8_t (int_of_char c)), A.Char)
 
       | A.Id s -> ((L.build_load (fst (fst (lookup s (snd bvtup)))) s (fst bvtup)), A.Void)
 
-      | A.ArrayAcc(id, index) -> 
+      | A.ArrayAcc(id, index) ->
 
-          let index = fst (add_expr bvtup index) in 
-          let arr = fst (fst (lookup id (snd bvtup))) in 
+          let index = fst (add_expr bvtup index) in
+          let arr = fst (fst (lookup id (snd bvtup))) in
           let arrType = snd (fst (lookup id (snd bvtup))) in
-          let testPrint = (match arrType with 
-              A.Str -> ext_call_alternate "getChar" [index; arr] bvtup 
-            | A.DNA -> ext_call_alternate "getChar" [index; arr] bvtup 
-            | A.RNA -> ext_call_alternate "getChar" [index; arr] bvtup 
-            | A.Pep -> ext_call_alternate "getChar" [index; arr] bvtup 
+          let testPrint = (match arrType with
+              A.Str -> ext_call_alternate "getChar" [index; arr] bvtup
+            | A.DNA -> ext_call_alternate "getChar" [index; arr] bvtup
+            | A.RNA -> ext_call_alternate "getChar" [index; arr] bvtup
+            | A.Pep -> ext_call_alternate "getChar" [index; arr] bvtup
             | _ ->   let val1 = L.build_gep arr [|index|] id (fst bvtup) in
                     L.build_load val1 "tmp" (fst bvtup)
-                ) in 
+
+                ) in
           if (testPrint = (L.const_int i8_t (-1))) then raise (Failure "Array index out of access") else ignore();
+
           (testPrint, arrType)
 
       | A.Binop (e1, op, e2) ->
           let e1' = fst (add_expr bvtup e1)
           and e2' = fst (add_expr bvtup e2)in
-          let e1Type = snd (add_expr bvtup e1) in 
-          let e2Type = snd (add_expr bvtup e2) in 
+          let e1Type = snd (add_expr bvtup e1) in
+          let e2Type = snd (add_expr bvtup e2) in
           (match op with
               A.Add     ->
                 let astType1 = L.type_of e1' in
                 let astType2 = L.type_of e2' in
-                let throwAway = match astType1 with 
+
+                let throwAway = match astType1 with
                       type_str when type_str = str_t -> ext_call_alternate "concat" [e2';e1'] bvtup
-                    | type_int when type_int = i32_t -> 
+                    | type_int when type_int = i32_t ->
+
                         (match astType2 with
                           type_int when type_int = i32_t -> (*i-i*)L.build_add e1' e2' "bop" (fst bvtup)
-                        | type_double when type_double = double_t -> (*i-d*)L.build_fadd 
+                        | type_double when type_double = double_t -> (*i-d*)L.build_fadd
                             (ext_call_alternate "int2double" [e1'] bvtup) e2' "bop" (fst bvtup) )
-                    | type_double when type_double = double_t -> 
+                    | type_double when type_double = double_t ->
                         (match astType2 with
                           type_int when type_int = i32_t -> (*d-i*)L.build_fadd
                             e1' (ext_call_alternate "int2double" [e2'] bvtup) "bop" (fst bvtup)
                         | type_double when type_double = (*d-d*)double_t -> L.build_fadd e1' e2' "bop" (fst bvtup) )
-                in (throwAway, e1Type) 
+                in (throwAway, e1Type)
 
-            | A.Sub     -> 
+            | A.Sub     ->
                 let astType1 = L.type_of e1' in
                 let astType2 = L.type_of e2' in
-                let ret = match astType1 with 
-                   type_int when type_int = i32_t -> 
+                let ret = match astType1 with
+                   type_int when type_int = i32_t ->
                         (match astType2 with
                           type_int when type_int = i32_t -> (*i-i*)L.build_sub e1' e2' "bop" (fst bvtup)
                         | type_double when type_double = double_t -> (*i-d*)L.build_fsub
                             (ext_call_alternate "int2double" [e1'] bvtup) e2' "bop" (fst bvtup) )
-                    | type_double when type_double = double_t -> 
+                    | type_double when type_double = double_t ->
                         (match astType2 with
                           type_int when type_int = i32_t -> (*d-i*)L.build_fsub
                             e1' (ext_call_alternate "int2double" [e2'] bvtup) "bop" (fst bvtup)
                         | type_double when type_double = (*d-d*)double_t -> L.build_fsub e1' e2' "bop" (fst bvtup) )
                 in (ret, e1Type)
-          
-            | A.Mult    -> 
+
+            | A.Mult    ->
                 let astType1 = L.type_of e1' in
                 let astType2 = L.type_of e2' in
-                let ret = match astType1 with 
-                   type_int when type_int = i32_t -> 
+                let ret = match astType1 with
+                   type_int when type_int = i32_t ->
                         (match astType2 with
                           type_int when type_int = i32_t -> (*i-i*)L.build_mul e1' e2' "bop" (fst bvtup)
                         | type_double when type_double = double_t -> (*i-d*)L.build_fmul
                             (ext_call_alternate "int2double" [e1'] bvtup) e2' "bop" (fst bvtup) )
-                    | type_double when type_double = double_t -> 
+                    | type_double when type_double = double_t ->
                         (match astType2 with
                           type_int when type_int = i32_t -> (*d-i*)L.build_fmul
                             e1' (ext_call_alternate "int2double" [e2'] bvtup) "bop" (fst bvtup)
                         | type_double when type_double = (*d-d*)double_t -> L.build_fmul e1' e2' "bop" (fst bvtup) )
                 in (ret, e1Type)
 
-            | A.Div     -> 
+            | A.Div     ->
                 let astType1 = L.type_of e1' in
                 let astType2 = L.type_of e2' in
-                let ret = match astType1 with 
-                   type_int when type_int = i32_t -> 
+                let ret = match astType1 with
+                   type_int when type_int = i32_t ->
                         (match astType2 with
                           type_int when type_int = i32_t -> (*i-i*)L.build_sdiv e1' e2' "bop" (fst bvtup)
                         | type_double when type_double = double_t -> (*i-d*)L.build_fdiv
                             (ext_call_alternate "int2double" [e1'] bvtup) e2' "bop" (fst bvtup) )
-                    | type_double when type_double = double_t -> 
+                    | type_double when type_double = double_t ->
                         (match astType2 with
                           type_int when type_int = i32_t -> (*d-i*)L.build_fdiv
                             e1' (ext_call_alternate "int2double" [e2'] bvtup) "bop" (fst bvtup)
                         | type_double when type_double = (*d-d*)double_t -> L.build_fdiv e1' e2' "bop" (fst bvtup))
-                in (ret, e1Type) 
-            
+                in (ret, e1Type)
+
             | A.Mod     -> ((ext_call "mod" [e1;e2] bvtup),  e1Type)
-            
-            | A.Exp     -> 
+
+            | A.Expon     ->
                 let astType1 = L.type_of e1' in
                 let astType2 = L.type_of e2' in
-                let ret = match astType1 with 
-                   type_int when type_int = i32_t -> 
+                let ret = match astType1 with
+                   type_int when type_int = i32_t ->
                         (match astType2 with
                           type_int when type_int = i32_t -> (*i-i*) ext_call_alternate "exp_ii" [e1';e2'] bvtup
                         | type_double when type_double = double_t -> (*i-d*)ext_call_alternate "exp_id" [e1';e2'] bvtup )
-                    | type_double when type_double = double_t -> 
+                    | type_double when type_double = double_t ->
                         (match astType2 with
                           type_int when type_int = i32_t -> ext_call_alternate "exp_di" [e1';e2'] bvtup(*d-i*)
                         | type_double when type_double = double_t -> ext_call_alternate "exp_dd" [e1';e2'] bvtup(*d-d*))
-                in (ret, e1Type) 
-            
+                in (ret, e1Type)
+
             | A.And     -> ((L.build_and e1' e2' "bop" (fst bvtup)), e1Type)
 
             | A.Or      -> ((L.build_or e1' e2' "bop" (fst bvtup)), e1Type)
-            
-            | A.Equal   -> 
+
+            | A.Equal   ->
                 (let astType = L.type_of e1' in
-                match astType with 
+                match astType with
                    type_int when type_int = i32_t ->
                       ((L.build_icmp L.Icmp.Eq e1' e2' "bop" (fst bvtup)), A.Int)
                   |type_double when type_double = double_t ->
                       ((L.build_fcmp L.Fcmp.Ueq e1' e2' "bop" (fst bvtup) ), A.Double))
 
-            | A.Neq     -> 
+            | A.Neq     ->
                 (let astType = L.type_of e1' in
-                match astType with 
+                match astType with
                    type_int when type_int = i32_t ->
                       ((L.build_icmp L.Icmp.Ne e1' e2' "bop" (fst bvtup)), A.Int)
                   |type_double when type_double = double_t ->
                       ((L.build_fcmp L.Fcmp.Une e1' e2' "bop" (fst bvtup) ), A.Double))
-            
-            | A.Less    -> 
+
+            | A.Less    ->
                 (let astType = L.type_of e1' in
-                match astType with 
+                match astType with
                    type_int when type_int = i32_t ->
                       ((L.build_icmp L.Icmp.Slt e1' e2' "bop" (fst bvtup)), A.Int)
                   |type_double when type_double = double_t ->
                       ((L.build_fcmp L.Fcmp.Ult e1' e2' "bop" (fst bvtup) ), A.Double))
-            
+
             | A.Leq     ->
                 (let astType = L.type_of e1' in
-                match astType with 
+                match astType with
                    type_int when type_int = i32_t ->
                       ((L.build_icmp L.Icmp.Sle e1' e2' "bop" (fst bvtup)), A.Int)
                   |type_double when type_double = double_t ->
-                      ((L.build_fcmp L.Fcmp.Ule e1' e2' "bop" (fst bvtup)), A.Double)) 
-            
+                      ((L.build_fcmp L.Fcmp.Ule e1' e2' "bop" (fst bvtup)), A.Double))
+
             | A.Greater ->
                 (let astType = L.type_of e1' in
-                match astType with 
+                match astType with
                    type_int when type_int = i32_t ->
                       ((L.build_icmp L.Icmp.Sgt e1' e2' "bop" (fst bvtup)), A.Int)
                   |type_double when type_double = double_t ->
                       ((L.build_fcmp L.Fcmp.Ugt e1' e2' "bop" (fst bvtup) ), A.Double))
-            
-            | A.Geq     -> 
+
+            | A.Geq     ->
                 (let astType = L.type_of e1' in
-                match astType with 
+                match astType with
                    type_int when type_int = i32_t ->
                       ((L.build_icmp L.Icmp.Sge e1' e2' "bop" (fst bvtup)), A.Int)
                   |type_double when type_double = double_t ->
                       ((L.build_fcmp L.Fcmp.Uge e1' e2' "bop" (fst bvtup)), A.Double) )
-          ) 
+          )
 
       | A.Lunop(op, e) ->
           let e' = fst (add_expr bvtup e) in
@@ -324,30 +328,30 @@ let translate prog =
           (match op with
               A.Neg         -> ((L.build_neg e' "left_uop" (fst bvtup)), eType)
             | A.Not         -> ((L.build_not e' "left_uop" (fst bvtup)), eType)
-            | A.Expon       -> ((L.build_not e' "left_uop" (fst bvtup)), eType) (*TODO*)
+        (*    | A.Expon       -> ((L.build_not e' "left_uop" (fst bvtup)), eType) *)
             | A.Comp        -> ((ext_call "complement" [e] bvtup), eType)
            )
       | A.SizeOf(id) ->  (* Gets size of array *) (*NOTE: change to get size of strings too *)
 
-          let var = lookup id (snd bvtup) in 
-          let varValue = fst (add_expr bvtup (A.Id(id))) in 
+          let var = lookup id (snd bvtup) in
+          let varValue = fst (add_expr bvtup (A.Id(id))) in
           let varType = snd (add_expr bvtup (A.Id(id))) in
           let typeOf = L.type_of (varValue) in
-          let size = if typeOf = str_t then ext_call_alternate "strlength" [varValue] bvtup else snd var in 
+          let size = if typeOf = str_t then ext_call_alternate "strlength" [varValue] bvtup else snd var in
           (size, varType)
       | A.Fread(filename) ->
-            let filename = fst (add_expr bvtup (A.Stringlit(filename))) in 
-            let contents = ext_call_alternate "readFASTAFile" [filename] bvtup in 
+            let filename = fst (add_expr bvtup (A.Stringlit(filename))) in
+            let contents = ext_call_alternate "readFASTAFile" [filename] bvtup in
             (contents, A.Str)
       | A.Read(filename) ->
-            let filename = fst (add_expr bvtup (A.Stringlit(filename))) in 
-            let contents = ext_call_alternate "readFile" [filename] bvtup in 
+            let filename = fst (add_expr bvtup (A.Stringlit(filename))) in
+            let contents = ext_call_alternate "readFile" [filename] bvtup in
             (contents, A.Str)
 
       | A.Runop(e, op) ->
           (((match op with
 
-            | A.Transcb     -> ext_call "transcribe" 
+            | A.Transcb     -> ext_call "transcribe"
             | A.Translt     -> ext_call "transcribe"  (*todo# change name*)
             | A.Translttwo  -> ext_call "transcribe"  (*todo# change name*)
           ) [e] bvtup), (snd (add_expr bvtup e)))
@@ -359,10 +363,10 @@ let translate prog =
       | A.ArrayAssign (id, index, exprhs) ->
           let exprValue = fst (add_expr bvtup exprhs) in
           let exprType = snd (add_expr bvtup exprhs) in
-          let index = fst (add_expr bvtup index) in 
-          let arr = fst (fst (lookup id (snd bvtup))) in 
+          let index = fst (add_expr bvtup index) in
+          let arr = fst (fst (lookup id (snd bvtup))) in
           let val1 = L.build_gep arr [|index|] id (fst bvtup) in
-          let testPrint = L.build_store exprValue val1 (fst bvtup) in 
+          let testPrint = L.build_store exprValue val1 (fst bvtup) in
           (exprValue, exprType)
 
 
@@ -372,26 +376,26 @@ let translate prog =
       | A.Call ("print", [e] ) ->
 
           let astType = L.type_of (fst (add_expr bvtup e)) in
-          let eval = fst (add_expr bvtup e) in 
-          let result = match astType with 
-           type_int when type_int = i32_t -> 
+          let eval = fst (add_expr bvtup e) in
+          let result = match astType with
+           type_int when type_int = i32_t ->
              L.build_call (StringMap.find "printf" ext_funcs) [| int_format_str ; (eval) |]
             "printf" (fst bvtup)
 
-          | type_bool when type_bool = i1_t -> 
+          | type_bool when type_bool = i1_t ->
             ext_call_alternate "print_tf" [eval] bvtup
-          
+
           | type_double when type_double = double_t ->
             L.build_call (StringMap.find "printf" ext_funcs) [| double_format_str ; (eval) |]
             "printf" (fst bvtup)
           | type_char when type_char = i8_t ->
             L.build_call (StringMap.find "printf" ext_funcs) [| char_format_str ; (eval) |]
             "printf" (fst bvtup)
-          
+
           | _ -> L.build_call (StringMap.find "printf" ext_funcs) [| str_format_str ; (eval) |]
                   "printf" (fst bvtup) in
                   (result, A.Int)
-      
+
       (*| A.Call ("print_str", [s]) ->
           L.build_call (StringMap.find "printf" ext_funcs) [| str_format_str ; (add_expr bvtup s) |]
           "printf" (fst bvtup) *)
@@ -423,7 +427,7 @@ let translate prog =
       | A.Noexpr -> ((L.const_int i32_t 0), A.Int)
 
       | _ -> ((L.const_int i32_t 0), A.Int) (*todo# finish all the exprs*)
-     
+
     and ext_call f_name arg bvtup=
       let arg=List.map (fun a -> fst (add_expr bvtup a)) arg in
         let arg=Array.of_list arg in
@@ -441,12 +445,12 @@ let translate prog =
       true -> let local_var = L.build_array_alloca (ltype_of_typ v_typ) arrSize v_name (fst bvtup) in
       ((fst bvtup),StringMap.add v_name ((local_var, v_typ), arrSize) (snd bvtup));
 
-      | false -> 
+      | false ->
       (* check for strings *)
 
       let local_var = L.build_alloca (ltype_of_typ v_typ) v_name (fst bvtup) in
       ((fst bvtup),StringMap.add v_name ((local_var, v_typ), arrSize) (snd bvtup))
-    
+
     in
    (*add_terminal*)
     let add_terminal builder f =
@@ -464,13 +468,13 @@ let translate prog =
           let bvtup=add_local bvtup (typ, id, false, (L.const_int i32_t 1) ) in
           ignore(add_stmt bvtup (A.Expr (A.Assign (id, expr))));
           bvtup
-      | A.ArrayDecl(typ, size, id)-> 
+      | A.ArrayDecl(typ, size, id)->
           (* Make this work with non-hardcoded size and with our scoping rules. What is bvtup? *)
-         let size = fst (add_expr bvtup size) in  
+         let size = fst (add_expr bvtup size) in
          let bvtup = add_local bvtup (typ, id, true, size) in
-        
-        (* L.build_call test_func [|testPrint;toStore|] "test" (fst bvtup);  *)       
-         bvtup  
+
+        (* L.build_call test_func [|testPrint;toStore|] "test" (fst bvtup);  *)
+         bvtup
 
       | A.Return e ->
           ignore (match fdecl.A.typ with

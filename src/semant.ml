@@ -28,6 +28,17 @@ let check_v_type t = try ignore(StringMap.find (string_of_typ t) types_map)
 	with Not_found -> raise (Failure ("unrecognized type " ^ (string_of_typ t)))
 ;;
 
+let map_array_type t =
+	match t with
+	| Int -> ArrayInt
+	| _ -> ArrayInt
+;;
+
+let array_type_unfold t =
+	match t with
+	| ArrayInt -> Int
+	| _ -> Double
+;;
 
 (* check for duplicates *)
 let report_duplicate exceptf list =
@@ -84,12 +95,26 @@ let check_stmt func function_decls =
 		| Sequence _ -> Seq (* is this correct? *)
 		| Stringlit _ -> Str (* is this correct?  *)
 		| Litdouble _ -> Double (*is this correct? *)
-	(*	| ArrayAcc(s,e) =
-		| Strcat(e,e) = *)
+		| ArrayAcc(s,e) -> let check_int_expr3 e =
+				if expr e != Int then raise (Failure ("expected Integer expression in " ^ string_of_expr e))
+				else ()
+			in check_int_expr3 e;
+			array_type_unfold (type_of_identifier s)
+
+(*		| Strcat(e1, e2) as ex -> let lt = expr e1
+			and rt = expr e2 in
+			check_assign lt rt (Failure ("illegal concatenation " ^ string_of_typ lt ^
+			" = " ^ string_of_typ rt ^ " in " ^
+			string_of_expr ex))		*)
 		| Binop(e1, op, e2) as e -> let t1 = expr e1 and t2 = expr e2 in
 		(match op with
-			Add | Sub | Mult | Div | Exp when t1 = Int && t2 = Int -> Int
-			| Add | Sub | Mult | Div | Exp when t1 = Double && t2 = Double -> Double
+			Add | Sub | Mult | Div | Expon when t1 = Int && t2 = Int -> Int
+			| Add | Sub | Mult | Div | Expon when t1 = Double && t2 = Double -> Double
+			| Add when t1 =  Str && t2 = Str -> Str
+			| Add when t1 =  Codon && t2 = Codon -> RNA
+			| Add when t1 =  DNA && t2 = DNA -> DNA
+			| Add when t1 =  RNA && t2 = RNA -> RNA
+			| Add when t1 =  Seq && t2 = Seq -> Seq
 			| Mod when t1 = Int && t2 = Int -> Int
 			| Equal | Neq when t1 = t2 -> Bool
 			| Less | Leq | Greater | Geq when t1 = Int && t2 = Int -> Bool
@@ -107,8 +132,7 @@ let check_stmt func function_decls =
 				string_of_typ t ^ " in " ^ string_of_expr ex)))
 		| Runop(e, op) as ex -> let t = expr e in
 		(match op with
-			Expon when t = Int -> Int   (* Exponential should be a binary operator *)
-			| Transcb when t = Seq || t = DNA -> RNA
+			  Transcb when t = Seq || t = DNA -> RNA
 			| Translt when t = Seq || t = RNA -> Pep
 			| Translttwo when t = Seq -> Aa
 			| _ -> raise (Failure ("illegal right unary operator " ^ string_of_uop op ^
@@ -119,9 +143,17 @@ let check_stmt func function_decls =
 		check_assign lt rt (Failure ("illegal assignment " ^ string_of_typ lt ^
 			" = " ^ string_of_typ rt ^ " in " ^
 		string_of_expr ex))
-	(*	| ArrayAssign(s,e1,e2) =()
-		| SizeOf = ()
-		| Typecast =()
+		| ArrayAssign(s,e1,e2) as ex -> let check_int_expr2 e =
+				if expr e != Int then raise (Failure ("expected Integer expression in " ^ string_of_expr e))
+				else ()
+			in check_int_expr2 e1;
+			let lt = array_type_unfold (type_of_identifier s)
+			and rt = expr e2 in
+			check_assign lt rt (Failure ("illegal assignment " ^ string_of_typ lt ^
+				" = " ^ string_of_typ rt ^ " in " ^
+			string_of_expr ex))
+		| SizeOf(s) -> ignore(type_of_identifier s); Int
+	(*	| Typecast =()
 		| Fread = ()
 		| Read = () *)
 		| Call(fname, actuals) as call -> if fname = "print" then (
@@ -144,9 +176,14 @@ let check_stmt func function_decls =
 						fd.typ	)
 
 		in	(* end of expression checking *)
-
+		(* check whether an expression is Boolean *)
 		let check_bool_expr e =
 			if expr e != Bool then raise (Failure ("expected Boolean expression in " ^ string_of_expr e))
+			else ()
+		in
+		(* check whether an expression is Integer *)
+		let check_int_expr e =
+			if expr e != Int then raise (Failure ("expected Integer expression in " ^ string_of_expr e))
 			else ()
 		in
 
@@ -176,10 +213,8 @@ let check_stmt func function_decls =
 					" = " ^ string_of_typ rt ^ " in " ^ s ^" = "^
 				string_of_expr e)))
 			| ArrayDecl(t, e, s) -> ignore(check_v_type t);
-			(locals_list) := StringMap.add s t !(locals_list);
-			ignore(let lt = t and rt = expr e in check_assign lt rt (Failure ("illegal assignment " ^ string_of_typ lt ^
-				" = " ^ string_of_typ rt ^ " in " ^ s ^" = "^
-			string_of_expr e)))
+			(locals_list) := StringMap.add s (map_array_type t) !(locals_list);
+			check_int_expr e
 			| Nobranching -> ()
 
 		in

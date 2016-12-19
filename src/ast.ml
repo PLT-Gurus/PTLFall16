@@ -1,9 +1,9 @@
-type uop = Neg | Not | Expon | Comp | Transcb | Translt | Translttwo
+type uop = Neg | Not | Comp | Transcb | Translt | Translttwo
 
-type op = Add | Sub | Mult | Div | Mod | Exp | And | Or | Equal |
-		 Neq | Less | Leq | Greater | Geq
+type op = Add | Sub | Mult | Div | Mod | And | Or | Equal |
+		 Neq | Less | Leq | Greater | Geq | Expon
 
-type typ = Int | Bool | Void | Char | Double | Aa | Nuc | Codon | Seq | Str | DNA | RNA | Pep
+type typ = Int | Bool | Void | Char | Double | Aa | Nuc | Codon | Seq | Str | DNA | RNA | Pep | ArrayInt
 
 type ending = End
 
@@ -26,12 +26,12 @@ type expr =
 		| Lunop of uop * expr 		(*added into Codegen*)
 		| Runop of expr * uop 		(*added into Codegen*)
 		| Assign of string * expr 	(*added into Codegen*)
-		| ArrayAssign of string * expr * expr
+		| ArrayAssign of string * expr * expr		(* added to the functions below *)
 		| Call of string * expr list(*added into Codegen*)
-		| SizeOf of string
-		| Typecast of typ * expr
-		| Fread of string
-		| Read of string
+		| SizeOf of string							(* adds to the functions below *)
+		| Typecast of typ * expr					(* adds to the functions below *)
+		| Fread of string							(* adds to the functions below *)
+		| Read of string							(* adds to the functions below *)
 		| Noexpr 					(*added into Codegen*)
 
 
@@ -45,7 +45,7 @@ type stmt =
 		| Elseif of expr * stmt * stmt
 		| Else of stmt
 		| VDecl of typ * string * expr
-		| ArrayDecl of typ * expr * string
+		| ArrayDecl of typ * expr * string    (* adds to the functions below *)
 		| Nobranching
 
 type bind = typ * string
@@ -73,7 +73,6 @@ let string_of_op = function
 	| Mult		-> "*"
 	| Div 		-> "/"
 	| Mod 		-> "%"
-	| Exp 		-> "^"
 	| And 		-> "&"
 	| Or  		-> "|"
 	| Equal 	-> "=="
@@ -82,6 +81,7 @@ let string_of_op = function
 	| Leq 		-> "<="
 	| Greater 	-> ">"
 	| Geq		-> ">="
+	| Expon 	-> "^"
 
 
 let string_of_typ = function
@@ -100,8 +100,7 @@ let string_of_typ = function
 	| Str       ->"str"
 
 let string_of_uop = function
-	  Expon 	-> "^" (*not quite sure about this one*)
-	| Neg 		-> "-"
+	  Neg 		-> "-"
 	| Comp 		-> "@"
 	| Transcb 	-> "->"
 	| Translt 	-> "+>"
@@ -140,6 +139,10 @@ let rec string_of_expr = function
 		string_of_expr exp ^ string_of_uop uop
 	| Assign(str,exp)->
 		str ^ "=" ^ string_of_expr exp
+	| Strcat(exp1,exp2) ->
+		string_of_expr exp1 ^ "+" ^ string_of_expr exp2
+	| ArrayAssign(str,exp1,exp2)->
+		str ^ "[" ^ string_of_expr exp1 ^ "]" ^ "=" ^ string_of_expr exp2
 	| Call(str,l_expr)->
 		str ^ "(" ^
 		String.concat "," (List.map string_of_expr l_expr) ^

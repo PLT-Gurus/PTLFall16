@@ -5,23 +5,27 @@ target triple = "x86_64-pc-linux-gnu"
 %struct._IO_FILE = type { i32, i8*, i8*, i8*, i8*, i8*, i8*, i8*, i8*, i8*, i8*, i8*, %struct._IO_marker*, %struct._IO_FILE*, i32, i32, i64, i16, i8, [1 x i8], i8*, i64, i8*, i8*, i8*, i8*, i64, i32, [20 x i8] }
 %struct._IO_marker = type { %struct._IO_marker*, %struct._IO_FILE*, i32 }
 
-@fmt_int = private unnamed_addr constant [3 x i8] c"%d\00"
-@fmt_str = private unnamed_addr constant [3 x i8] c"%s\00"
+@fmt_int = private unnamed_addr constant [4 x i8] c"%d\0A\00"
+@fmt_str = private unnamed_addr constant [4 x i8] c"%s\0A\00"
+@fmt_str.1 = private unnamed_addr constant [6 x i8] c"%.3f\0A\00"
 @context = private unnamed_addr constant [6 x i8] c"hello\00"
-@context.1 = private unnamed_addr constant [6 x i8] c"false\00"
 @.str = private unnamed_addr constant [16 x i8] c"Hello I'm in C\0A\00", align 1
 @.str.1 = private unnamed_addr constant [2 x i8] c"r\00", align 1
+@.str.2 = private unnamed_addr constant [6 x i8] c"true\0A\00", align 1
+@.str.3 = private unnamed_addr constant [7 x i8] c"false\0A\00", align 1
 
 declare i32 @printf(i8*, ...)
+
+declare double @db_exp(double, double, ...)
 
 define i32 @main() {
 entry:
   %hi = alloca i8*
   store i8* getelementptr inbounds ([6 x i8], [6 x i8]* @context, i32 0, i32 0), i8** %hi
-  %printf = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @fmt_str, i32 0, i32 0), i8* getelementptr inbounds ([6 x i8], [6 x i8]* @context.1, i32 0, i32 0))
+  %print_tf = call i32 (i1, ...) bitcast (i32 (i1)* @print_tf to i32 (i1, ...)*)(i1 false)
   %hi1 = load i8*, i8** %hi
   %hi2 = load i8*, i8** %hi
-  %printf3 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @fmt_str, i32 0, i32 0), i8* %hi2)
+  %printf = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @fmt_str, i32 0, i32 0), i8* %hi2)
   ret i32 0
 }
 
@@ -773,9 +777,121 @@ define i8* @readFile(i8* %string) #0 {
   ret i8* %24
 }
 
+; Function Attrs: nounwind uwtable
+define i32 @mod(i32 %a, i32 %b) #0 {
+  %1 = alloca i32, align 4
+  %2 = alloca i32, align 4
+  store i32 %a, i32* %1, align 4
+  store i32 %b, i32* %2, align 4
+  %3 = load i32, i32* %1, align 4
+  %4 = load i32, i32* %2, align 4
+  %5 = srem i32 %3, %4
+  ret i32 %5
+}
+
+; Function Attrs: nounwind uwtable
+define i32 @exp_ii(i32 %a, i32 %b) #0 {
+  %1 = alloca i32, align 4
+  %2 = alloca i32, align 4
+  store i32 %a, i32* %1, align 4
+  store i32 %b, i32* %2, align 4
+  %3 = load i32, i32* %1, align 4
+  %4 = sitofp i32 %3 to double
+  %5 = load i32, i32* %2, align 4
+  %6 = sitofp i32 %5 to double
+  %7 = call double @pow(double %4, double %6) #1
+  %8 = fptosi double %7 to i32
+  ret i32 %8
+}
+
+; Function Attrs: nounwind
+declare double @pow(double, double) #3
+
+; Function Attrs: nounwind uwtable
+define double @exp_di(double %a, i32 %b) #0 {
+  %1 = alloca double, align 8
+  %2 = alloca i32, align 4
+  store double %a, double* %1, align 8
+  store i32 %b, i32* %2, align 4
+  %3 = load double, double* %1, align 8
+  %4 = load i32, i32* %2, align 4
+  %5 = sitofp i32 %4 to double
+  %6 = call double @pow(double %3, double %5) #1
+  ret double %6
+}
+
+; Function Attrs: nounwind uwtable
+define double @exp_id(i32 %a, double %b) #0 {
+  %1 = alloca i32, align 4
+  %2 = alloca double, align 8
+  store i32 %a, i32* %1, align 4
+  store double %b, double* %2, align 8
+  %3 = load i32, i32* %1, align 4
+  %4 = sitofp i32 %3 to double
+  %5 = load double, double* %2, align 8
+  %6 = call double @pow(double %4, double %5) #1
+  ret double %6
+}
+
+; Function Attrs: nounwind uwtable
+define double @exp_dd(double %a, double %b) #0 {
+  %1 = alloca double, align 8
+  %2 = alloca double, align 8
+  store double %a, double* %1, align 8
+  store double %b, double* %2, align 8
+  %3 = load double, double* %1, align 8
+  %4 = load double, double* %2, align 8
+  %5 = call double @pow(double %3, double %4) #1
+  ret double %5
+}
+
+; Function Attrs: nounwind uwtable
+define i32 @double2int(double %d) #0 {
+  %1 = alloca double, align 8
+  store double %d, double* %1, align 8
+  %2 = load double, double* %1, align 8
+  %3 = fptosi double %2 to i32
+  ret i32 %3
+}
+
+; Function Attrs: nounwind uwtable
+define double @int2double(i32 %i) #0 {
+  %1 = alloca i32, align 4
+  store i32 %i, i32* %1, align 4
+  %2 = load i32, i32* %1, align 4
+  %3 = sitofp i32 %2 to double
+  ret double %3
+}
+
+; Function Attrs: nounwind uwtable
+define i32 @print_tf(i1 zeroext %b) #0 {
+  %1 = alloca i32, align 4
+  %2 = alloca i8, align 1
+  %3 = zext i1 %b to i8
+  store i8 %3, i8* %2, align 1
+  %4 = load i8, i8* %2, align 1
+  %5 = trunc i8 %4 to i1
+  br i1 %5, label %6, label %8
+
+; <label>:6                                       ; preds = %0
+  %7 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.2, i32 0, i32 0))
+  store i32 %7, i32* %1, align 4
+  br label %10
+
+; <label>:8                                       ; preds = %0
+  %9 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.3, i32 0, i32 0))
+  store i32 %9, i32* %1, align 4
+  br label %10
+
+; <label>:10                                      ; preds = %8, %6
+  %11 = load i32, i32* %1, align 4
+  ret i32 %11
+}
+
 attributes #0 = { nounwind uwtable "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+fxsr,+mmx,+sse,+sse2" "unsafe-fp-math"="false" "use-soft-float"="false" }
 attributes #1 = { nounwind }
 attributes #2 = { "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+fxsr,+mmx,+sse,+sse2" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #3 = { nounwind "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+fxsr,+mmx,+sse,+sse2" "unsafe-fp-math"="false" "use-soft-float"="false" }
 
 !llvm.ident = !{!0}
 
