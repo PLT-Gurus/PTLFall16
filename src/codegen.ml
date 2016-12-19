@@ -72,7 +72,8 @@ let translate prog =
     {name="exp_dd"        ;ret=double_t;    arg=[|double_t;double_t|]     };
     {name="print_tf"      ;ret=i32_t;       arg=[|i1_t|]                  };
     {name="getChar"       ;ret=i8_t;         arg=[|str_dt; i32_t|]         };
-    {name="formatPep"       ;ret=str_t;         arg=[|str_t|]         }
+    {name="formatPep"       ;ret=str_t;         arg=[|str_t|]         };
+    {name="printPep"       ;ret=i32_t;         arg=[|str_t|]         }
   ]
   in
 
@@ -125,10 +126,10 @@ let translate prog =
     let (the_function, _) = StringMap.find fdecl.A.fname function_decls in
     let builder = L.builder_at_end context (L.entry_block the_function) in
 
-    let int_format_str = L.build_global_stringptr "%d\n" "fmt_int" builder in
-    let str_format_str = L.build_global_stringptr "%s\n" "fmt_str" builder in
-    let double_format_str = L.build_global_stringptr "%.3f\n" "fmt_str" builder in
-    let char_format_str = L.build_global_stringptr "%c\n" "fmt_str" builder in
+    let int_format_str = L.build_global_stringptr "%d" "fmt_int" builder in
+    let str_format_str = L.build_global_stringptr "%s" "fmt_str" builder in
+    let double_format_str = L.build_global_stringptr "%.3f" "fmt_str" builder in
+    let char_format_str = L.build_global_stringptr "%c" "fmt_str" builder in
 
     let add_formal map (v_typ, v_name) param =
       L.set_value_name v_name param;
@@ -160,18 +161,16 @@ let translate prog =
 
       | A.Litchar c -> ((L.const_int i8_t (int_of_char c)), A.Char)
 
-      | A.Id s -> ((L.build_load (fst (fst (lookup s (snd bvtup)))) s (fst bvtup)), A.Void)
+      | A.Id s -> ((L.build_load (fst (fst (lookup s (snd bvtup)))) s (fst bvtup)), (snd (fst (lookup s (snd bvtup)))))
 
       | A.ArrayAcc(id, index) ->
 
           let index = fst (add_expr bvtup index) in
           let arr = fst (fst (lookup id (snd bvtup))) in
           let arrType = snd (fst (lookup id (snd bvtup))) in
-          let testPrint = (match arrType with
-              A.Str -> ext_call_alternate "getChar" [index; arr] bvtup
-            | A.DNA -> ext_call_alternate "getChar" [index; arr] bvtup
-            | A.RNA -> ext_call_alternate "getChar" [index; arr] bvtup
-            | A.Pep -> ext_call_alternate "getChar" [index; arr] bvtup
+          let arrSize =  snd (lookup id (snd bvtup)) in
+          let testPrint = (match arrSize with
+              a when a = (L.const_int i32_t 1) -> arrType = A.Char; ext_call_alternate "getChar" [index; arr] bvtup
             | _ ->   let val1 = L.build_gep arr [|index|] id (fst bvtup) in
                     L.build_load val1 "tmp" (fst bvtup)
 
@@ -375,30 +374,29 @@ let translate prog =
 
       | A.Call ("print", [e] ) ->
 
-          let astType = L.type_of (fst (add_expr bvtup e)) in
+          let astType = snd (add_expr bvtup e) in
           let eval = fst (add_expr bvtup e) in
           let result = match astType with
-           type_int when type_int = i32_t ->
+           A.Int ->
              L.build_call (StringMap.find "printf" ext_funcs) [| int_format_str ; (eval) |]
             "printf" (fst bvtup)
 
-          | type_bool when type_bool = i1_t ->
-            ext_call_alternate "print_tf" [eval] bvtup
-
-          | type_double when type_double = double_t ->
+          | A.Bool ->
+            if eval = (L.const_int i1_t 0) then L.build_call (StringMap.find "printf" ext_funcs) [| str_format_str ; (fst (add_expr bvtup (A.Stringlit("false")) ))|] 
+            "printf" (fst bvtup)  else L.build_call (StringMap.find "printf" ext_funcs) [| str_format_str ; (fst (add_expr bvtup (A.Stringlit("true"))))|] 
+            "printf" (fst bvtup)
+                  
+          | A.Double ->
             L.build_call (StringMap.find "printf" ext_funcs) [| double_format_str ; (eval) |]
             "printf" (fst bvtup)
-          | type_char when type_char = i8_t ->
+          | A.Char ->
             L.build_call (StringMap.find "printf" ext_funcs) [| char_format_str ; (eval) |]
             "printf" (fst bvtup)
-
+          | A.Void -> raise (Failure "Cannot print void type "); (L.const_int i32_t 0)
+          | A.Pep -> ext_call "printPep" [e] bvtup
           | _ -> L.build_call (StringMap.find "printf" ext_funcs) [| str_format_str ; (eval) |]
                   "printf" (fst bvtup) in
                   (result, A.Int)
-
-      (*| A.Call ("print_str", [s]) ->
-          L.build_call (StringMap.find "printf" ext_funcs) [| str_format_str ; (add_expr bvtup s) |]
-          "printf" (fst bvtup) *)
 
       | A.Call (f, act) ->
           let (fdef, fdecl) = StringMap.find f function_decls in
@@ -422,7 +420,7 @@ let translate prog =
       | A.Litpep(str) ->
                 let pepTemp = ((L.build_global_stringptr str "context" (fst bvtup)), A.Pep) in
                 let pepResult = ext_call_alternate "formatPep" [fst pepTemp] bvtup in 
-                pepTemp
+                (pepResult, A.Pep)
 
       | A.Noexpr -> ((L.const_int i32_t 0), A.Int)
 

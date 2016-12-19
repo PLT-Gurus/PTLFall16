@@ -1,0 +1,17 @@
+Pep oriana = #A-T-G-C;
+int hi = 42;
+double hello = 42.0;
+bool isTrue = true;
+string sample = "hello";
+char samp = sample[0];
+DNA min = #atgc;
+RNA stan = #gcgc;
+print(hi);
+print(isTrue);
+print(sample);
+print(samp);
+print(min);
+print(hello);
+print(stan);
+print(oriana);
+

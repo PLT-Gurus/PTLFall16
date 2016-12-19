@@ -9,10 +9,8 @@ target triple = "x86_64-pc-linux-gnu"
 @fmt_str = private unnamed_addr constant [3 x i8] c"%s\00"
 @fmt_str.1 = private unnamed_addr constant [5 x i8] c"%.3f\00"
 @fmt_str.2 = private unnamed_addr constant [3 x i8] c"%c\00"
-@context = private unnamed_addr constant [5 x i8] c"AGTC\00"
-@context.3 = private unnamed_addr constant [5 x i8] c"AGTC\00"
-@context.4 = private unnamed_addr constant [3 x i8] c"AA\00"
-@context.5 = private unnamed_addr constant [3 x i8] c"AA\00"
+@context = private unnamed_addr constant [5 x i8] c"atgc\00"
+@context.3 = private unnamed_addr constant [5 x i8] c"atgc\00"
 @.str = private unnamed_addr constant [16 x i8] c"Hello I'm in C\0A\00", align 1
 @.str.1 = private unnamed_addr constant [2 x i8] c"r\00", align 1
 @.str.2 = private unnamed_addr constant [6 x i8] c"true\0A\00", align 1
@@ -26,22 +24,15 @@ declare double @db_exp(double, double, ...)
 
 define i32 @main() {
 entry:
-  %myarray = alloca i8*, i32 5
-  %myarray1 = getelementptr i8*, i8** %myarray, i32 0
-  store i8* getelementptr inbounds ([5 x i8], [5 x i8]* @context, i32 0, i32 0), i8** %myarray1
-  %test = alloca i8*
-  store i8* getelementptr inbounds ([3 x i8], [3 x i8]* @context.4, i32 0, i32 0), i8** %test
-  %myarray2 = getelementptr i8*, i8** %myarray, i32 0
-  %tmp = load i8*, i8** %myarray2
-  %myarray3 = getelementptr i8*, i8** %myarray, i32 0
-  %tmp4 = load i8*, i8** %myarray3
-  store i8* %tmp, i8** %test
-  %myarray5 = load i8*, i8** %myarray
-  %myarray6 = load i8*, i8** %myarray
-  %printf = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @fmt_str, i32 0, i32 0), i8* %myarray6)
-  %test7 = load i8*, i8** %test
-  %test8 = load i8*, i8** %test
-  %printf9 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @fmt_str, i32 0, i32 0), i8* %test8)
+  %hello = alloca i8*
+  store i8* getelementptr inbounds ([5 x i8], [5 x i8]* @context, i32 0, i32 0), i8** %hello
+  %temp = alloca i8
+  %getChar = call i8 (i8**, i32, ...) bitcast (i8 (i8**, i32)* @getChar to i8 (i8**, i32, ...)*)(i8** %hello, i32 2)
+  %getChar1 = call i8 (i8**, i32, ...) bitcast (i8 (i8**, i32)* @getChar to i8 (i8**, i32, ...)*)(i8** %hello, i32 2)
+  store i8 %getChar, i8* %temp
+  %temp2 = load i8, i8* %temp
+  %temp3 = load i8, i8* %temp
+  %printf = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @fmt_str.2, i32 0, i32 0), i8 %temp3)
   ret i32 0
 }
 
