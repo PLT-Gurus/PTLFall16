@@ -421,7 +421,7 @@ let translate prog =
 
       | A.Litpep(str) ->
                 let pepTemp = ((L.build_global_stringptr str "context" (fst bvtup)), A.Pep) in
-                (* let pepResult = ext_call_alternate "formatPep" [pepTemp] bvtup in  *)
+                let pepResult = ext_call_alternate "formatPep" [fst pepTemp] bvtup in 
                 pepTemp
 
       | A.Noexpr -> ((L.const_int i32_t 0), A.Int)
