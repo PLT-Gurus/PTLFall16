@@ -60,8 +60,8 @@ let array_type_unfold t =
 	| ArrayRNA -> RNA
 	| ArrayPep -> Pep
 	| Str -> Char
-	| DNA -> Nuc
-	| RNA -> Nuc
+	| DNA -> Char
+	| RNA -> Char
 	| Pep -> Aa
 	| _ -> Int
 ;;
