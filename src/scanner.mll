@@ -1,6 +1,9 @@
 (* Ocamllex scanner for DNA# *)
 
-{ open Parser }
+{
+    open Parser
+    let unescape s = Scanf.sscanf ("\"" ^ s ^ "\"") "%S%!" (fun x -> x)
+}
 
 let seq = ['A''G''C''a''g''c']*
 let dna = ['A''G''T''C''a''g''t''c']+
