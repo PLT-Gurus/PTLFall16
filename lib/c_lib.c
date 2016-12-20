@@ -336,3 +336,40 @@ int printPep(char * input)
     return 1;
 
 }
+bool testValid(char * input, char type)
+{
+    int size = 0;
+    while(input[size] != 0) size++;
+    if (type == 'd')// dna type checking
+    {
+        for (int i =0; i< size; i++)
+        {
+       
+            if ((input[i] != 'a') && (input[i] != 't') && (input[i] != 'g')  && (input[i] != 'c')  && (input[i] != 'A')  && (input[i] != 'T')  && (input[i] != 'G')
+              && (input[i] != 'C'))
+            {
+                return 0;
+            }
+        }
+    }
+    if (type == 'r')// dna type checking
+    {
+        for (int i =0; i< size; i++)
+        {
+             if ((input[i] != 'a') && (input[i] != 'u') && (input[i] != 'g')  && (input[i] != 'c')  && (input[i] != 'A')  && (input[i] != 'U')  && (input[i] != 'G')
+              && (input[i] != 'C'))
+                return 0;
+        
+        }
+    }
+    if (type == 'p')// dna type checking
+    {
+        for (int i =0; i< size; i++)
+        {
+            // implement checker
+        
+        }
+    }
+
+    return 1;
+}

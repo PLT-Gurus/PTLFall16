@@ -1,0 +1,3 @@
+DNA hi = #atgc;
+string boo = cast<string>(hi);
+print(boo);

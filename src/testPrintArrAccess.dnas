@@ -1,0 +1,2 @@
+string hello = "krieger";
+print(hello[1]);

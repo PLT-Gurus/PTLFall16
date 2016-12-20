@@ -50,6 +50,7 @@ rule token = parse
 | "return"  {RETURN}
 | "readFASTA" {FREAD}
 | "read" 	{READ}
+| "cast" 	{CAST}
 (*| "import"	{IMPORT} *)
 (* Concat operator, specifically for data of string types (strings, DNA, RNA, etc. )
 | "+=" 		{STRCAT}   *)

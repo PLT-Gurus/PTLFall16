@@ -33,6 +33,7 @@ type expr =
 		| Typecast of typ * expr					(* adds to the functions below *)
 		| Fread of string							(* adds to the functions below *)
 		| Read of string							(* adds to the functions below *)
+		| Cast of typ * expr
 		| Noexpr 					(*added into Codegen*)
 
 
