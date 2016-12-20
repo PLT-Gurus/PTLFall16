@@ -1,13 +1,14 @@
 DNA d1 = #CACGCCCCAGCTCTGCCCTTGCAGAGGCAGAGTAGGGAAGAGCAAGCTGCCCGAGACGCAGGGGAAGGAGGATGAGGGCCCTGGGGATGAGCTGGGGTGAACCAGGCTCCCTTTCCTTTGCAGGTGCGAAGCCCAGCGGTGCAGAGTCCAGCAAAGGTGCAGGTATGAGGATGGACCTGATGGGTTCCTGGACCCTCCCCTCTCACCCTGGTCCCTCAGTCTCATTCCCCCACTCCTGCCACCTCCTGTCTGGCCATCAGGAAGGCCAGCCTGCTCCCCACCTGATCCTCCCAAACCCAGAGCCACCTGATGCCTGCCCCTCTGCTCCACAGCCTTTGTGTCCAAGCAGGAGGGCAGCGAGGTAGTGA;
-DNA d2 = #CACGCCCCAGCTCTGCCCTTGCAGAGGGAGAGGAGGGAAGAGCAAGCTGCCCGAGACGCAGGGGAAGGAGGATGAGGGCCCTGGGGATGAGCTGGGGTGAACCAGGCTCCCTTTCCTTTGCAGGTGCGAAGCCCAGCGGTGCAGAGTCCAGCAAAGGTGCAGGTATGAGGATGGACCTGATGGGTTCCTGGACCCTCCCCTCTCACCCTGGTCCCTCAGTCTCATTCCCCCACTC;
-print(d1);
+RNA p1 = d1->;
+print(p1);
 print('\n');
 print('\n');
-print(d2);
+DNA d2 = #CACGCCCCAGCTCTGCCCTTGCAGAGGGAGAGGAGGGAAGAGCAAGCTGCCCGAGACGCAGGGGAAGGAGGATGAGGGCCCTGGGGATGAGCTGGGGTGAACCAGGCTCCCTTTCCTTTGCAGGTGCGAAGCCCAGCGGTGCAGAGTCCAGCAAAGGTGCAGGTATGAGGATGGACCTGATGGGTTCCTGGACCCTCCCCTCTCACCCTGGTCCCTCAGTCTCATTCCCCCACTCCTG;
+RNA p2 = d2->;
+print(p2);
 print('\n');
-int res = lcs_DNA(d1,d2);
-// lcs_DNA longest common subsequence with DNA inputs
-int lcs_DNA(DNA A, DNA B)
+int res = lcs_RNA(p1,p2);
+int lcs_RNA(RNA A, RNA B)
 	int sizeA = A.length;
 	int sizeB = B.length;
 	int arr_size = (sizeA +1) * (sizeB + 1);
@@ -17,6 +18,7 @@ int lcs_DNA(DNA A, DNA B)
 		C[i2] = 0;
 	end
 	int i = sizeA; int j = sizeB;
+
 	for i=sizeA; i >= 0; i = i-1 then
 		for j=sizeB; j >= 0; j = j-1 then
 			if i == sizeA  | j == sizeB then
@@ -38,16 +40,13 @@ int lcs_DNA(DNA A, DNA B)
 		end
 	end
 
-/*	for i = 0; i<sizeA*sizeB; i=i+1 then
-		//print(C[i]);
-		end		*/
 	i= 0;	j= 0;
 	print('\n');
-	print("Longest subsequence:");print('\n');print('\t');
+	//print("Longest subsequence:");print('\n');print('\t');
 	while (i < sizeA  & j<sizeB) then
 		if (A[i] == B[j] ) then
 			char temp = A[i];
-			print(temp);
+			// print(temp);
 			i = i + 1;	j = j+ 1 ;
 		elseif C[getIndex(i+1, j, sizeA, sizeB)] >= C[getIndex(i, j+1, sizeA, sizeB)] then
 			i = i +1 ;
@@ -55,7 +54,7 @@ int lcs_DNA(DNA A, DNA B)
 			j = j + 1;
 		end
 	end
-	print('\n');
+	//print('\n');
 	print("The length of the longest subsequence:");print('\n');print('\t');
 	print(C[0]);print('\n');
 	return C[0];

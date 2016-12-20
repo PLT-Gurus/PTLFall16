@@ -1,0 +1,4 @@
+Pep sample = #A-T-G-C;
+RNA test  = #;
+Pep final = test+>;
+print(final);

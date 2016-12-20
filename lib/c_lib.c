@@ -21,17 +21,20 @@ char* complement(char* str){
     while(str[i] != 0) i++;
     int length = i;
     char retstr [length];
+
     char curr;
     for(int i = 0; i<length; i++){
         curr = str[i];
-        if(curr == 65 || curr == 84)
-            retstr[i] = 149 - curr;
-        else if(curr == 67 || curr == 71)
-            retstr[i] = 138 - curr;
-        else if(curr == 97 || curr == 116)
-            retstr[i] = 181 - curr;
-        else if(curr == 99 || curr == 103)
-            retstr[i] = 170 - curr;
+        if(curr == 'A' || curr == 'a')
+            retstr[i] = 'T';
+        else if(curr == 'T'|| curr == 't')
+            retstr[i] = 'A';
+        else if(curr == 'G' || curr == 'g')
+            retstr[i] = 'C';
+        else if(curr == 'C' || curr == 'c')
+            retstr[i] = 'G';
+		else
+			retstr[i] = 'G';
     }
     retstr[length] = '\0';
     return retstr;
@@ -41,23 +44,27 @@ char* transcribe(char* str){
 	if(!str)
         return str;
     int i = 0;
-    while(str[i] != 0) i++;
+    while(str[i] != '\0'){
+		i++;
+	}
     int length = i;
-    char retstr [length];
+	//printf("%d\n", length);
+    //char retstr [length];
+	char* retstr = malloc(length);
     char curr;
-    for(int i = 0; i<length; i++){
+    for(i = 0; i<length; i++){
         curr = str[i];
-        if(curr == 84)
-            retstr[i] = 65;
-        else if(curr == 67 || curr == 71)
-            retstr[i] = 138 - curr;
-        else if(curr == 116)
-            retstr[i] = 65;
-        else if(curr == 99 || curr == 103)
-            retstr[i] = 170 - curr;
-        else if(curr == 65 || curr == 97)
-            retstr[i] = 85;
+		if(curr == 'A' || curr == 'a')
+            retstr[i] = 'U';
+        else if(curr == 'T'|| curr == 't')
+            retstr[i] = 'A';
+        else if(curr == 'G' || curr == 'g')
+            retstr[i] = 'C';
+        else if(curr == 'C' || curr == 'c')
+            retstr[i] = 'G';
+
     }
+
     retstr[length] = '\0';
 	//printf("%d\n", length);
     return retstr;
@@ -76,11 +83,14 @@ int char_num(char a){
     return ret;
 }
 int codon_number(char a, char b, char c){
-    return char_num(a) * 16 + char_num(b) * 4 + char_num(c);
+	int ret = char_num(a) * 16 + char_num(b) * 4 + char_num(c);
+	//if(ret == 0)
+	//	printf("HEHEHEHEHEHH->%c%c%c\n", a, b, c);
+    return ret;
 }
 
 char* translate(char* str){
-    if(!str)
+	if(!str)
         return str;
     int i = 0;
     while(str[i] != 0) i++;
@@ -131,8 +141,8 @@ char* translate(char* str){
 	//printf("%d\n", a);
     int ret_size = (b-a)/3 + 1;
 	//printf("%d\n", ret_size);
-    char retstr [ret_size];
-    //char* retstr = malloc(ret_size);
+    //char retstr [ret_size];
+    char* retstr = malloc(ret_size);
     int index;
     for(int i = a; i<b; i=i+3){
         temp = codon_number(str[i], str[i+1], str[i+2]);
@@ -154,8 +164,8 @@ char* translate(char* str){
         retstr2[i] = curr;
     }
     retstr2[length2] = '\0';
-    return retstr2;
-    //return retstr;
+    return retstr;
+	//return retstr;
 }
 
 char* translate2(char* str){
@@ -344,7 +354,7 @@ bool testValid(char * input, char type)
     {
         for (int i =0; i< size; i++)
         {
-       
+
             if ((input[i] != 'a') && (input[i] != 't') && (input[i] != 'g')  && (input[i] != 'c')  && (input[i] != 'A')  && (input[i] != 'T')  && (input[i] != 'G')
               && (input[i] != 'C'))
             {
@@ -352,22 +362,22 @@ bool testValid(char * input, char type)
             }
         }
     }
-    if (type == 'r')// dna type checking
+    if (type == 'r')// rna type checking
     {
         for (int i =0; i< size; i++)
         {
              if ((input[i] != 'a') && (input[i] != 'u') && (input[i] != 'g')  && (input[i] != 'c')  && (input[i] != 'A')  && (input[i] != 'U')  && (input[i] != 'G')
               && (input[i] != 'C'))
                 return 0;
-        
+
         }
     }
-    if (type == 'p')// dna type checking
+    if (type == 'p')// pep type checking
     {
         for (int i =0; i< size; i++)
         {
             // implement checker
-        
+
         }
     }
 

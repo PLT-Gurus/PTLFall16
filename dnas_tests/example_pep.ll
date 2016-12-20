@@ -26,7 +26,7 @@ target triple = "x86_64-pc-linux-gnu"
 @fmt_str.16 = private unnamed_addr constant [5 x i8] c"%.3f\00"
 @fmt_str.17 = private unnamed_addr constant [3 x i8] c"%c\00"
 @context.18 = private unnamed_addr constant [369 x i8] c"CACGCCCCAGCTCTGCCCTTGCAGAGGCAGAGTAGGGAAGAGCAAGCTGCCCGAGACGCAGGGGAAGGAGGATGAGGGCCCTGGGGATGAGCTGGGGTGAACCAGGCTCCCTTTCCTTTGCAGGTGCGAAGCCCAGCGGTGCAGAGTCCAGCAAAGGTGCAGGTATGAGGATGGACCTGATGGGTTCCTGGACCCTCCCCTCTCACCCTGGTCCCTCAGTCTCATTCCCCCACTCCTGCCACCTCCTGTCTGGCCATCAGGAAGGCCAGCCTGCTCCCCACCTGATCCTCCCAAACCCAGAGCCACCTGATGCCTGCCCCTCTGCTCCACAGCCTTTGTGTCCAAGCAGGAGGGCAGCGAGGTAGTGA\00"
-@context.19 = private unnamed_addr constant [236 x i8] c"CACGCCCCAGCTCTGCCCTTGCAGAGGGAGAGGAGGGAAGAGCAAGCTGCCCGAGACGCAGGGGAAGGAGGATGAGGGCCCTGGGGATGAGCTGGGGTGAACCAGGCTCCCTTTCCTTTGCAGGTGCGAAGCCCAGCGGTGCAGAGTCCAGCAAAGGTGCAGGTATGAGGATGGACCTGATGGGTTCCTGGACCCTCCCCTCTCACCCTGGTCCCTCAGTCTCATTCCCCCACTC\00"
+@context.19 = private unnamed_addr constant [887 x i8] c"CACGCCCCAGCTCTGCCCTTGCAGAGGGAGAGGAGGGAAGAGCAAGCTGCCCGAGACGCAGGGGAAGGAGGATGAGGGCCCTGGGGATGAGCTGGGGTGAACCAGGCTCCCTTTCCTTTGCAGGTGCGAAGCCCAGCGGTGCAGAGTCCAGCAAAGGTGCAGGTATGAGGATGGACCTGATGGGTTCCTGGACCCTCCCCTCTCACCCTGGTCCCTCAGTCTCATTCCCCCACTCCTGCCACCTCCTGTCTGGCCATCAGGAAGGCCAGCCTGCTCCCCACCTGATCCTCCCAAACCCAGAGCCACCTGATGCCTGCCCCTCTGCTCCACAGCCTTTGTGTCCAAGCAGGAGGGCAGCGAGGTAGTGAAGAGACCCAGGCGCTACCTGTATCAATGGCTGGGGTGAGAGAAAAGGCAGAGCTGGGCCAAGGCCCTGCCTCTCCGGGATGGTCTGTGGGGGAGCTGCAGCAGGGAGTGGCCTCTCTGGGTTGTGGTGGGGGTACAGGCAGCCTGCCCTGGTGGGCACCCTGGAGCCCCATGTGTAGGGAGAGGAGGGATGGGCATTTTGCACGGGGGCTGATGCCACCACGTCGGGTGTCTCAGAGCCCCAGTCCCCTACCCGGATCCCCTGGAGCCCAGGAGGGAGGTGTGTGAGCTCAATCCGGACTGTGACGAGTTGGCTGACCACATCGGCTTTCAGGAGGCCTATCGGCGCTTCTACGGCACTCCGGTCTAGGGTGTCGCTCTGCTGGCCTGGCCGGCAACCCCAGTTCTGCTCCTCTCCAGGCACCCTTCTTTCCTCTTCCCCTTGCCCTTGCCCTGACCTCCCAGCCCTATGGATGTGGGGTCCCCATCATCCCAGCTGCTCCCAAATAAACTCCAGAAG\00"
 @codon = global [64 x i8] c"KDKDTTTTRSRSIIMIQHQHPPPPRRRRLLLLEDEDAAAAGGGGVVVVBYBYSSSSBCWCLFLF", align 16
 @.str = private unnamed_addr constant [16 x i8] c"Hello I'm in C\0A\00", align 1
 @.str.1 = private unnamed_addr constant [35 x i8] c"No possible translation available.\00", align 1
@@ -40,7 +40,7 @@ declare i32 @printf(i8*, ...)
 
 declare double @db_exp(double, double, ...)
 
-define i32 @lcs_DNA(i8* %A, i8* %B) {
+define i32 @lcs_Pep(i8* %A, i8* %B) {
 entry:
   %A1 = alloca i8*
   store i8* %A, i8** %A1
@@ -475,21 +475,30 @@ define i32 @main() {
 entry:
   %d1 = alloca i8*
   store i8* getelementptr inbounds ([369 x i8], [369 x i8]* @context.18, i32 0, i32 0), i8** %d1
-  %d2 = alloca i8*
-  store i8* getelementptr inbounds ([236 x i8], [236 x i8]* @context.19, i32 0, i32 0), i8** %d2
+  %p1 = alloca i8*
   %d11 = load i8*, i8** %d1
   %d12 = load i8*, i8** %d1
-  %printf = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @fmt_str.15, i32 0, i32 0), i8* %d12)
-  %printf3 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @fmt_str.17, i32 0, i32 0), i8 10)
-  %d24 = load i8*, i8** %d2
-  %d25 = load i8*, i8** %d2
-  %printf6 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @fmt_str.15, i32 0, i32 0), i8* %d25)
-  %printf7 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @fmt_str.17, i32 0, i32 0), i8 10)
+  %translate2 = call i8* (i8*, ...) bitcast (i8* (i8*)* @translate2 to i8* (i8*, ...)*)(i8* %d12)
+  store i8* %translate2, i8** %p1
+  %p13 = load i8*, i8** %p1
+  %p14 = load i8*, i8** %p1
+  %printf = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @fmt_str.15, i32 0, i32 0), i8* %p14)
+  %printf5 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @fmt_str.17, i32 0, i32 0), i8 10)
+  %d2 = alloca i8*
+  store i8* getelementptr inbounds ([887 x i8], [887 x i8]* @context.19, i32 0, i32 0), i8** %d2
+  %p2 = alloca i8*
+  %d26 = load i8*, i8** %d2
+  %d27 = load i8*, i8** %d2
+  %translate28 = call i8* (i8*, ...) bitcast (i8* (i8*)* @translate2 to i8* (i8*, ...)*)(i8* %d27)
+  store i8* %translate28, i8** %p2
+  %p29 = load i8*, i8** %p2
+  %p210 = load i8*, i8** %p2
+  %printf11 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @fmt_str.15, i32 0, i32 0), i8* %p210)
   %res = alloca i32
-  %d28 = load i8*, i8** %d2
-  %d19 = load i8*, i8** %d1
-  %lcs_DNA_result = call i32 @lcs_DNA(i8* %d19, i8* %d28)
-  store i32 %lcs_DNA_result, i32* %res
+  %p212 = load i8*, i8** %p2
+  %p113 = load i8*, i8** %p1
+  %lcs_Pep_result = call i32 @lcs_Pep(i8* %p113, i8* %p212)
+  store i32 %lcs_Pep_result, i32* %res
   ret i32 0
 }
 

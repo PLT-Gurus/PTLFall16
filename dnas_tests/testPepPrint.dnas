@@ -1,4 +1,0 @@
-Pep sample = #ATGC;
-RNA test  = #;
-Pep final = test+>;
-print(final);

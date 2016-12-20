@@ -88,7 +88,6 @@ rule token = parse
 | "string" 	{STRING}
 (*Complex Data Types *)
 | "Seq"     {SEQUENCE}
-| "codon"   {CODON}
 | "DNA"     {DNA}						(* MAKE GENERAL FUNCTION TO ALLOW RNA INPUT*)
 | "RNA"     {RNA}
 | "Pep"     {PEPTIDE}						(*WRITE CODE TO ALLOW FOR PEPTIDE ENTRIES *)
@@ -105,6 +104,8 @@ rule token = parse
 
 | '"'([^'"']* as lxm)'"'  {STRING_LIT(lxm)}
 
+| '''(nuc as lxm)'''    { NUC_LIT(lxm) }
+| '''(aa as lxm)    { AA_LIT( String.get lxm 1 )}
 | char as lxm  		{ CHAR_LIT( String.get lxm 1 ) }
 | escape_char as lxm{ CHAR_LIT( String.get (unescape lxm) 1) }
 

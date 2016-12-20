@@ -62,7 +62,7 @@ let array_type_unfold t =
 	| Str -> Char
 	| DNA -> Char
 	| RNA -> Char
-	| Pep -> Aa
+	| Pep -> Char
 	| _ -> Int
 ;;
 
@@ -82,7 +82,7 @@ let check_assign lvaluet rvaluet err =
 	match lvaluet with
 	  DNA -> if rvaluet == DNA || rvaluet == Seq then lvaluet else raise err
 	| RNA -> if rvaluet == RNA || rvaluet == Seq then lvaluet else raise err
-	| Pep -> lvaluet
+	| Pep -> if rvaluet == Pep then lvaluet else raise err
 	| _ -> if lvaluet == rvaluet then lvaluet else raise err
 
 (* function checking starts from here *)
