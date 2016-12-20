@@ -1,0 +1,6 @@
+int adder (int a, int b, int c)
+c = b +a;
+return c;
+end
+
+print(adder(6,7,0));

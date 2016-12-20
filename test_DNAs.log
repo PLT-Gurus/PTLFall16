@@ -1,0 +1,295 @@
+/usr/bin/lli
+
+###### Testing test-ArrAccess
+./DNAs.native < dnas_tests/test-ArrAccess.dnas > test-ArrAccess.ll
+lli test-ArrAccess.ll > test-ArrAccess.out
+diff -b test-ArrAccess.out dnas_tests/test-ArrAccess.out > test-ArrAccess.diff
+./test_DNAs.sh: 34: ./test_DNAs.sh: error: not found
+FAILED test-ArrAccess.out differs from dnas_tests/test-ArrAccess.out
+###### SUCCESS
+
+###### Testing test-hw
+./DNAs.native < dnas_tests/test-hw.dnas > test-hw.ll
+lli test-hw.ll > test-hw.out
+diff -b test-hw.out dnas_tests/test-hw.out > test-hw.diff
+###### SUCCESS
+
+###### Testing test-hw12-declareString
+./DNAs.native < dnas_tests/test-hw12-declareString.dnas > test-hw12-declareString.ll
+lli test-hw12-declareString.ll > test-hw12-declareString.out
+diff -b test-hw12-declareString.out dnas_tests/test-hw12-declareString.out > test-hw12-declareString.diff
+###### SUCCESS
+
+###### Testing test-hw13-printDataTypes
+./DNAs.native < dnas_tests/test-hw13-printDataTypes.dnas > test-hw13-printDataTypes.ll
+lli test-hw13-printDataTypes.ll > test-hw13-printDataTypes.out
+diff -b test-hw13-printDataTypes.out dnas_tests/test-hw13-printDataTypes.out > test-hw13-printDataTypes.diff
+###### SUCCESS
+
+###### Testing test-hw14-declareDNA
+./DNAs.native < dnas_tests/test-hw14-declareDNA.dnas > test-hw14-declareDNA.ll
+lli test-hw14-declareDNA.ll > test-hw14-declareDNA.out
+diff -b test-hw14-declareDNA.out dnas_tests/test-hw14-declareDNA.out > test-hw14-declareDNA.diff
+###### SUCCESS
+
+###### Testing test-hw15-ExponentialConcatArrayLength
+./DNAs.native < dnas_tests/test-hw15-ExponentialConcatArrayLength.dnas > test-hw15-ExponentialConcatArrayLength.ll
+lli test-hw15-ExponentialConcatArrayLength.ll > test-hw15-ExponentialConcatArrayLength.out
+diff -b test-hw15-ExponentialConcatArrayLength.out dnas_tests/test-hw15-ExponentialConcatArrayLength.out > test-hw15-ExponentialConcatArrayLength.diff
+###### SUCCESS
+
+###### Testing test-hw16-declarePep
+./DNAs.native < dnas_tests/test-hw16-declarePep.dnas > test-hw16-declarePep.ll
+lli test-hw16-declarePep.ll > test-hw16-declarePep.out
+diff -b test-hw16-declarePep.out dnas_tests/test-hw16-declarePep.out > test-hw16-declarePep.diff
+###### SUCCESS
+
+###### Testing test-hw17-DNAArray
+./DNAs.native < dnas_tests/test-hw17-DNAArray.dnas > test-hw17-DNAArray.ll
+lli test-hw17-DNAArray.ll > test-hw17-DNAArray.out
+diff -b test-hw17-DNAArray.out dnas_tests/test-hw17-DNAArray.out > test-hw17-DNAArray.diff
+###### SUCCESS
+
+###### Testing test-hw2-ForWhile
+./DNAs.native < dnas_tests/test-hw2-ForWhile.dnas > test-hw2-ForWhile.ll
+lli test-hw2-ForWhile.ll > test-hw2-ForWhile.out
+diff -b test-hw2-ForWhile.out dnas_tests/test-hw2-ForWhile.out > test-hw2-ForWhile.diff
+###### SUCCESS
+
+###### Testing test-hw22-scopetest
+./DNAs.native < dnas_tests/test-hw22-scopetest.dnas > test-hw22-scopetest.ll
+lli test-hw22-scopetest.ll > test-hw22-scopetest.out
+diff -b test-hw22-scopetest.out dnas_tests/test-hw22-scopetest.out > test-hw22-scopetest.diff
+###### SUCCESS
+
+###### Testing test-hw23-testChar
+./DNAs.native < dnas_tests/test-hw23-testChar.dnas > test-hw23-testChar.ll
+lli test-hw23-testChar.ll > test-hw23-testChar.out
+diff -b test-hw23-testChar.out dnas_tests/test-hw23-testChar.out > test-hw23-testChar.diff
+###### SUCCESS
+
+###### Testing test-hw23
+./DNAs.native < dnas_tests/test-hw23.dnas > test-hw23.ll
+lli test-hw23.ll > test-hw23.out
+diff -b test-hw23.out dnas_tests/test-hw23.out > test-hw23.diff
+###### SUCCESS
+
+###### Testing test-hw25-declareDNARNA
+./DNAs.native < dnas_tests/test-hw25-declareDNARNA.dnas > test-hw25-declareDNARNA.ll
+lli test-hw25-declareDNARNA.ll > test-hw25-declareDNARNA.out
+diff -b test-hw25-declareDNARNA.out dnas_tests/test-hw25-declareDNARNA.out > test-hw25-declareDNARNA.diff
+###### SUCCESS
+
+###### Testing test-hw25dna
+./DNAs.native < dnas_tests/test-hw25dna.dnas > test-hw25dna.ll
+lli test-hw25dna.ll > test-hw25dna.out
+diff -b test-hw25dna.out dnas_tests/test-hw25dna.out > test-hw25dna.diff
+###### SUCCESS
+
+###### Testing test-hw27-arraybug
+./DNAs.native < dnas_tests/test-hw27-arraybug.dnas > test-hw27-arraybug.ll
+lli test-hw27-arraybug.ll > test-hw27-arraybug.out
+diff -b test-hw27-arraybug.out dnas_tests/test-hw27-arraybug.out > test-hw27-arraybug.diff
+###### SUCCESS
+
+###### Testing test-hw3-ForWhile
+./DNAs.native < dnas_tests/test-hw3-ForWhile.dnas > test-hw3-ForWhile.ll
+lli test-hw3-ForWhile.ll > test-hw3-ForWhile.out
+diff -b test-hw3-ForWhile.out dnas_tests/test-hw3-ForWhile.out > test-hw3-ForWhile.diff
+###### SUCCESS
+
+###### Testing test-hw34-pass-forbool
+./DNAs.native < dnas_tests/test-hw34-pass-forbool.dnas > test-hw34-pass-forbool.ll
+lli test-hw34-pass-forbool.ll > test-hw34-pass-forbool.out
+diff -b test-hw34-pass-forbool.out dnas_tests/test-hw34-pass-forbool.out > test-hw34-pass-forbool.diff
+###### SUCCESS
+
+###### Testing test-hw4-printString
+./DNAs.native < dnas_tests/test-hw4-printString.dnas > test-hw4-printString.ll
+lli test-hw4-printString.ll > test-hw4-printString.out
+diff -b test-hw4-printString.out dnas_tests/test-hw4-printString.out > test-hw4-printString.diff
+###### SUCCESS
+
+###### Testing test-hw40-pass-forbool
+./DNAs.native < dnas_tests/test-hw40-pass-forbool.dnas > test-hw40-pass-forbool.ll
+lli test-hw40-pass-forbool.ll > test-hw40-pass-forbool.out
+diff -b test-hw40-pass-forbool.out dnas_tests/test-hw40-pass-forbool.out > test-hw40-pass-forbool.diff
+./test_DNAs.sh: 34: ./test_DNAs.sh: error: not found
+FAILED test-hw40-pass-forbool.out differs from dnas_tests/test-hw40-pass-forbool.out
+###### SUCCESS
+
+###### Testing test-hw41-testfuncdecl
+./DNAs.native < dnas_tests/test-hw41-testfuncdecl.dnas > test-hw41-testfuncdecl.ll
+lli test-hw41-testfuncdecl.ll > test-hw41-testfuncdecl.out
+diff -b test-hw41-testfuncdecl.out dnas_tests/test-hw41-testfuncdecl.out > test-hw41-testfuncdecl.diff
+./test_DNAs.sh: 34: ./test_DNAs.sh: error: not found
+FAILED test-hw41-testfuncdecl.out differs from dnas_tests/test-hw41-testfuncdecl.out
+###### SUCCESS
+
+###### Testing test-hw42-testformalfuncdecl
+./DNAs.native < dnas_tests/test-hw42-testformalfuncdecl.dnas > test-hw42-testformalfuncdecl.ll
+lli test-hw42-testformalfuncdecl.ll > test-hw42-testformalfuncdecl.out
+diff -b test-hw42-testformalfuncdecl.out dnas_tests/test-hw42-testformalfuncdecl.out > test-hw42-testformalfuncdecl.diff
+./test_DNAs.sh: 34: ./test_DNAs.sh: error: not found
+FAILED test-hw42-testformalfuncdecl.out differs from dnas_tests/test-hw42-testformalfuncdecl.out
+###### SUCCESS
+
+###### Testing test-hw44-nucdecl
+./DNAs.native < dnas_tests/test-hw44-nucdecl.dnas > test-hw44-nucdecl.ll
+lli test-hw44-nucdecl.ll > test-hw44-nucdecl.out
+diff -b test-hw44-nucdecl.out dnas_tests/test-hw44-nucdecl.out > test-hw44-nucdecl.diff
+./test_DNAs.sh: 34: ./test_DNAs.sh: error: not found
+FAILED test-hw44-nucdecl.out differs from dnas_tests/test-hw44-nucdecl.out
+###### SUCCESS
+
+###### Testing test-hw5-printSeq
+./DNAs.native < dnas_tests/test-hw5-printSeq.dnas > test-hw5-printSeq.ll
+lli test-hw5-printSeq.ll > test-hw5-printSeq.out
+diff -b test-hw5-printSeq.out dnas_tests/test-hw5-printSeq.out > test-hw5-printSeq.diff
+###### SUCCESS
+
+###### Testing test-hw7-testDNARNAPepConcat
+./DNAs.native < dnas_tests/test-hw7-testDNARNAPepConcat.dnas > test-hw7-testDNARNAPepConcat.ll
+lli test-hw7-testDNARNAPepConcat.ll > test-hw7-testDNARNAPepConcat.out
+diff -b test-hw7-testDNARNAPepConcat.out dnas_tests/test-hw7-testDNARNAPepConcat.out > test-hw7-testDNARNAPepConcat.diff
+###### SUCCESS
+
+###### Testing test-hw8-stringArray
+./DNAs.native < dnas_tests/test-hw8-stringArray.dnas > test-hw8-stringArray.ll
+lli test-hw8-stringArray.ll > test-hw8-stringArray.out
+diff -b test-hw8-stringArray.out dnas_tests/test-hw8-stringArray.out > test-hw8-stringArray.diff
+###### SUCCESS
+
+###### Testing test-hw9-declareFunctions
+./DNAs.native < dnas_tests/test-hw9-declareFunctions.dnas > test-hw9-declareFunctions.ll
+lli test-hw9-declareFunctions.ll > test-hw9-declareFunctions.out
+diff -b test-hw9-declareFunctions.out dnas_tests/test-hw9-declareFunctions.out > test-hw9-declareFunctions.diff
+###### SUCCESS
+
+###### Testing fail-test-hw1-failComplement
+./DNAs.native < dnas_tests/fail-test-hw1-failComplement.dnas > fail-test-hw1-failComplement.ll
+Fatal error: exception Failure("illegal left unary operator @RNA in @stan")
+./test_DNAs.sh: 34: ./test_DNAs.sh: error: not found
+###### SUCCESS
+
+###### Testing fail-test-hw10-failDeclareDNA
+./DNAs.native < dnas_tests/fail-test-hw10-failDeclareDNA.dnas > fail-test-hw10-failDeclareDNA.ll
+Fatal error: exception Failure("illegal assignment DNA = str in hi = atgc")
+./test_DNAs.sh: 34: ./test_DNAs.sh: error: not found
+###### SUCCESS
+
+###### Testing fail-test-hw11-failDeclareArray
+./DNAs.native < dnas_tests/fail-test-hw11-failDeclareArray.dnas > fail-test-hw11-failDeclareArray.ll
+Fatal error: exception Failure("illegal assignment DNA = str in David[0]=atgc")
+./test_DNAs.sh: 34: ./test_DNAs.sh: error: not found
+###### SUCCESS
+
+###### Testing fail-test-hw18-failArrayBoundaries
+./DNAs.native < dnas_tests/fail-test-hw18-failArrayBoundaries.dnas > fail-test-hw18-failArrayBoundaries.ll
+Fatal error: exception Failure("undeclared identifier myarray")
+./test_DNAs.sh: 34: ./test_DNAs.sh: error: not found
+###### SUCCESS
+
+###### Testing fail-test-hw19-declareRNATranscribeTranslateTranslate2Concat
+./DNAs.native < dnas_tests/fail-test-hw19-declareRNATranscribeTranslateTranslate2Concat.dnas > fail-test-hw19-declareRNATranscribeTranslateTranslate2Concat.ll
+lli fail-test-hw19-declareRNATranscribeTranslateTranslate2Concat.ll > fail-test-hw19-declareRNATranscribeTranslateTranslate2Concat.out
+diff -b fail-test-hw19-declareRNATranscribeTranslateTranslate2Concat.out dnas_tests/fail-test-hw19-declareRNATranscribeTranslateTranslate2Concat.out > fail-test-hw19-declareRNATranscribeTranslateTranslate2Concat.diff
+./test_DNAs.sh: 34: ./test_DNAs.sh: error: not found
+FAILED fail-test-hw19-declareRNATranscribeTranslateTranslate2Concat.out differs from dnas_tests/fail-test-hw19-declareRNATranscribeTranslateTranslate2Concat.out
+###### SUCCESS
+
+###### Testing fail-test-hw20-AddingInt
+./DNAs.native < dnas_tests/fail-test-hw20-AddingInt.dnas > fail-test-hw20-AddingInt.ll
+Fatal error: exception Failure("function print may not be defined")
+./test_DNAs.sh: 34: ./test_DNAs.sh: error: not found
+###### SUCCESS
+
+###### Testing fail-test-hw20-UDFprint
+./DNAs.native < dnas_tests/fail-test-hw20-UDFprint.dnas > fail-test-hw20-UDFprint.ll
+Fatal error: exception Failure("function print may not be defined")
+./test_DNAs.sh: 34: ./test_DNAs.sh: error: not found
+###### SUCCESS
+
+###### Testing fail-test-hw21-UDFdupeformal
+./DNAs.native < dnas_tests/fail-test-hw21-UDFdupeformal.dnas > fail-test-hw21-UDFdupeformal.ll
+Fatal error: exception Failure("duplicate formal a in sample")
+./test_DNAs.sh: 34: ./test_DNAs.sh: error: not found
+###### SUCCESS
+
+###### Testing fail-test-hw21-failAddition
+./DNAs.native < dnas_tests/fail-test-hw21-failAddition.dnas > fail-test-hw21-failAddition.ll
+Fatal error: exception Failure("duplicate formal a in sample")
+./test_DNAs.sh: 34: ./test_DNAs.sh: error: not found
+###### SUCCESS
+
+###### Testing fail-test-hw24-failTranscribeString
+./DNAs.native < dnas_tests/fail-test-hw24-failTranscribeString.dnas > fail-test-hw24-failTranscribeString.ll
+Fatal error: exception Failure("illegal right unary operator ->str in sample->")
+./test_DNAs.sh: 34: ./test_DNAs.sh: error: not found
+###### SUCCESS
+
+###### Testing fail-test-hw24
+./DNAs.native < dnas_tests/fail-test-hw24.dnas > fail-test-hw24.ll
+Fatal error: exception Failure("illegal right unary operator ->str in sample->")
+./test_DNAs.sh: 34: ./test_DNAs.sh: error: not found
+###### SUCCESS
+
+###### Testing fail-test-hw26-failassign
+./DNAs.native < dnas_tests/fail-test-hw26-failassign.dnas > fail-test-hw26-failassign.ll
+Fatal error: exception Failure("illegal assignment int = bool in b = true")
+./test_DNAs.sh: 34: ./test_DNAs.sh: error: not found
+###### SUCCESS
+
+###### Testing fail-test-hw29-fail-badreturn
+./DNAs.native < dnas_tests/fail-test-hw29-fail-badreturn.dnas > fail-test-hw29-fail-badreturn.ll
+Fatal error: exception Failure("return gives double expected int in z")
+./test_DNAs.sh: 34: ./test_DNAs.sh: error: not found
+###### SUCCESS
+
+###### Testing fail-test-hw30-fail-followreturn
+./DNAs.native < dnas_tests/fail-test-hw30-fail-followreturn.dnas > fail-test-hw30-fail-followreturn.ll
+Fatal error: exception Failure("nothing may follow a return")
+./test_DNAs.sh: 34: ./test_DNAs.sh: error: not found
+###### SUCCESS
+
+###### Testing fail-test-hw31-fail-intforArray
+./DNAs.native < dnas_tests/fail-test-hw31-fail-intforArray.dnas > fail-test-hw31-fail-intforArray.ll
+Fatal error: exception Failure("expected Integer expression in 5.5")
+./test_DNAs.sh: 34: ./test_DNAs.sh: error: not found
+###### SUCCESS
+
+###### Testing fail-test-hw32-fail-intforArray2
+./DNAs.native < dnas_tests/fail-test-hw32-fail-intforArray2.dnas > fail-test-hw32-fail-intforArray2.ll
+Fatal error: exception Failure("expected Integer expression in 5.6")
+./test_DNAs.sh: 34: ./test_DNAs.sh: error: not found
+###### SUCCESS
+
+###### Testing fail-test-hw33-fail-ifbool
+./DNAs.native < dnas_tests/fail-test-hw33-fail-ifbool.dnas > fail-test-hw33-fail-ifbool.ll
+Fatal error: exception Failure("expected Boolean expression in b+1")
+./test_DNAs.sh: 34: ./test_DNAs.sh: error: not found
+###### SUCCESS
+
+###### Testing fail-test-hw35-fail-forbool
+./DNAs.native < dnas_tests/fail-test-hw35-fail-forbool.dnas > fail-test-hw35-fail-forbool.ll
+Fatal error: exception Failure("expected Boolean expression in i+1")
+./test_DNAs.sh: 34: ./test_DNAs.sh: error: not found
+###### SUCCESS
+
+###### Testing fail-test-hw36-fail-whilebool
+./DNAs.native < dnas_tests/fail-test-hw36-fail-whilebool.dnas > fail-test-hw36-fail-whilebool.ll
+Fatal error: exception Failure("expected Boolean expression in i+1")
+./test_DNAs.sh: 34: ./test_DNAs.sh: error: not found
+###### SUCCESS
+
+###### Testing fail-test-hw37-fail-illegalassign
+./DNAs.native < dnas_tests/fail-test-hw37-fail-illegalassign.dnas > fail-test-hw37-fail-illegalassign.ll
+Fatal error: exception Failure("illegal assignment int = bool in i=true")
+./test_DNAs.sh: 34: ./test_DNAs.sh: error: not found
+###### SUCCESS
+
+###### Testing fail-test-hw43-varvoid
+./DNAs.native < dnas_tests/fail-test-hw43-varvoid.dnas > fail-test-hw43-varvoid.ll
+Fatal error: exception Failure("unrecognized type nul")
+./test_DNAs.sh: 34: ./test_DNAs.sh: error: not found
+###### SUCCESS
