@@ -1,3 +1,7 @@
 DNA hi = #atgc;
+int l1 = 1;
 string boo = cast<string>(hi);
-print(boo);
+//DNA d1 = cast<DNA>(l1);
+//string boo = cast<int>(hi);
+//string boo = cast<DNA>(hi);
+print(hi);

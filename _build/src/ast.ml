@@ -12,8 +12,8 @@ type expr =
 		  Litint of int 		(*added into Codegen*)
 		| Litbool of bool 		(*added into Codegen*)
 		| Litchar of char 		(*added into Codegen*)
-	(*	| Litnuc of char	*)
-	(*	| Litaa of char		*)
+		| Litnuc of char
+		| Litaa of char
 		| Id of string 			(*added into Codegen*)
 		| Litdna of string
 		| Litrna of string
@@ -30,7 +30,6 @@ type expr =
 		| ArrayAssign of string * expr * expr		(* added to the functions below *)
 		| Call of string * expr list(*added into Codegen*)
 		| SizeOf of string							(* adds to the functions below *)
-		| Typecast of typ * expr					(* adds to the functions below *)
 		| Fread of string							(* adds to the functions below *)
 		| Read of string							(* adds to the functions below *)
 		| Cast of typ * expr
@@ -92,7 +91,7 @@ let string_of_typ = function
 	| Void 		->"nul"
 	| Char 		->"char"
 	| Double 	->"double"
-	| Aa 		->"AA"
+	| Aa 		->"aa"
 	| Nuc 		->"nuc"
 	| Codon 	->"codon"
 	| Seq 		->"seq"
@@ -144,6 +143,10 @@ let rec string_of_expr = function
 		"false"
 	| Litchar(ch)->
 		String.make 1 ch
+	| Litnuc(ch)->
+		String.make 1 ch
+	| Litaa(ch)->
+		String.make 1 ch
 	| Litdouble(flt)->
 		string_of_float flt
 	| Binop(exp1,op,exp2)->
@@ -161,7 +164,7 @@ let rec string_of_expr = function
 		str ^ "[" ^ string_of_expr exp1 ^ "]" ^ "=" ^ string_of_expr exp2
 	| SizeOf(str)->
 		str ^ ".length"
-	| Typecast(typ, expr)->
+	| Cast(typ, expr)->
 		string_of_typ typ ^ " " ^ string_of_expr expr
 	| Fread(str)->
 		"FASTA read " ^ str

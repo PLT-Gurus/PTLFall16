@@ -67,6 +67,8 @@ type token =
   | ID of (string)
   | SEQUENCE_LIT of (string)
   | CHAR_LIT of (char)
+  | NUC_LIT of (char)
+  | AA_LIT of (char)
   | DNA_LIT of (string)
   | RNA_LIT of (string)
   | PEP_LIT of (string)

@@ -20,7 +20,7 @@ char* complement(char* str){
     int i = 0;
     while(str[i] != 0) i++;
     int length = i;
-    char retstr [length];
+    char* retstr = malloc(length);
 
     char curr;
     for(int i = 0; i<length; i++){
@@ -376,7 +376,11 @@ bool testValid(char * input, char type)
     {
         for (int i =0; i< size; i++)
         {
-            // implement checker
+			for (int j = 0; j<64; j++){
+				if(input[i] == codon[j])
+					break;
+				return 0;
+			}
 
         }
     }

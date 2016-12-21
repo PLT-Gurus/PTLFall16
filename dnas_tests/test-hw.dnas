@@ -1,7 +1,7 @@
 
 int i=1;
 i = i+1;
-print(i);
+//print(i);
 
 int func(int A, int B)
     int c = A + B;
@@ -9,9 +9,13 @@ int func(int A, int B)
     return c;
 end
 
-char a = '\r';
-print(a);
+
 
 for i =1; i<10; i=i+1 then
 
 end
+
+nuc a = 't';
+ //char a = 't';
+// aa a = 't';
+print(a);

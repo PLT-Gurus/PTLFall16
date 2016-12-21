@@ -42,11 +42,11 @@ int lcs_RNA(RNA A, RNA B)
 
 	i= 0;	j= 0;
 	print('\n');
-	//print("Longest subsequence:");print('\n');print('\t');
+	print("Longest subsequence:");print('\n');print('\t');
 	while (i < sizeA  & j<sizeB) then
 		if (A[i] == B[j] ) then
 			char temp = A[i];
-			// print(temp);
+			print(temp);
 			i = i + 1;	j = j+ 1 ;
 		elseif C[getIndex(i+1, j, sizeA, sizeB)] >= C[getIndex(i, j+1, sizeA, sizeB)] then
 			i = i +1 ;
@@ -54,7 +54,7 @@ int lcs_RNA(RNA A, RNA B)
 			j = j + 1;
 		end
 	end
-	//print('\n');
+	print('\n');
 	print("The length of the longest subsequence:");print('\n');print('\t');
 	print(C[0]);print('\n');
 	return C[0];

@@ -34,6 +34,8 @@ let translate prog =
   | A.Double ->double_t
   | A.Int  -> i32_t
   | A.Char -> i8_t
+  | A.Nuc -> i8_t
+  | A.Aa -> i8_t
   | A.Bool -> i1_t
   | A.Void -> void_t
   | A.Str -> str_t
@@ -162,6 +164,10 @@ let translate prog =
       | A.Litbool b -> ((L.const_int i1_t (if b then 1 else 0)), A.Bool)
 
       | A.Litchar c -> ((L.const_int i8_t (int_of_char c)), A.Char)
+
+      | A.Litaa c -> ((L.const_int i8_t (int_of_char c)), A.Aa)
+
+      | A.Litnuc c -> ((L.const_int i8_t (int_of_char c)), A.Nuc)
 
       | A.Id s -> ((L.build_load (fst (fst (lookup s (snd bvtup)))) s (fst bvtup)), (snd (fst (lookup s (snd bvtup)))))
 
@@ -353,15 +359,15 @@ let translate prog =
             let filename = fst (add_expr bvtup (A.Stringlit(filename))) in
             let contents = ext_call_alternate "readFile" [filename] bvtup in
             (contents, A.Str)
-      | A.Cast(t, e) -> 
-             let result = match t with  
+      | A.Cast(t, e) ->
+             let result = match t with
             A.Str -> add_expr bvtup e
           | A.DNA -> let checker = (ext_call "testValid" [e;A.Litchar('d')] bvtup) in
-                      let checker2 = L.const_int i1_t 0 in 
+                      let checker2 = L.const_int i1_t 0 in
                     if not (L.is_null checker) then raise (Failure "Cannot cast input type to container type ") else (fst (add_expr bvtup e), t)
-          | A.RNA ->  let checker = (ext_call "testValid" [e;A.Litchar('r')] bvtup) in 
+          | A.RNA ->  let checker = (ext_call "testValid" [e;A.Litchar('r')] bvtup) in
                        if not (L.is_null checker) then raise (Failure "Cannot cast input type to container type ") else (fst (add_expr bvtup e), t)
-          | A.Pep -> let checker = (ext_call "testValid" [e;A.Litchar('p')] bvtup) in 
+          | A.Pep -> let checker = (ext_call "testValid" [e;A.Litchar('p')] bvtup) in
                        if not (L.is_null checker) then raise (Failure "Cannot cast input type to container type ") else (fst (add_expr bvtup e), t)
           | _ -> raise (Failure "Cannot cast to specified type "); add_expr bvtup e
 
@@ -415,6 +421,14 @@ let translate prog =
           | A.Char ->
             L.build_call (StringMap.find "printf" ext_funcs) [| char_format_str ; (eval) |]
             "printf" (fst bvtup)
+            | A.Nuc ->
+              L.build_call (StringMap.find "printf" ext_funcs) [| char_format_str ; (eval) |]
+              "printf" (fst bvtup)
+              | A.Aa ->
+                L.build_call (StringMap.find "printf" ext_funcs) [| char_format_str ; (eval) |]
+                "printf" (fst bvtup)
+            | A.Pep ->
+                ext_call "printPep" [e] bvtup
           | A.Void -> raise (Failure "Cannot print void type "); (L.const_int i32_t 0)
           | _ -> L.build_call (StringMap.find "printf" ext_funcs) [| str_format_str ; (eval) |]
                   "printf" (fst bvtup) in

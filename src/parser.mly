@@ -145,7 +145,6 @@ expr:
     |   LPAREN expr RPAREN  {$2}
     |   ID LPAREN actuals_opt RPAREN    {Call($1, $3)}
     |   ID PERIOD SIZEOF {SizeOf($1)}
-    |   LT typ GT expr {Typecast($2, $4)}
     |   FREAD LPAREN STRING_LIT RPAREN {Fread($3)}
     |   READ LPAREN STRING_LIT RPAREN {Read($3)}
     |   CAST LT typ GT LPAREN expr RPAREN {Cast($3, $6)}

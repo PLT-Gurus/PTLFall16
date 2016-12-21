@@ -16,6 +16,9 @@ let locals_list = ref StringMap.empty;;
 let count = ref true;;
 let v_types_list = ["int"; "bool"; "char"; "double"; "aa"; "nuc"; "codon"; "seq"; "DNA"; "RNA"; "Peptide"; "str"];;
 let types_map = List.fold_left (fun m (t) -> StringMap.add t true m) StringMap.empty v_types_list;;
+let cast_types_list = [ "seq"; "DNA"; "RNA"; "Peptide"; "str"];;
+let cast_types_map = List.fold_left (fun m (t) -> StringMap.add t true m) StringMap.empty cast_types_list;;
+
 
 
 (* Raise an exception if a given binding is to a void type *)
@@ -26,6 +29,10 @@ let check_not_void exceptf = function
 
 let check_v_type t = try ignore(StringMap.find (string_of_typ t) types_map)
 	with Not_found -> raise (Failure ("unrecognized type " ^ (string_of_typ t)))
+;;
+
+let check_cast_type t = try ignore(StringMap.find (string_of_typ t) cast_types_map)
+	with Not_found -> raise (Failure ("invalid type " ^ (string_of_typ t) ^ " for cast."))
 ;;
 
 let map_array_type t =
@@ -62,7 +69,7 @@ let array_type_unfold t =
 	| Str -> Char
 	| DNA -> Char
 	| RNA -> Char
-	| Pep -> Aa
+	| Pep -> Char
 	| _ -> Int
 ;;
 
@@ -82,7 +89,9 @@ let check_assign lvaluet rvaluet err =
 	match lvaluet with
 	  DNA -> if rvaluet == DNA || rvaluet == Seq then lvaluet else raise err
 	| RNA -> if rvaluet == RNA || rvaluet == Seq then lvaluet else raise err
-	| Pep -> lvaluet
+	| Char -> if rvaluet == Char || rvaluet == Aa || rvaluet == Nuc then lvaluet else raise err
+	| Aa -> if rvaluet == Aa || rvaluet == Nuc then lvaluet else raise err
+	| Pep -> if rvaluet == Pep then lvaluet else raise err
 	| _ -> if lvaluet == rvaluet then lvaluet else raise err
 
 (* function checking starts from here *)
@@ -117,6 +126,8 @@ let check_stmt func function_decls =
 		Litint _ -> Int
 		| Litbool _ -> Bool
 		| Litchar _ -> Char
+		| Litnuc _ -> Nuc
+		| Litaa _ -> Aa
 		| Id s -> type_of_identifier s (* there is an issue for order of initialization *)
 		| Litdna _ -> DNA
 		| Litrna _ -> RNA
@@ -187,7 +198,9 @@ let check_stmt func function_decls =
 				" = " ^ string_of_typ rt ^ " in " ^
 			string_of_expr ex))
 		| SizeOf(s) -> ignore(type_of_identifier s); Int
-	(*	| Typecast =()	*)
+		| Cast(t,e) -> ignore(check_cast_type t);
+						ignore(check_cast_type (expr e));
+						t
 		| Fread(s) -> DNA
 		| Read(s) -> Str
 		| Call(fname, actuals) as call -> if fname = "print" then (

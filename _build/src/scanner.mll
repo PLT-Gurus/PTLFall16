@@ -35,7 +35,6 @@ rule token = parse
 | ']' 		{RBRACK}
 | ';'       {SEMI}
 | ','       {COMMA}
-| "begin"   {BEGIN}
 | "end"     {END}
 | "if"      {IF}
 | "elseif"  {ELSEIF}
@@ -51,9 +50,6 @@ rule token = parse
 | "readFASTA" {FREAD}
 | "read" 	{READ}
 | "cast" 	{CAST}
-(*| "import"	{IMPORT} *)
-(* Concat operator, specifically for data of string types (strings, DNA, RNA, etc. )
-| "+=" 		{STRCAT}   *)
 (* Arithmetic Binary Operators*)
 | '+'		{PLUS}
 | '-'		{MINUS}
@@ -88,7 +84,6 @@ rule token = parse
 | "string" 	{STRING}
 (*Complex Data Types *)
 | "Seq"     {SEQUENCE}
-| "codon"   {CODON}
 | "DNA"     {DNA}						(* MAKE GENERAL FUNCTION TO ALLOW RNA INPUT*)
 | "RNA"     {RNA}
 | "Pep"     {PEPTIDE}						(*WRITE CODE TO ALLOW FOR PEPTIDE ENTRIES *)
@@ -105,6 +100,8 @@ rule token = parse
 
 | '"'([^'"']* as lxm)'"'  {STRING_LIT(lxm)}
 
+| '''(nuc as lxm)'''    { NUC_LIT(lxm) }
+| '''(aa as lxm)    { AA_LIT(lxm)}
 | char as lxm  		{ CHAR_LIT( String.get lxm 1 ) }
 | escape_char as lxm{ CHAR_LIT( String.get (unescape lxm) 1) }
 

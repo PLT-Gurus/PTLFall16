@@ -7,11 +7,6 @@ ocamlfind ocamldep -package llvm.target -package llvm.linker -package llvm.bitre
 ocamlfind ocamldep -package llvm.target -package llvm.linker -package llvm.bitreader -package llvm.bitwriter -package llvm.analysis -package llvm -modules src/codegen.ml > src/codegen.ml.depends
 # Target: src/ast.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:src/ast.cmo, file:src/ast.ml, implem, ocaml, package(llvm), package(llvm.analysis), package(llvm.bitreader), package(llvm.bitwriter), package(llvm.linker), package(llvm.target), quiet }
 ocamlfind ocamlc -c -w +a-4 -package llvm.target -package llvm.linker -package llvm.bitreader -package llvm.bitwriter -package llvm.analysis -package llvm -I src -o src/ast.cmo src/ast.ml
-+ ocamlfind ocamlc -c -w +a-4 -package llvm.target -package llvm.linker -package llvm.bitreader -package llvm.bitwriter -package llvm.analysis -package llvm -I src -o src/ast.cmo src/ast.ml
-File "src/ast.ml", line 124, characters 25-1092:
-Warning 8: this pattern-matching is not exhaustive.
-Here is an example of a value that is not matched:
-Cast (_, _)
 # Target: src/linker.ml.depends, tags: { extension:ml, file:src/linker.ml, ocaml, ocamldep, package(llvm), package(llvm.analysis), package(llvm.bitreader), package(llvm.bitwriter), package(llvm.linker), package(llvm.target), quiet }
 ocamlfind ocamldep -package llvm.target -package llvm.linker -package llvm.bitreader -package llvm.bitwriter -package llvm.analysis -package llvm -modules src/linker.ml > src/linker.ml.depends
 # Target: src/linker.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:src/linker.cmo, file:src/linker.ml, implem, ocaml, package(llvm), package(llvm.analysis), package(llvm.bitreader), package(llvm.bitwriter), package(llvm.linker), package(llvm.target), quiet }
@@ -38,82 +33,78 @@ ocamlfind ocamldep -package llvm.target -package llvm.linker -package llvm.bitre
 # Target: src/codegen.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:src/codegen.cmo, file:src/codegen.ml, implem, ocaml, package(llvm), package(llvm.analysis), package(llvm.bitreader), package(llvm.bitwriter), package(llvm.linker), package(llvm.target), quiet }
 ocamlfind ocamlc -c -w +a-4 -package llvm.target -package llvm.linker -package llvm.bitreader -package llvm.bitwriter -package llvm.analysis -package llvm -I src -o src/codegen.cmo src/codegen.ml
 + ocamlfind ocamlc -c -w +a-4 -package llvm.target -package llvm.linker -package llvm.bitreader -package llvm.bitwriter -package llvm.analysis -package llvm -I src -o src/codegen.cmo src/codegen.ml
-File "src/codegen.ml", line 175, characters 50-66:
+File "src/codegen.ml", line 181, characters 50-66:
 Warning 10: this expression should have type unit.
-File "src/codegen.ml", line 198, characters 24-336:
+File "src/codegen.ml", line 204, characters 24-336:
 Warning 25: bad style, all clauses in this pattern-matching are guarded.
-File "src/codegen.ml", line 203, characters 24-337:
+File "src/codegen.ml", line 209, characters 24-337:
 Warning 25: bad style, all clauses in this pattern-matching are guarded.
-File "src/codegen.ml", line 194, characters 32-948:
+File "src/codegen.ml", line 200, characters 32-948:
 Warning 25: bad style, all clauses in this pattern-matching are guarded.
-File "src/codegen.ml", line 214, characters 24-336:
+File "src/codegen.ml", line 220, characters 24-336:
 Warning 25: bad style, all clauses in this pattern-matching are guarded.
-File "src/codegen.ml", line 219, characters 24-337:
+File "src/codegen.ml", line 225, characters 24-337:
 Warning 25: bad style, all clauses in this pattern-matching are guarded.
-File "src/codegen.ml", line 212, characters 26-838:
+File "src/codegen.ml", line 218, characters 26-838:
 Warning 25: bad style, all clauses in this pattern-matching are guarded.
-File "src/codegen.ml", line 230, characters 24-336:
+File "src/codegen.ml", line 236, characters 24-336:
 Warning 25: bad style, all clauses in this pattern-matching are guarded.
-File "src/codegen.ml", line 235, characters 24-337:
+File "src/codegen.ml", line 241, characters 24-337:
 Warning 25: bad style, all clauses in this pattern-matching are guarded.
-File "src/codegen.ml", line 228, characters 26-838:
+File "src/codegen.ml", line 234, characters 26-838:
 Warning 25: bad style, all clauses in this pattern-matching are guarded.
-File "src/codegen.ml", line 246, characters 24-337:
+File "src/codegen.ml", line 252, characters 24-337:
 Warning 25: bad style, all clauses in this pattern-matching are guarded.
-File "src/codegen.ml", line 251, characters 24-336:
+File "src/codegen.ml", line 257, characters 24-336:
 Warning 25: bad style, all clauses in this pattern-matching are guarded.
-File "src/codegen.ml", line 244, characters 26-838:
+File "src/codegen.ml", line 250, characters 26-838:
 Warning 25: bad style, all clauses in this pattern-matching are guarded.
-File "src/codegen.ml", line 264, characters 24-278:
+File "src/codegen.ml", line 270, characters 24-278:
 Warning 25: bad style, all clauses in this pattern-matching are guarded.
-File "src/codegen.ml", line 268, characters 24-276:
+File "src/codegen.ml", line 274, characters 24-276:
 Warning 25: bad style, all clauses in this pattern-matching are guarded.
-File "src/codegen.ml", line 262, characters 26-719:
+File "src/codegen.ml", line 268, characters 26-719:
 Warning 25: bad style, all clauses in this pattern-matching are guarded.
-File "src/codegen.ml", line 279, characters 16-593:
+File "src/codegen.ml", line 285, characters 16-593:
 Warning 25: bad style, all clauses in this pattern-matching are guarded.
-File "src/codegen.ml", line 291, characters 16-317:
+File "src/codegen.ml", line 297, characters 16-317:
 Warning 25: bad style, all clauses in this pattern-matching are guarded.
-File "src/codegen.ml", line 299, characters 16-318:
+File "src/codegen.ml", line 305, characters 16-318:
 Warning 25: bad style, all clauses in this pattern-matching are guarded.
-File "src/codegen.ml", line 308, characters 16-317:
+File "src/codegen.ml", line 314, characters 16-317:
 Warning 25: bad style, all clauses in this pattern-matching are guarded.
-File "src/codegen.ml", line 316, characters 16-318:
+File "src/codegen.ml", line 322, characters 16-318:
 Warning 25: bad style, all clauses in this pattern-matching are guarded.
-File "src/codegen.ml", line 324, characters 16-317:
+File "src/codegen.ml", line 330, characters 16-317:
 Warning 25: bad style, all clauses in this pattern-matching are guarded.
-File "src/codegen.ml", line 334, characters 10-356:
+File "src/codegen.ml", line 340, characters 10-356:
 Warning 8: this pattern-matching is not exhaustive.
 Here is an example of a value that is not matched:
 (Transcb|Translt|Translttwo)
-File "src/codegen.ml", line 366, characters 17-65:
+File "src/codegen.ml", line 372, characters 17-65:
 Warning 21: this statement never returns (or has an unsound type.)
-File "src/codegen.ml", line 372, characters 12-197:
+File "src/codegen.ml", line 378, characters 12-197:
 Warning 8: this pattern-matching is not exhaustive.
 Here is an example of a value that is not matched:
 (Neg|Not|Comp)
-File "src/codegen.ml", line 418, characters 22-63:
+File "src/codegen.ml", line 432, characters 22-63:
 Warning 21: this statement never returns (or has an unsound type.)
 File "src/codegen.ml", line 30, characters 6-14:
 Warning 26: unused variable intptr_t.
-File "src/codegen.ml", line 188, characters 14-20:
+File "src/codegen.ml", line 194, characters 14-20:
 Warning 26: unused variable e2Type.
-File "src/codegen.ml", line 360, characters 26-34:
+File "src/codegen.ml", line 366, characters 26-34:
 Warning 26: unused variable checker2.
-File "src/codegen.ml", line 391, characters 14-23:
+File "src/codegen.ml", line 397, characters 14-23:
 Warning 26: unused variable testPrint.
 # Target: src/scanner.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:src/scanner.cmo, file:src/scanner.ml, implem, ocaml, package(llvm), package(llvm.analysis), package(llvm.bitreader), package(llvm.bitwriter), package(llvm.linker), package(llvm.target), quiet }
 ocamlfind ocamlc -c -w +a-4 -package llvm.target -package llvm.linker -package llvm.bitreader -package llvm.bitwriter -package llvm.analysis -package llvm -I src -o src/scanner.cmo src/scanner.ml
 # Target: src/semant.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:src/semant.cmo, file:src/semant.ml, implem, ocaml, package(llvm), package(llvm.analysis), package(llvm.bitreader), package(llvm.bitwriter), package(llvm.linker), package(llvm.target), quiet }
 ocamlfind ocamlc -c -w +a-4 -package llvm.target -package llvm.linker -package llvm.bitreader -package llvm.bitwriter -package llvm.analysis -package llvm -I src -o src/semant.cmo src/semant.ml
 + ocamlfind ocamlc -c -w +a-4 -package llvm.target -package llvm.linker -package llvm.bitreader -package llvm.bitwriter -package llvm.analysis -package llvm -I src -o src/semant.cmo src/semant.ml
-File "src/semant.ml", line 116, characters 16-3959:
-Warning 8: this pattern-matching is not exhaustive.
-Here is an example of a value that is not matched:
-(Typecast (_, _)|Cast (_, _))
-File "src/semant.ml", line 191, characters 9-12:
+File "src/semant.ml", line 204, characters 9-12:
 Warning 27: unused variable s.
-File "src/semant.ml", line 192, characters 8-11:
+File "src/semant.ml", line 205, characters 8-11:
 Warning 27: unused variable s.
 # Target: src/DNAs.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:src/DNAs.cmo, file:src/DNAs.ml, implem, ocaml, package(llvm), package(llvm.analysis), package(llvm.bitreader), package(llvm.bitwriter), package(llvm.linker), package(llvm.target), quiet }
 ocamlfind ocamlc -c -w +a-4 -package llvm.target -package llvm.linker -package llvm.bitreader -package llvm.bitwriter -package llvm.analysis -package llvm -I src -o src/DNAs.cmo src/DNAs.ml
@@ -122,11 +113,6 @@ File "src/DNAs.ml", line 1, characters 0-8:
 Warning 33: unused open Ast.
 # Target: src/ast.cmx, tags: { compile, extension:cmx, extension:ml, file:src/ast.cmx, file:src/ast.ml, implem, native, ocaml, package(llvm), package(llvm.analysis), package(llvm.bitreader), package(llvm.bitwriter), package(llvm.linker), package(llvm.target), quiet }
 ocamlfind ocamlopt -c -w +a-4 -package llvm.target -package llvm.linker -package llvm.bitreader -package llvm.bitwriter -package llvm.analysis -package llvm -I src -o src/ast.cmx src/ast.ml
-+ ocamlfind ocamlopt -c -w +a-4 -package llvm.target -package llvm.linker -package llvm.bitreader -package llvm.bitwriter -package llvm.analysis -package llvm -I src -o src/ast.cmx src/ast.ml
-File "src/ast.ml", line 124, characters 25-1092:
-Warning 8: this pattern-matching is not exhaustive.
-Here is an example of a value that is not matched:
-Cast (_, _)
 # Target: src/linker.cmx, tags: { compile, extension:cmx, extension:ml, file:src/linker.cmx, file:src/linker.ml, implem, native, ocaml, package(llvm), package(llvm.analysis), package(llvm.bitreader), package(llvm.bitwriter), package(llvm.linker), package(llvm.target), quiet }
 ocamlfind ocamlopt -c -w +a-4 -package llvm.target -package llvm.linker -package llvm.bitreader -package llvm.bitwriter -package llvm.analysis -package llvm -I src -o src/linker.cmx src/linker.ml
 + ocamlfind ocamlopt -c -w +a-4 -package llvm.target -package llvm.linker -package llvm.bitreader -package llvm.bitwriter -package llvm.analysis -package llvm -I src -o src/linker.cmx src/linker.ml
@@ -148,82 +134,78 @@ Warning 45: this open statement shadows the constructor RNA (which is later used
 # Target: src/codegen.cmx, tags: { compile, extension:cmx, extension:ml, file:src/codegen.cmx, file:src/codegen.ml, implem, native, ocaml, package(llvm), package(llvm.analysis), package(llvm.bitreader), package(llvm.bitwriter), package(llvm.linker), package(llvm.target), quiet }
 ocamlfind ocamlopt -c -w +a-4 -package llvm.target -package llvm.linker -package llvm.bitreader -package llvm.bitwriter -package llvm.analysis -package llvm -I src -o src/codegen.cmx src/codegen.ml
 + ocamlfind ocamlopt -c -w +a-4 -package llvm.target -package llvm.linker -package llvm.bitreader -package llvm.bitwriter -package llvm.analysis -package llvm -I src -o src/codegen.cmx src/codegen.ml
-File "src/codegen.ml", line 175, characters 50-66:
+File "src/codegen.ml", line 181, characters 50-66:
 Warning 10: this expression should have type unit.
-File "src/codegen.ml", line 198, characters 24-336:
+File "src/codegen.ml", line 204, characters 24-336:
 Warning 25: bad style, all clauses in this pattern-matching are guarded.
-File "src/codegen.ml", line 203, characters 24-337:
+File "src/codegen.ml", line 209, characters 24-337:
 Warning 25: bad style, all clauses in this pattern-matching are guarded.
-File "src/codegen.ml", line 194, characters 32-948:
+File "src/codegen.ml", line 200, characters 32-948:
 Warning 25: bad style, all clauses in this pattern-matching are guarded.
-File "src/codegen.ml", line 214, characters 24-336:
+File "src/codegen.ml", line 220, characters 24-336:
 Warning 25: bad style, all clauses in this pattern-matching are guarded.
-File "src/codegen.ml", line 219, characters 24-337:
+File "src/codegen.ml", line 225, characters 24-337:
 Warning 25: bad style, all clauses in this pattern-matching are guarded.
-File "src/codegen.ml", line 212, characters 26-838:
+File "src/codegen.ml", line 218, characters 26-838:
 Warning 25: bad style, all clauses in this pattern-matching are guarded.
-File "src/codegen.ml", line 230, characters 24-336:
+File "src/codegen.ml", line 236, characters 24-336:
 Warning 25: bad style, all clauses in this pattern-matching are guarded.
-File "src/codegen.ml", line 235, characters 24-337:
+File "src/codegen.ml", line 241, characters 24-337:
 Warning 25: bad style, all clauses in this pattern-matching are guarded.
-File "src/codegen.ml", line 228, characters 26-838:
+File "src/codegen.ml", line 234, characters 26-838:
 Warning 25: bad style, all clauses in this pattern-matching are guarded.
-File "src/codegen.ml", line 246, characters 24-337:
+File "src/codegen.ml", line 252, characters 24-337:
 Warning 25: bad style, all clauses in this pattern-matching are guarded.
-File "src/codegen.ml", line 251, characters 24-336:
+File "src/codegen.ml", line 257, characters 24-336:
 Warning 25: bad style, all clauses in this pattern-matching are guarded.
-File "src/codegen.ml", line 244, characters 26-838:
+File "src/codegen.ml", line 250, characters 26-838:
 Warning 25: bad style, all clauses in this pattern-matching are guarded.
-File "src/codegen.ml", line 264, characters 24-278:
+File "src/codegen.ml", line 270, characters 24-278:
 Warning 25: bad style, all clauses in this pattern-matching are guarded.
-File "src/codegen.ml", line 268, characters 24-276:
+File "src/codegen.ml", line 274, characters 24-276:
 Warning 25: bad style, all clauses in this pattern-matching are guarded.
-File "src/codegen.ml", line 262, characters 26-719:
+File "src/codegen.ml", line 268, characters 26-719:
 Warning 25: bad style, all clauses in this pattern-matching are guarded.
-File "src/codegen.ml", line 279, characters 16-593:
+File "src/codegen.ml", line 285, characters 16-593:
 Warning 25: bad style, all clauses in this pattern-matching are guarded.
-File "src/codegen.ml", line 291, characters 16-317:
+File "src/codegen.ml", line 297, characters 16-317:
 Warning 25: bad style, all clauses in this pattern-matching are guarded.
-File "src/codegen.ml", line 299, characters 16-318:
+File "src/codegen.ml", line 305, characters 16-318:
 Warning 25: bad style, all clauses in this pattern-matching are guarded.
-File "src/codegen.ml", line 308, characters 16-317:
+File "src/codegen.ml", line 314, characters 16-317:
 Warning 25: bad style, all clauses in this pattern-matching are guarded.
-File "src/codegen.ml", line 316, characters 16-318:
+File "src/codegen.ml", line 322, characters 16-318:
 Warning 25: bad style, all clauses in this pattern-matching are guarded.
-File "src/codegen.ml", line 324, characters 16-317:
+File "src/codegen.ml", line 330, characters 16-317:
 Warning 25: bad style, all clauses in this pattern-matching are guarded.
-File "src/codegen.ml", line 334, characters 10-356:
+File "src/codegen.ml", line 340, characters 10-356:
 Warning 8: this pattern-matching is not exhaustive.
 Here is an example of a value that is not matched:
 (Transcb|Translt|Translttwo)
-File "src/codegen.ml", line 366, characters 17-65:
+File "src/codegen.ml", line 372, characters 17-65:
 Warning 21: this statement never returns (or has an unsound type.)
-File "src/codegen.ml", line 372, characters 12-197:
+File "src/codegen.ml", line 378, characters 12-197:
 Warning 8: this pattern-matching is not exhaustive.
 Here is an example of a value that is not matched:
 (Neg|Not|Comp)
-File "src/codegen.ml", line 418, characters 22-63:
+File "src/codegen.ml", line 432, characters 22-63:
 Warning 21: this statement never returns (or has an unsound type.)
 File "src/codegen.ml", line 30, characters 6-14:
 Warning 26: unused variable intptr_t.
-File "src/codegen.ml", line 188, characters 14-20:
+File "src/codegen.ml", line 194, characters 14-20:
 Warning 26: unused variable e2Type.
-File "src/codegen.ml", line 360, characters 26-34:
+File "src/codegen.ml", line 366, characters 26-34:
 Warning 26: unused variable checker2.
-File "src/codegen.ml", line 391, characters 14-23:
+File "src/codegen.ml", line 397, characters 14-23:
 Warning 26: unused variable testPrint.
 # Target: src/scanner.cmx, tags: { compile, extension:cmx, extension:ml, file:src/scanner.cmx, file:src/scanner.ml, implem, native, ocaml, package(llvm), package(llvm.analysis), package(llvm.bitreader), package(llvm.bitwriter), package(llvm.linker), package(llvm.target), quiet }
 ocamlfind ocamlopt -c -w +a-4 -package llvm.target -package llvm.linker -package llvm.bitreader -package llvm.bitwriter -package llvm.analysis -package llvm -I src -o src/scanner.cmx src/scanner.ml
 # Target: src/semant.cmx, tags: { compile, extension:cmx, extension:ml, file:src/semant.cmx, file:src/semant.ml, implem, native, ocaml, package(llvm), package(llvm.analysis), package(llvm.bitreader), package(llvm.bitwriter), package(llvm.linker), package(llvm.target), quiet }
 ocamlfind ocamlopt -c -w +a-4 -package llvm.target -package llvm.linker -package llvm.bitreader -package llvm.bitwriter -package llvm.analysis -package llvm -I src -o src/semant.cmx src/semant.ml
 + ocamlfind ocamlopt -c -w +a-4 -package llvm.target -package llvm.linker -package llvm.bitreader -package llvm.bitwriter -package llvm.analysis -package llvm -I src -o src/semant.cmx src/semant.ml
-File "src/semant.ml", line 116, characters 16-3959:
-Warning 8: this pattern-matching is not exhaustive.
-Here is an example of a value that is not matched:
-(Typecast (_, _)|Cast (_, _))
-File "src/semant.ml", line 191, characters 9-12:
+File "src/semant.ml", line 204, characters 9-12:
 Warning 27: unused variable s.
-File "src/semant.ml", line 192, characters 8-11:
+File "src/semant.ml", line 205, characters 8-11:
 Warning 27: unused variable s.
 # Target: src/DNAs.cmx, tags: { compile, extension:cmx, extension:ml, file:src/DNAs.cmx, file:src/DNAs.ml, implem, native, ocaml, package(llvm), package(llvm.analysis), package(llvm.bitreader), package(llvm.bitwriter), package(llvm.linker), package(llvm.target), quiet }
 ocamlfind ocamlopt -c -w +a-4 -package llvm.target -package llvm.linker -package llvm.bitreader -package llvm.bitwriter -package llvm.analysis -package llvm -I src -o src/DNAs.cmx src/DNAs.ml
