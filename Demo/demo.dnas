@@ -1,0 +1,22 @@
+DNA d1 = readFASTA("./Demo/bonegla.FASTA");
+DNA d2 = #ATGCCCTTA; //readFASTA("./Demo/myglobin.FASTA");
+// returns the same string
+RNA r1 = d2->;
+print(d2->);
+/*print('\n');
+print(d2);
+//Pep p1 = d1%>;
+print('\n');
+print('\n');
+Pep p1=#A-K-T-G;
+print(p1);
+print('\n');
+print('\n');
+print('\n');       */
+RNA r2 = #GUGUUUGUAUAA;
+Pep p2 = r2+>;
+print('\n');
+print(r2);
+print('\n');
+//print(r2+>);
+print(p2);
