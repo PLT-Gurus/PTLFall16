@@ -1,0 +1,2 @@
+string sample = "incorrect";
+DNA test = cast<DNA>(sample);

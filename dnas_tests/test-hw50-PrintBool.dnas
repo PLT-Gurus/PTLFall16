@@ -1,0 +1,4 @@
+bool hi = true;
+print(hi);
+bool hello = false;
+print (hello);
