@@ -11,7 +11,6 @@ int test(int a,int b)
 {
 	printf("Hello I'm in C\n");
 	return a+b;
-
 }
 
 char* complement(char* str){
@@ -48,8 +47,6 @@ char* transcribe(char* str){
 		i++;
 	}
     int length = i;
-	//printf("%d\n", length);
-    //char retstr [length];
 	char* retstr = malloc(length);
     char curr;
     for(i = 0; i<length; i++){
@@ -66,7 +63,6 @@ char* transcribe(char* str){
     }
 
     retstr[length] = '\0';
-	//printf("%d\n", length);
     return retstr;
 }
 
@@ -95,9 +91,6 @@ char* translate(char* str){
     int i = 0;
     while(str[i] != 0) i++;
     int length = i;
-    //printf("%s\n", "length");
-    //printf("%d\n", length);
-    // good here
     int start[3];
     int ending[3];
     for(i=0; i<3; i++){
@@ -125,37 +118,22 @@ char* translate(char* str){
 				temp = i;
 			if(temp == -1)
 				temp = i;
-			// temp = i;
-
         }
     }
-    //printf("%s\n", "temp");
-    //printf("%d\n", ending[0]);
-
     char* retdef = "No possible translation available.";
     if(temp == -1)
         return retdef;
     int b = ending[temp];
     int a = start[temp];
-	//printf("%d\n", b);
-	//printf("%d\n", a);
     int ret_size = (b-a)/3 + 1;
-	//printf("%d\n", ret_size);
-    //char retstr [ret_size];
     char* retstr = malloc(ret_size);
     int index;
     for(int i = a; i<b; i=i+3){
         temp = codon_number(str[i], str[i+1], str[i+2]);
         index = (i-a)/3;
-		//printf("%d\n", index);
         retstr[index] = codon[temp];
-		//printf("%c\n", codon[temp]);
-		//printf("%c\n", retstr[index]);
     }
-	//printf("%d\n", ret_size);
 	retstr[ret_size-1] = '\0';
-	/*for(int i = 0; i<ret_size-1; i++)
-		printf("%c\n", retstr[i]); */
 	int length2 = ret_size - 1;
 	char retstr2 [length2];
     int curr;
@@ -165,7 +143,6 @@ char* translate(char* str){
     }
     retstr2[length2] = '\0';
     return retstr;
-	//return retstr;
 }
 
 char* translate2(char* str){
@@ -192,7 +169,6 @@ char* concat(char * input1, char * input2)
     }
     retstr[length] = '\0';
     return retstr;
-
 }
 int strlength(char * input)
 {
@@ -308,7 +284,6 @@ char getChar (char ** input, int index)
     char temp =input[0][index];
     return temp;
 }
-
 char* formatPep(char * input)
 {
     int i= 0;
@@ -354,7 +329,6 @@ bool testValid(char * input, char type)
     {
         for (int i =0; i< size; i++)
         {
-
             if ((input[i] != 'a') && (input[i] != 't') && (input[i] != 'g')  && (input[i] != 'c')  && (input[i] != 'A')  && (input[i] != 'T')  && (input[i] != 'G')
               && (input[i] != 'C'))
             {
@@ -369,7 +343,6 @@ bool testValid(char * input, char type)
              if ((input[i] != 'a') && (input[i] != 'u') && (input[i] != 'g')  && (input[i] != 'c')  && (input[i] != 'A')  && (input[i] != 'U')  && (input[i] != 'G')
               && (input[i] != 'C'))
                 return 0;
-
         }
     }
     if (type == 'p')// pep type checking
@@ -381,9 +354,11 @@ bool testValid(char * input, char type)
 					break;
 				return 0;
 			}
-
         }
     }
-
+    return 1;
+}
+int release_memory(char* a){
+    free(a);
     return 1;
 }
