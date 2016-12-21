@@ -1,8 +1,0 @@
-int foo(int a, bool b, int c) end
-
-void bar(int a, void b, int c) end /* Error: illegal void formal b */
-
-int main()
-
-  return 0;
-end

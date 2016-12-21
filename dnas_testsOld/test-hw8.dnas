@@ -1,9 +1,0 @@
-string [8] David;
-David[0] = "Lose ";
-David[1] = "yourself";
-David[2] = "to ";
-David[3] = "dance";
-int i = 0;
-for i=0;i<4;i=i+1 then
-	print_str(David[i]);
-end

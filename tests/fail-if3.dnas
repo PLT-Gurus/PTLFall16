@@ -1,9 +1,0 @@
-int main()
-  if (true) then
-    42;
-  elseif (true) then
-    55;
-  else
-    bar; /* Error: undeclared variable */
-  end
-end

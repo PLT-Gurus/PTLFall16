@@ -1,3 +1,0 @@
-int print(int a, int b, double c)
-  a = b +1;
-end

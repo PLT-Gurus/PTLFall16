@@ -8,10 +8,10 @@ LLI="lli"
 DNAS="./DNAs.native"
 #DNAs="_build/DNAs.native"
 
-DEFAULT_PATH="./dnas_tests"
+DEFAULT_PATH="./"
 
 Run() {
-    eval $* 
+    eval $*
 }
 
 Usage() {
@@ -46,7 +46,7 @@ CompileFile(){
     echo "# compiling ${basename}.dnas"
     Run "$DNAS" "<" $1 ">" "${DEFAULT_PATH}/${basename}.ll"
     echo "     ${basename}.ll ... Done"
-    Run "$LLI" "${DEFAULT_PATH}/${basename}.ll" ">" "${DEFAULT_PATH}/${basename}.out" 
+    Run "$LLI" "${DEFAULT_PATH}/${basename}.ll" ">" "${DEFAULT_PATH}/${basename}.out"
     echo "     ${basename}.out ... Done"
 
 }
@@ -111,4 +111,3 @@ do
 	    ;;
     esac
 done
-

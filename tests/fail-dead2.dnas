@@ -1,9 +1,0 @@
-int main()
-  int i;
-
-  begin
-    i = 15;
-    return i;
-  end
-  i = 32; /* Error: code after a return */
-end

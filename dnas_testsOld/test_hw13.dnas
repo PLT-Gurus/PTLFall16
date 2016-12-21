@@ -1,5 +1,0 @@
-string hi = "abc"; 
-string hello = "def";
-string sample = "atgc";
-DNA another= sample->;
-print(sample.length);
