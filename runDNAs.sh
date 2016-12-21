@@ -8,7 +8,7 @@ LLI="lli"
 DNAS="./DNAs.native"
 #DNAs="_build/DNAs.native"
 
-DEFAULT_PATH="./"
+DEFAULT_PATH="."
 
 Run() {
     eval $*
@@ -89,9 +89,9 @@ shift `expr $OPTIND - 1`
 
 if [ $# -ge 1 ]
 then
-    files="dnas_tests/$@"
+    files="$@"
 else
-    files="dnas_tests/*.dnas"
+    files="*.dnas"
 fi
 
 for file in $files

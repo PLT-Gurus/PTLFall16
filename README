@@ -14,7 +14,11 @@ It also requires clang compiler for the c built-in functions inside the compiler
 To run your dna files using the following command:
 make    (to build the compiler first)
 ./runDNAs.sh -r filename.dnas
-(make sure filename.dnas is stored inside dnas_tests folder --will fix later)
+
+<\t>-a   Print AST of file
+<\t>-c   Compile file
+<\t>-r   Run file
+<\t>-h   Print this help
 
 If the terminal shows "can't find command",feed "chmod +x runDNAs.sh" into the terminal first.
 
