@@ -1,4 +1,3 @@
-
 (* Semantic checking for #DNA compiler *)
 
 open Ast
@@ -9,8 +8,6 @@ module StringMap = Map.Make(String)
    Check each global statement, then check each function
 *)
 (* Top-level functions - global checking functions *)
-
-
 let globals_list = ref StringMap.empty;;
 let locals_list = ref StringMap.empty;;
 let count = ref true;;
@@ -18,8 +15,6 @@ let v_types_list = ["int"; "bool"; "char"; "double"; "aa"; "nuc"; "codon"; "seq"
 let types_map = List.fold_left (fun m (t) -> StringMap.add t true m) StringMap.empty v_types_list;;
 let cast_types_list = [ "seq"; "DNA"; "RNA"; "Peptide"; "str"];;
 let cast_types_map = List.fold_left (fun m (t) -> StringMap.add t true m) StringMap.empty cast_types_list;;
-
-
 
 (* Raise an exception if a given binding is to a void type *)
 let check_not_void exceptf = function
@@ -82,8 +77,7 @@ let report_duplicate exceptf list =
 	in helper (List.sort compare list)
 ;;
 
-(* Raise an exception of the given rvalue type cannot be assigned to
-the given lvalue type *)
+(* Raise an exception of the given rvalue type cannot be assigned to the given lvalue type *)
 
 let check_assign lvaluet rvaluet err =
 	match lvaluet with
@@ -115,7 +109,6 @@ let function_decl s function_decls = try StringMap.find s function_decls
 ;;
 
 let check_stmt func function_decls =
-
 	let type_of_identifier s =
 
 		try StringMap.find s !(locals_list)
@@ -128,25 +121,20 @@ let check_stmt func function_decls =
 		| Litchar _ -> Char
 		| Litnuc _ -> Nuc
 		| Litaa _ -> Aa
-		| Id s -> type_of_identifier s (* there is an issue for order of initialization *)
+		| Id s -> type_of_identifier s
 		| Litdna _ -> DNA
 		| Litrna _ -> RNA
 		| Litpep _ -> Pep
 		| LitCodon _ -> Str
-		| Sequence _ -> Seq (* is this correct? *)
-		| Stringlit _ -> Str (* is this correct?  *)
-		| Litdouble _ -> Double (*is this correct? *)
+		| Sequence _ -> Seq
+		| Stringlit _ -> Str
+		| Litdouble _ -> Double
 		| ArrayAcc(s,e) -> let check_int_expr3 e =
 				if expr e != Int then raise (Failure ("expected Integer expression in " ^ string_of_expr e))
 				else ()
 			in check_int_expr3 e;
 			array_type_unfold (type_of_identifier s)
 
-(*		| Strcat(e1, e2) as ex -> let lt = expr e1
-			and rt = expr e2 in
-			check_assign lt rt (Failure ("illegal concatenation " ^ string_of_typ lt ^
-			" = " ^ string_of_typ rt ^ " in " ^
-			string_of_expr ex))		*)
 		| Binop(e1, op, e2) as e -> let t1 = expr e1 and t2 = expr e2 in
 		(match op with
 			Add | Sub | Mult | Div | Expon when t1 = Int && t2 = Int -> Int
@@ -276,10 +264,7 @@ let check_func func function_decls =
 	report_duplicate (fun n -> "duplicate formal " ^ n ^ " in " ^ func.fname) (List.map snd func.formals);
 
 	(locals_list) := List.fold_left (fun m (t, n) -> StringMap.add n t m) StringMap.empty func.formals;
-(*
-	let symbols = List.fold_left (fun m (t, n) -> StringMap.add n t m) StringMap.empty func.formals
-	in
-*)
+
 	check_stmt func function_decls;
 	if !(count) then (
 		(globals_list) := !(locals_list);
@@ -287,7 +272,6 @@ let check_func func function_decls =
 	else
 		(locals_list) := StringMap.empty
 ;;
-
 
 let check prog =
 	check_UDF_conflict prog.funcs;

@@ -1,72 +1,22 @@
-DNA d1 = #CACGCCCCAGCTCTGCCCTTGCAGAGGCAGAGTAGGGAAGAGCAAGCTGCCCGAGACGCAGGGGAAGGAGGATGAGGGCCCTGGGGATGAGCTGGGGTGAACCAGGCTCCCTTTCCTTTGCAGGTGCGAAGCCCAGCGGTGCAGAGTCCAGCAAAGGTGCAGGTATGAGGATGGACCTGATGGGTTCCTGGACCCTCCCCTCTCACCCTGGTCCCTCAGTCTCATTCCCCCACTCCTGCCACCTCCTGTCTGGCCATCAGGAAGGCCAGCCTGCTCCCCACCTGATCCTCCCAAACCCAGAGCCACCTGATGCCTGCCCCTCTGCTCCACAGCCTTTGTGTCCAAGCAGGAGGGCAGCGAGGTAGTGA;
-DNA d2 = #CACGCCCCAGCTCTGCCCTTGCAGAGGGAGAGGAGGGAAGAGCAAGCTGCCCGAGACGCAGGGGAAGGAGGATGAGGGCCCTGGGGATGAGCTGGGGTGAACCAGGCTCCCTTTCCTTTGCAGGTGCGAAGCCCAGCGGTGCAGAGTCCAGCAAAGGTGCAGGTATGAGGATGGACCTGATGGGTTCCTGGACCCTCCCCTCTCACCCTGGTCCCTCAGTCTCATTCCCCCACTC;
-print(d1);
-print('\n');
-print('\n');
+DNA d1 = readFASTA("./Demo/bonegla.FASTA");
+DNA d2 = #ATGCCCTTA; //readFASTA("./Demo/myglobin.FASTA");
+// returns the same string
+RNA r1 = d2->;
+print(d2->);
+/*print('\n');
 print(d2);
+//Pep p1 = d1%>;
 print('\n');
-int res = lcs_DNA(d1,d2);
-// lcs_DNA longest common subsequence with DNA inputs
-int lcs_DNA(DNA A, DNA B)
-	int sizeA = A.length;
-	int sizeB = B.length;
-	int arr_size = (sizeA +1) * (sizeB + 1);
-	int [arr_size] C;
-	int i2 = 0;
-	for i2; i2< arr_size; i2 = i2+1 then
-		C[i2] = 0;
-	end
-	int i = sizeA; int j = sizeB;
-	for i=sizeA; i >= 0; i = i-1 then
-		for j=sizeB; j >= 0; j = j-1 then
-			if i == sizeA  | j == sizeB then
-				int index = getIndex(i, j, sizeA, sizeB);
-				C[index] = 0;
-			elseif (A[i] == B[j]) then
-				int index1 = getIndex(i,j,sizeA,sizeB);
-				int index2 = getIndex(i+1,j+1,sizeA,sizeB);
-				C[index1] = 1 + C[index2];
-			else
-				int index3 = getIndex((i+1), j, sizeA, sizeB);
-				int index4 = getIndex(i,(j+1), sizeA, sizeB);
-				int index5 = getIndex(i,j, sizeA, sizeB);
-				int firstVal = C[index3];
-				int secondVal = C[index4];
-				int max = getMax(firstVal, secondVal);
-				C[index5] = max;
-			end
-		end
-	end
-
-/*	for i = 0; i<sizeA*sizeB; i=i+1 then
-		//print(C[i]);
-		end		*/
-	i= 0;	j= 0;
-	print('\n');
-	print("Longest subsequence:");print('\n');print('\t');
-	while (i < sizeA  & j<sizeB) then
-		if (A[i] == B[j] ) then
-			char temp = A[i];
-			print(temp);
-			i = i + 1;	j = j+ 1 ;
-		elseif C[getIndex(i+1, j, sizeA, sizeB)] >= C[getIndex(i, j+1, sizeA, sizeB)] then
-			i = i +1 ;
-		else
-			j = j + 1;
-		end
-	end
-	print('\n');
-	print("The length of the longest subsequence:");print('\n');print('\t');
-	print(C[0]);print('\n');
-	return C[0];
-end
-
-int getIndex(int x, int y, int col, int row)
-	return row * x + y;
-end
-
-int getMax(int x, int y)
-	int result = -1;
-	if x > y then result = x; else result = y; end
-	return result;
-end
+print('\n');
+Pep p1=#A-K-T-G;
+print(p1);
+print('\n');
+print('\n');
+print('\n');       */
+RNA r2 = #GUGUUUGUAUAA;
+Pep p2 = r2+>;
+print('\n');
+print(r2);
+print('\n');
+//print(r2+>);
+print(p2);
