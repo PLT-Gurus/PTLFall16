@@ -1,0 +1,11 @@
+int i =0;
+int j =0;
+int b = 7;
+int c = 6;
+while (i +1)<c then
+  print(i);
+  i=i+1;
+  for j=0; j<7; j=j+1 then
+    print(j);
+  end
+end
