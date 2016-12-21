@@ -1,3 +1,0 @@
-string hello = "krieger";
-char temp = hello[1];
-print(temp);
